@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ public class ViewEvent extends AppCompatActivity {
 
     ListView mTrainingLV, mFixtureLV;
     String cEvent;
+    TextView mNoTraining, mNoFixture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +36,24 @@ public class ViewEvent extends AppCompatActivity {
         String currentTeam = ((GlobalVariables) ViewEvent.this.getApplication()).getCurrentTeam();
         setTitle("All events for " + currentTeam);
 
-//        final ArrayList<String> trainings = new ArrayList<>();
-//        final ArrayList<String> fixtures = new ArrayList<>();
-
         mTrainingLV = (ListView) findViewById(R.id.trainingListView);
         mFixtureLV = (ListView) findViewById(R.id.fixtureListView);
+        mNoTraining = (TextView) findViewById(R.id.noTrainingsData);
+        mNoFixture = (TextView) findViewById(R.id.noFixturesData);
+
+        mNoTraining.setVisibility(View.INVISIBLE);
+        mNoFixture.setVisibility(View.INVISIBLE);
 
         mDatabaseQueryT = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         mDatabaseQueryT.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                collectTrainingEvents((Map<String, Object>) dataSnapshot.getValue());
+                if(!dataSnapshot.exists()){
+                    mTrainingLV.setVisibility(View.INVISIBLE);
+                    mNoTraining.setVisibility(View.VISIBLE);
+                } else {
+                    collectTrainingEvents((Map<String, Object>) dataSnapshot.getValue());
+                }
             }
 
             @Override
@@ -57,7 +66,12 @@ public class ViewEvent extends AppCompatActivity {
         mDatabaseQueryF.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                collectFixtureEvents((Map<String, Object>) dataSnapshot.getValue());
+                if(!dataSnapshot.exists()){
+                    mFixtureLV.setVisibility(View.INVISIBLE);
+                    mNoFixture.setVisibility(View.VISIBLE);
+                }else {
+                    collectFixtureEvents((Map<String, Object>) dataSnapshot.getValue());
+                }
             }
 
             @Override

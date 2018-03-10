@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
@@ -20,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -31,9 +34,10 @@ import java.util.Map;
     private Query mDatabaseQuery;
 
     ListView lv;
+    TextView mNoTeam;
 
     User user;
-    String teamID, userName;
+    String teamID, userName, userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +45,45 @@ import java.util.Map;
         setContentView(R.layout.activity_join_team);
 
         lv = (ListView) findViewById(R.id.teamListView);
+        mNoTeam = (TextView) findViewById(R.id.noTeamTextView);
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
 
+        mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                userType = user.getType();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         mDatabaseQuery = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                collectTeamNames((Map<String, Object>) dataSnapshot.getValue());
+                if (!dataSnapshot.exists()) {
+                    if (userType.equalsIgnoreCase("Manager")){
+                        lv.setVisibility(View.INVISIBLE);
+                        mNoTeam.setVisibility(View.VISIBLE);
+                        Toast.makeText(JoinTeam.this,"No teams created, you need to create a team first before joining it", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(JoinTeam.this, CreateTeam.class));
+                    } else if (userType.equalsIgnoreCase("Player")){
+                        lv.setVisibility(View.INVISIBLE);
+                        mNoTeam.setVisibility(View.VISIBLE);
+                        Toast.makeText(JoinTeam.this,"No teams have been created yet" + teamID, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(JoinTeam.this, PlayerHome.class));
+                    }
+                } else {
+                    collectTeamNames((Map<String, Object>) dataSnapshot.getValue());
+                }
             }
 
             @Override
@@ -85,8 +117,10 @@ import java.util.Map;
                         userName = user.getName();
                         if (user.getType().equalsIgnoreCase("Manager")) {
                             mDatabaseT.child(teamID).child("manager").child(fbUser.getUid()).setValue(userName);
+                            startActivity(new Intent(JoinTeam.this, ManagerHome.class));
                         } else if (user.getType().equalsIgnoreCase("Player")){
                             mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
+                            startActivity(new Intent(JoinTeam.this, PlayerHome.class));
                         }
                         mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
                     }
@@ -98,7 +132,6 @@ import java.util.Map;
                 });
                 Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
                 ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
-                startActivity(new Intent(JoinTeam.this, ManagerHome.class));
             }
         });
     }

@@ -57,6 +57,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
 
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
+        userID = fbUser.getUid();
 
         mDate = (TextView) findViewById(R.id.fixtureDate);
         mTime = (TextView) findViewById(R.id.fixtureTime);
@@ -70,7 +71,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mUpdateAvailibility = (Button) findViewById(R.id.updateAvailibilityBtn);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
-        attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee");
+        attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee").child(userID);
 
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -247,7 +248,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mViewAttendees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ViewIndividualFixture.this, ViewAttendeesTraining.class));
+                startActivity(new Intent(ViewIndividualFixture.this, ViewAttendeesFixture.class));
             }
         });
 

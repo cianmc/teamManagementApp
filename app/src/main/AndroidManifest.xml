@@ -43,7 +43,9 @@
         <activity android:name=".ViewIndividualTraining" />
         <activity android:name=".ViewIndividualFixture" />
         <activity android:name=".ViewAttendeesTraining" />
-        <activity android:name=".ViewAttendeesFixture"></activity>
+        <activity android:name=".ViewAttendeesFixture" />
+        <activity android:name=".FixtureRating" />
+        <activity android:name=".TrainingRating"></activity>
     </application>
 
 </manifest>

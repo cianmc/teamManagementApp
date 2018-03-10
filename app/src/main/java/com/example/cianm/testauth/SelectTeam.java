@@ -31,7 +31,7 @@ public class SelectTeam extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser fbUser;
 
-    TextView tv;
+    TextView mNoTeam;
     ListView lv;
     Button mJoinTeam;
     ProgressBar mProgressBar;
@@ -50,8 +50,11 @@ public class SelectTeam extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.selectTeamListView);
         mJoinTeam = (Button) findViewById(R.id.joinTeamBtn);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mNoTeam = (TextView) findViewById(R.id.noTeamTextView);
 
-        mProgressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mNoTeam.setVisibility(View.INVISIBLE);
+        lv.setVisibility(View.VISIBLE);
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
@@ -62,50 +65,56 @@ public class SelectTeam extends AppCompatActivity {
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userTeamRef = rootRef.child("User").child(uid).child("team");
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        userTeamRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    String teamName = ds.getValue(String.class);
-                    teamNames.add(teamName);
-                }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SelectTeam.this, android.R.layout.select_dialog_singlechoice, teamNames);
-                lv.setAdapter(arrayAdapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                        mJoinTeam.setVisibility(View.GONE);
-                        teamID = adapterView.getItemAtPosition(i).toString();
-                        mDatabaseU.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                user = dataSnapshot.getValue(User.class);
-                                userType = user.getType();
-                                ((GlobalVariables) SelectTeam.this.getApplication()).setCurrentTeam(teamID);
-                                if (user.getType().equalsIgnoreCase("Manager")) {
-                                    startActivity(new Intent(SelectTeam.this, ManagerHome.class));
-                                } else if (user.getType().equalsIgnoreCase("Player")){
-                                    startActivity(new Intent(SelectTeam.this, PlayerHome.class));
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                        Toast.makeText(SelectTeam.this,"Loading data for team " + teamID, Toast.LENGTH_SHORT).show();
+                if (!dataSnapshot.exists()) {
+                    mNoTeam.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.INVISIBLE);
+                } else {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String teamName = ds.getValue(String.class);
+                        teamNames.add(teamName);
                     }
-                });
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SelectTeam.this, android.R.layout.select_dialog_singlechoice, teamNames);
+                    lv.setAdapter(arrayAdapter);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            mProgressBar.setVisibility(View.VISIBLE);
+                            mJoinTeam.setVisibility(View.GONE);
+                            teamID = adapterView.getItemAtPosition(i).toString();
+                            mDatabaseU.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    user = dataSnapshot.getValue(User.class);
+                                    userType = user.getType();
+                                    ((GlobalVariables) SelectTeam.this.getApplication()).setCurrentTeam(teamID);
+                                    if (user.getType().equalsIgnoreCase("Manager")) {
+                                        startActivity(new Intent(SelectTeam.this, ManagerHome.class));
+                                    } else if (user.getType().equalsIgnoreCase("Player")) {
+                                        startActivity(new Intent(SelectTeam.this, PlayerHome.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            Toast.makeText(SelectTeam.this, "Loading data for team " + teamID, Toast.LENGTH_SHORT).show();
+                        }
+                    });
             }
+
+        }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-        userTeamRef.addListenerForSingleValueEvent(valueEventListener);
+
+        });
 
         mJoinTeam.setOnClickListener(new View.OnClickListener() {
             @Override
