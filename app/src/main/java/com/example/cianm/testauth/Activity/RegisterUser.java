@@ -1,4 +1,4 @@
-package com.example.cianm.testauth;
+package com.example.cianm.testauth.Activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;

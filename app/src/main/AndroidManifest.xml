@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,11 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterUser"
+            android:name=".Activity.RegisterUser"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".CheckValidation" />
-        <activity android:name=".ResetPassword" />
-        <activity android:name=".ManagerHome" />
+        <activity android:name=".Activity.CheckValidation" />
+        <activity android:name=".Activity.ResetPassword" />
+        <activity android:name=".ManagerHome"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CreateTeam"
             android:windowSoftInputMode="adjustPan" />
@@ -37,15 +38,16 @@
         <activity
             android:name=".CreateEvent"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".PlayerHome" />
-        <activity android:name=".SelectTeam" />
+        <activity android:name=".PlayerHome"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activity.SelectTeam" />
         <activity android:name=".ViewEvent" />
-        <activity android:name=".ViewIndividualTraining" />
-        <activity android:name=".ViewIndividualFixture" />
-        <activity android:name=".ViewAttendeesTraining" />
-        <activity android:name=".ViewAttendeesFixture" />
-        <activity android:name=".FixtureRating" />
-        <activity android:name=".TrainingRating"></activity>
+        <activity android:name=".Activity.ViewIndividualTraining" />
+        <activity android:name=".Activity.ViewIndividualFixture" />
+        <activity android:name=".Activity.ViewAttendeesTraining" />
+        <activity android:name=".Activity.ViewAttendeesFixture" />
+        <activity android:name=".Activity.FixtureRating" />
+        <activity android:name=".Activity.TrainingRating"/>
     </application>
 
 </manifest>

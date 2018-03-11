@@ -1,8 +1,6 @@
-package com.example.cianm.testauth;
+package com.example.cianm.testauth.Activity;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +13,8 @@ import com.example.cianm.testauth.Entity.Attendee;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.PlayerHome;
+import com.example.cianm.testauth.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.cianm.testauth.Activity.ViewIndividualFixture;
+import com.example.cianm.testauth.Activity.ViewIndividualTraining;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

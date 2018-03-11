@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navM_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/navM_create_team"
+            android:icon="@drawable/ic_create"
+            android:title="@string/createTeam" />
+        <item
+            android:id="@+id/navM_join_team"
+            android:icon="@drawable/ic_join_team"
+            android:title="@string/joinTeam" />
+        <item
+            android:id="@+id/navM_create_event"
+            android:icon="@drawable/ic_create"
+            android:title="@string/createEvent" />
+        <item
+            android:id="@+id/navM_view_event"
+            android:icon="@drawable/ic_event"
+            android:title="@string/viewEvent" />
+        <item
+            android:id="@+id/navM_view_ratings"
+            android:icon="@drawable/ic_view_ratings"
+            android:title="@string/viewRatings" />
+    </group>
+
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/navM_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/action_settings" />
+            <item
+                android:id="@+id/navM_sign_out"
+                android:icon="@drawable/ic_sign_out"
+                android:title="@string/signout" />
+        </menu>
+    </item>
+
+</menu>
