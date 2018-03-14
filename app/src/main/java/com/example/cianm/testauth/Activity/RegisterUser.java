@@ -76,17 +76,17 @@ public class RegisterUser extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
                 String name = mName.getText().toString();
-                if (TextUtils.isEmpty(email)) {
+                if (email.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter in a email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)) {
+                if (password.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter in a password address", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(name)) {
+                if (name.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter in your name address", Toast.LENGTH_SHORT).show();
                     return;
                 }

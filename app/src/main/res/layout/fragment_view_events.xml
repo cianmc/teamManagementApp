@@ -2,15 +2,21 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayoutViewEvents"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cianm.testauth.ViewEvent">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.cianm.testauth.Fragment.ViewEventFragment">
 
     <TextView
         android:id="@+id/trainingTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="235dp"
+        android:layout_marginEnd="220dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
         android:text="@string/training"
@@ -37,7 +43,7 @@
     <ListView
         android:id="@+id/trainingListView"
         android:layout_width="0dp"
-        android:layout_height="160dp"
+        android:layout_height="145dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -49,7 +55,7 @@
         android:id="@+id/fixtureTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="240dp"
+        android:layout_marginEnd="230dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="13dp"
         android:text="@string/fixture"
@@ -62,10 +68,12 @@
     <ListView
         android:id="@+id/fixtureListView"
         android:layout_width="0dp"
-        android:layout_height="160dp"
+        android:layout_height="145dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fixtureTextView" />
@@ -94,5 +102,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

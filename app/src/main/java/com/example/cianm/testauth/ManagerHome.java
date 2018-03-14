@@ -1,6 +1,8 @@
 package com.example.cianm.testauth;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,13 @@ import android.widget.Toast;
 import com.example.cianm.testauth.Activity.MainActivity;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.Fragment.CreateEventFragment;
+import com.example.cianm.testauth.Fragment.CreateTeamFragment;
+import com.example.cianm.testauth.Fragment.JoinTeamFragment;
+import com.example.cianm.testauth.Fragment.ManagerHomeFragment;
+import com.example.cianm.testauth.Fragment.SettingsFragment;
+import com.example.cianm.testauth.Fragment.ViewEventFragment;
+import com.example.cianm.testauth.Fragment.ViewRatingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +40,6 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
     private FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     FirebaseUser fbUser;
-    Button btnSignOut, mCreateTeam, mJoinTeam, mCreateEvent, mViewEvent;
     TextView txtName, txtEmail;
     View navHeader;
 
@@ -45,7 +53,6 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
         setTitle("Manager Home Page: " + currentTeam);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        contentItems();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,54 +67,11 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
         txtName = (TextView) navHeader.findViewById(R.id.mhNameTextView);
         txtEmail = (TextView) navHeader.findViewById(R.id.mhEmailTextView);
 
+        // load name and email to navigation menu
         loadNavHeader();
-    }
 
-    public void contentItems(){
-        mAuth = FirebaseAuth.getInstance();
-
-        btnSignOut = (Button) findViewById(R.id.signoutBtn);
-        mCreateTeam = (Button) findViewById(R.id.createTeamBtn);
-        mJoinTeam = (Button) findViewById(R.id.joinTeamBtn);
-        mCreateEvent = (Button) findViewById(R.id.createEventBtn);
-        mViewEvent = (Button) findViewById(R.id.viewEventBtn);
-
-        mCreateTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ManagerHome.this, CreateTeam.class));
-            }
-        });
-
-        mJoinTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ManagerHome.this, JoinTeam.class));
-            }
-        });
-
-        mCreateEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ManagerHome.this, CreateEvent.class));
-            }
-        });
-
-        mViewEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ManagerHome.this, ViewEvent.class));
-            }
-        });
-
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                Toast.makeText(getApplicationContext(), "Signing out...", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ManagerHome.this, MainActivity.class));
-            }
-        });
+        // set default menu item
+        displaySelectedScreen(R.id.navM_home);
     }
 
     private void loadNavHeader() {
@@ -143,28 +107,55 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        displaySelectedScreen(item.getItemId());
+        return true;
+    }
 
-        if(id == R.id.navM_home) {
+    private void displaySelectedScreen(int itemId) {
 
-        } else if (id == R.id.navM_create_team) {
-            startActivity(new Intent(ManagerHome.this, CreateTeam.class));
-        } else if (id == R.id.navM_join_team) {
+        //creating fragment object
+        Fragment fragment = null;
 
-        } else if (id == R.id.navM_create_event) {
+        //initializing the fragment object which is selected
+        switch (itemId) {
+            case R.id.navM_home:
+                fragment = new ManagerHomeFragment();
+                break;
+            case R.id.navM_create_team:
+                fragment = new CreateTeamFragment();
+                break;
+            case R.id.navM_join_team:
+                fragment = new JoinTeamFragment();
+                break;
+            case R.id.navM_create_event:
+                fragment = new CreateEventFragment();
+                break;
+            case R.id.navM_view_event:
+                fragment = new ViewEventFragment();
+                break;
+            case R.id.navM_view_ratings:
+                fragment = new ViewRatingsFragment();
+                break;
+            case R.id.navM_settings:
+                fragment = new SettingsFragment();
+                break;
+            case R.id.navM_sign_out:
+                mAuth.signOut();
+                Toast.makeText(getApplicationContext(), "Signing out...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent (ManagerHome.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
 
-        } else if (id == R.id.navM_view_event) {
-
-        } else if (id == R.id.navM_view_ratings) {
-
-        } else if (id == R.id.navM_settings) {
-
-        } else if (id == R.id.navM_sign_out) {
-
+        //replacing the fragment
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

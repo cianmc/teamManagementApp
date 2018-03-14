@@ -1,9 +1,12 @@
-package com.example.cianm.testauth;
+package com.example.cianm.testauth.Fragment;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import com.example.cianm.testauth.Activity.ViewIndividualFixture;
 import com.example.cianm.testauth.Activity.ViewIndividualTraining;
 import com.example.cianm.testauth.Entity.GlobalVariables;
+import com.example.cianm.testauth.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ViewEvent extends AppCompatActivity {
+/**
+ * Created by cianm on 14/03/2018.
+ */
+
+public class ViewEventFragment extends Fragment {
 
     DatabaseReference rootRef, trainingRef, fixtureRef;
     private Query mDatabaseQueryT, mDatabaseQueryF;
@@ -31,17 +39,25 @@ public class ViewEvent extends AppCompatActivity {
     String cEvent;
     TextView mNoTraining, mNoFixture;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_event);
-        String currentTeam = ((GlobalVariables) ViewEvent.this.getApplication()).getCurrentTeam();
-        setTitle("All events for " + currentTeam);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //returning our layout file
+        //change R.layout.yourlayoutfilename for each of your fragments
+        return inflater.inflate(R.layout.fragment_view_events, container, false);
+    }
 
-        mTrainingLV = (ListView) findViewById(R.id.trainingListView);
-        mFixtureLV = (ListView) findViewById(R.id.fixtureListView);
-        mNoTraining = (TextView) findViewById(R.id.noTrainingsData);
-        mNoFixture = (TextView) findViewById(R.id.noFixturesData);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //you can set the title for your toolbar here for different fragments different titles
+        String currentTeam = ((GlobalVariables) getActivity().getApplication()).getCurrentTeam();
+        getActivity().setTitle("View Events: " + currentTeam);
+
+        mTrainingLV = (ListView) getView().findViewById(R.id.trainingListView);
+        mFixtureLV = (ListView) getView().findViewById(R.id.fixtureListView);
+        mNoTraining = (TextView) getView().findViewById(R.id.noTrainingsData);
+        mNoFixture = (TextView) getView().findViewById(R.id.noFixturesData);
 
         mNoTraining.setVisibility(View.INVISIBLE);
         mNoFixture.setVisibility(View.INVISIBLE);
@@ -94,14 +110,14 @@ public class ViewEvent extends AppCompatActivity {
             trainings.add((String) singleTraining.get("date"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice, trainings);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_singlechoice, trainings);
         mTrainingLV.setAdapter(arrayAdapter);
         mTrainingLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 cEvent = adapterView.getItemAtPosition(i).toString();
-                ((GlobalVariables) ViewEvent.this.getApplication()).setCurrentEvent(cEvent);
-                startActivity(new Intent(ViewEvent.this, ViewIndividualTraining.class));
+                ((GlobalVariables) getActivity().getApplicationContext()).setCurrentEvent(cEvent);
+                startActivity(new Intent(getActivity(), ViewIndividualTraining.class));
             }
         });
     }
@@ -116,16 +132,15 @@ public class ViewEvent extends AppCompatActivity {
             fixtures.add((String) singleFixture.get("date"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice, fixtures);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_singlechoice, fixtures);
         mFixtureLV.setAdapter(arrayAdapter);
         mFixtureLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 cEvent = adapterView.getItemAtPosition(i).toString();
-                ((GlobalVariables) ViewEvent.this.getApplication()).setCurrentEvent(cEvent);
-                startActivity(new Intent(ViewEvent.this, ViewIndividualFixture.class));
+                ((GlobalVariables) getActivity().getApplicationContext()).setCurrentEvent(cEvent);
+                startActivity(new Intent(getActivity(), ViewIndividualFixture.class));
             }
         });
     }
 }
-

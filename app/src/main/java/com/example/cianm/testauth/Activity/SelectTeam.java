@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
-import com.example.cianm.testauth.JoinTeam;
 import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
@@ -108,7 +107,7 @@ public class SelectTeam extends AppCompatActivity {
                             Toast.makeText(SelectTeam.this, "Loading data for team " + teamID, Toast.LENGTH_SHORT).show();
                         }
                     });
-            }
+           }
 
         }
 

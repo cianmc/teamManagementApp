@@ -42,7 +42,7 @@ public class FixtureRating extends AppCompatActivity {
     ScrollView mRatingsView;
 
     int points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards;
-    String currentTeam, currentEvent, eventKey, tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards, position;
+    String currentTeam, currentEvent, eventKey, tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards, position, teamType;
 
     ArrayList<String> attendees;
     Team team;
@@ -109,7 +109,8 @@ public class FixtureRating extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 team = dataSnapshot.getValue(Team.class);
-                if(team.getType().equalsIgnoreCase("Hurling")){
+                teamType = team.getType();
+                if(teamType.equalsIgnoreCase("Hurling")){
                     mBlackCardLinearLayout.setVisibility(View.GONE);
                 }
             }
@@ -162,8 +163,8 @@ public class FixtureRating extends AppCompatActivity {
                 points++;
                 mPointsValue.setText(Integer.toString(points));
                 tPoints = mPointsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("points").setValue(tPoints);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("points").setValue(tPoints);
             }
         });
 
@@ -177,8 +178,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mPointsValue.setText(Integer.toString(points));
                 tPoints = mPointsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("points").setValue(tPoints);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("points").setValue(tPoints);
             }
         });
 
@@ -191,8 +192,8 @@ public class FixtureRating extends AppCompatActivity {
                 goals++;
                 mGoalsValue.setText(Integer.toString(goals));
                 tGoals = mGoalsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("goals").setValue(tGoals);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("goals").setValue(tGoals);
             }
         });
 
@@ -206,8 +207,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mGoalsValue.setText(Integer.toString(goals));
                 tGoals = mGoalsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("goals").setValue(tGoals);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("goals").setValue(tGoals);
             }
         });
 
@@ -219,8 +220,8 @@ public class FixtureRating extends AppCompatActivity {
                 wides++;
                 mWidesValue.setText(Integer.toString(wides));
                 tWides = mWidesValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("wides").setValue(tWides);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("wides").setValue(tWides);
             }
         });
 
@@ -234,8 +235,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mWidesValue.setText(Integer.toString(wides));
                 tWides = mWidesValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("wides").setValue(tWides);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("wides").setValue(tWides);
             }
         });
 
@@ -247,8 +248,8 @@ public class FixtureRating extends AppCompatActivity {
                 tackles++;
                 mTacklesValue.setText(Integer.toString(tackles));
                 tTackles = mTacklesValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("tackles").setValue(tTackles);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("tackles").setValue(tTackles);
             }
         });
 
@@ -262,8 +263,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mTacklesValue.setText(Integer.toString(tackles));
                 tTackles = mTacklesValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("tackles").setValue(tTackles);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("tackles").setValue(tTackles);
             }
         });
 
@@ -275,8 +276,8 @@ public class FixtureRating extends AppCompatActivity {
                 turnovers++;
                 mTurnoversValue.setText(Integer.toString(turnovers));
                 tTurnovers = mTurnoversValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("turnovers").setValue(tTurnovers);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("turnovers").setValue(tTurnovers);
             }
         });
 
@@ -290,8 +291,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mTurnoversValue.setText(Integer.toString(turnovers));
                 tTurnovers = mTurnoversValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("turnovers").setValue(tTurnovers);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("turnovers").setValue(tTurnovers);
             }
         });
 
@@ -307,8 +308,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mYellowCardsValue.setText(Integer.toString(yellowCards));
                 tYellowCards = mYellowCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("yellowCards").setValue(tYellowCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("yellowCards").setValue(tYellowCards);
             }
         });
 
@@ -332,8 +333,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mYellowCardsValue.setText(Integer.toString(yellowCards));
                 tYellowCards = mYellowCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("yellowCards").setValue(tYellowCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("yellowCards").setValue(tYellowCards);
             }
         });
 
@@ -353,8 +354,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mRedCardsValue.setText(Integer.toString(redCards));
                 tRedCards = mRedCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("redCards").setValue(tRedCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("redCards").setValue(tRedCards);
             }
         });
 
@@ -378,8 +379,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mRedCardsValue.setText(Integer.toString(redCards));
                 tRedCards = mRedCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("redCards").setValue(tRedCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("redCards").setValue(tRedCards);
             }
         });
 
@@ -398,8 +399,8 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mBlackCardsValue.setText(Integer.toString(blackCards));
                 tBlackCards = mBlackCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("blackCards").setValue(tBlackCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("blackCards").setValue(tBlackCards);
             }
         });
 
@@ -419,20 +420,21 @@ public class FixtureRating extends AppCompatActivity {
                 }
                 mBlackCardsValue.setText(Integer.toString(blackCards));
                 tBlackCards = mBlackCardsValue.getText().toString();
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                mTempRating.child(fbUser.getUid()).child(position).child("blackCards").setValue(tBlackCards);
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).child("blackCards").setValue(tBlackCards);
             }
         });
-                addListenerOnSpinnerItemSelection();
+
+        saveTempRatingFootball();
     }
 
-    public void addListenerOnSpinnerItemSelection(){
+    public void saveTempRatingFootball(){
         mChooseAttendeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                // final String position;
                 position = Integer.toString(i );
-                mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
+                mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
                 mTempRating.child(fbUser.getUid()).child(position).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -468,8 +470,8 @@ public class FixtureRating extends AppCompatActivity {
                             tBlackCards = mBlackCardsValue.getText().toString();
 
                             TempRatingFootball tempRate = new TempRatingFootball(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards);
-                            mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                            mTempRating.child(fbUser.getUid()).child(position).setValue(tempRate);
+                            mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                            mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRate);
 
                         } else {
                             newTempRatingButtons();
@@ -483,8 +485,8 @@ public class FixtureRating extends AppCompatActivity {
                             tBlackCards = mBlackCardsValue.getText().toString();
 
                             tempRate = new TempRatingFootball(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards);
-                            mTempRating = FirebaseDatabase.getInstance().getReference("TempRating");
-                            mTempRating.child(fbUser.getUid()).child(position).setValue(tempRate);
+                            mTempRating = FirebaseDatabase.getInstance().getReference("TempRatingF");
+                            mTempRating.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRate);
                         }
                     }
 

@@ -24,24 +24,18 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Activity.CheckValidation" />
         <activity android:name=".Activity.ResetPassword" />
-        <activity android:name=".ManagerHome"
-            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".CreateTeam"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".JoinTeam" />
+            android:name=".ManagerHome"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB-e-hxr2zDS46MlUeFc35cX0worzqkbIs" />
 
         <activity
-            android:name=".CreateEvent"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".PlayerHome"
+            android:name=".PlayerHome"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Activity.SelectTeam" />
-        <activity android:name=".ViewEvent" />
         <activity android:name=".Activity.ViewIndividualTraining" />
         <activity android:name=".Activity.ViewIndividualFixture" />
         <activity android:name=".Activity.ViewAttendeesTraining" />

@@ -1,13 +1,16 @@
-package com.example.cianm.testauth;
+package com.example.cianm.testauth.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -21,24 +24,33 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Fixture;
+import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
+import com.example.cianm.testauth.ManagerHome;
+import com.example.cianm.testauth.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class CreateEvent extends AppCompatActivity {
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+/**
+ * Created by cianm on 13/03/2018.
+ */
+
+public class CreateEventFragment extends Fragment {
 
     private static final String TAG = "CreateEvent";
 
@@ -62,45 +74,52 @@ public class CreateEvent extends AppCompatActivity {
     Fixture fixture;
     Training training;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
-        setTheme(R.style.AppTheme);
-        setTitle("Create Event");
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //returning our layout file
+        //change R.layout.yourlayoutfilename for each of your fragments
+        return inflater.inflate(R.layout.fragment_create_event, container, false);
+    }
 
-        currentTeam = ((GlobalVariables) CreateEvent.this.getApplication()).getCurrentTeam();
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //you can set the title for your toolbar here for different fragments different titles
+        getActivity().setTitle("Create Event");
+
+        currentTeam = ((GlobalVariables) getActivity().getApplication()).getCurrentTeam();
 
         mFirebaseDatabaseF = FirebaseDatabase.getInstance().getReference("Fixture");
         mFirebaseDatabaseT = FirebaseDatabase.getInstance().getReference("Training");
         mFirebaseDatabaseTeam = FirebaseDatabase.getInstance().getReference("Team").child(currentTeam);
 
         // Progress bar
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
 
         // Radio Group
-        rEvent = (RadioGroup) findViewById(R.id.createEventRadioGroup);
+        rEvent = (RadioGroup) getView().findViewById(R.id.createEventRadioGroup);
 
         // Buttons
-        mPickLocation = (Button) findViewById(R.id.pickLocationBtn);
-        mPickTime = (Button) findViewById(R.id.pickTimeBtn);
-        mPickDate = (Button) findViewById(R.id.pickDateBtn);
-        mCreateEvent = (Button) findViewById(R.id.createEventBtn);
+        mPickLocation = (Button) getView().findViewById(R.id.pickLocationBtn);
+        mPickTime = (Button) getView().findViewById(R.id.pickTimeBtn);
+        mPickDate = (Button) getView().findViewById(R.id.pickDateBtn);
+        mCreateEvent = (Button) getView().findViewById(R.id.createEventBtn);
 
         // Radio Buttons
-        rFixture = (RadioButton) findViewById(R.id.fixtureRadioButton);
-        rTraining = (RadioButton) findViewById(R.id.trainingRadioButton);
+        rFixture = (RadioButton) getView().findViewById(R.id.fixtureRadioButton);
+        rTraining = (RadioButton) getView().findViewById(R.id.trainingRadioButton);
 
         // Edit Texts
-        mDescription = (EditText) findViewById(R.id.descriptionEditText);
+        mDescription = (EditText) getView().findViewById(R.id.descriptionEditText);
 
         // Text Views
-        mViewPlace = (TextView) findViewById(R.id.showLocationView);
-        mViewTime = (TextView) findViewById(R.id.showTimeView);
-        mViewDate = (TextView) findViewById(R.id.showDateView);
-        mOppositionTextView = (AutoCompleteTextView) findViewById(R.id.oppositionAutoTextView);
-        mOppositionView = (TextView) findViewById(R.id.oppositionTextView);
-        mDescriptionView = (TextView) findViewById(R.id.descriptionTextView);
+        mViewPlace = (TextView) getView().findViewById(R.id.showLocationView);
+        mViewTime = (TextView) getView().findViewById(R.id.showTimeView);
+        mViewDate = (TextView) getView().findViewById(R.id.showDateView);
+        mOppositionTextView = (AutoCompleteTextView) getView().findViewById(R.id.oppositionAutoTextView);
+        mOppositionView = (TextView) getView().findViewById(R.id.oppositionTextView);
+        mDescriptionView = (TextView) getView().findViewById(R.id.descriptionTextView);
 
         mViewPlace.setVisibility(View.GONE);
         mViewTime.setVisibility(View.GONE);
@@ -133,14 +152,14 @@ public class CreateEvent extends AppCompatActivity {
 
         // Set values for AutoCompleteTextView
         String [] clubs = getResources().getStringArray(R.array.dublinClubs);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateEvent.this, android.R.layout.simple_list_item_1, clubs);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, clubs);
         mOppositionTextView.setAdapter(adapter);
 
         // Construct a GeoDataClient
-        mGeoDataClient = Places.getGeoDataClient(CreateEvent.this, null);
+        mGeoDataClient = Places.getGeoDataClient(getActivity(), null);
 
         // Construct a PlaceDectectionClient
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(CreateEvent.this, null);
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(getActivity(), null);
 
         // Filter so only location in Ireland can be picker
         typeFilter = new AutocompleteFilter.Builder().setCountry("IE").build();
@@ -150,7 +169,7 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter).build(CreateEvent.this);
+                    intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter).build(getActivity());
 
                 } catch (GooglePlayServicesRepairableException e) {
 
@@ -172,7 +191,7 @@ public class CreateEvent extends AppCompatActivity {
                 mHour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 mMinute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(CreateEvent.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         mViewTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
@@ -195,7 +214,7 @@ public class CreateEvent extends AppCompatActivity {
                 mMonth = myCalendar.get(Calendar.MONTH) + 1;
                 mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog mDatePicker;
-                mDatePicker = new DatePickerDialog(CreateEvent.this, new DatePickerDialog.OnDateSetListener() {
+                mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                         mViewDate.setText(year + "/" + (month + 1) + "/" + day);
@@ -212,16 +231,16 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!rFixture.isChecked() && !rTraining.isChecked()){
-                    Toast.makeText(CreateEvent.this, "You must select a type of event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "You must select a type of event", Toast.LENGTH_SHORT).show();
                 }
                 if (location.isEmpty()){
-                    Toast.makeText(CreateEvent.this, "Please select a location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select a location", Toast.LENGTH_SHORT).show();
                 }
                 if (date.isEmpty()){
-                    Toast.makeText(CreateEvent.this, "Please select a date for the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select a date for the event", Toast.LENGTH_SHORT).show();
                 }
                 if (time.isEmpty()){
-                    Toast.makeText(CreateEvent.this, "Please select a time for the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please select a time for the event", Toast.LENGTH_SHORT).show();
                 }
 
                 mProgressBar.setVisibility(View.VISIBLE);
@@ -229,24 +248,24 @@ public class CreateEvent extends AppCompatActivity {
                     String userID = mFirebaseDatabaseT.push().getKey();
                     String type = "Training";
                     description = mDescription.getText().toString();
-                    if (description.isEmpty()){ Toast.makeText(CreateEvent.this, "Please enter in a description", Toast.LENGTH_SHORT).show(); }
+                    if (description.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a description", Toast.LENGTH_SHORT).show(); }
                     training = new Training(date, description, location, time, latlong, type);
                     mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
                     mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
                     mCreateEvent.setVisibility(View.GONE);
-                    startActivity(new Intent(CreateEvent.this, ManagerHome.class));
-                    Toast.makeText(CreateEvent.this, "Training sucessfully created", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), ManagerHome.class));
+                    Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
                 } else if (rFixture.isChecked()){
                     String userID = mFirebaseDatabaseF.push().getKey();
                     String type = "Fixture";
                     opposition = mOppositionTextView.getText().toString();
-                    if (opposition.isEmpty()){ Toast.makeText(CreateEvent.this, "Please enter in a  opponent", Toast.LENGTH_SHORT).show();}
+                    if (opposition.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a  opponent", Toast.LENGTH_SHORT).show();}
                     fixture = new Fixture (date, location, time, opposition, latlong, type);
                     mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
                     mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
                     mCreateEvent.setVisibility(View.GONE);
-                    startActivity(new Intent(CreateEvent.this, ManagerHome.class));
-                    Toast.makeText(CreateEvent.this, "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), ManagerHome.class));
+                    Toast.makeText(getActivity(), "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -254,11 +273,11 @@ public class CreateEvent extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-                Place place = PlaceAutocomplete.getPlace(this, data);
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
                 mViewPlace.setVisibility(View.VISIBLE);
                 mViewPlace.setText(place.getName());
                 location = place.getName().toString();
@@ -267,7 +286,7 @@ public class CreateEvent extends AppCompatActivity {
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
 
-                Status status = PlaceAutocomplete.getStatus(this, data);
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
                 // TODO: Handle the error.
                 Log.i(TAG, status.getStatusMessage());
 
@@ -278,11 +297,12 @@ public class CreateEvent extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mProgressBar.setVisibility(View.GONE);
         mPickDate.setVisibility(View.VISIBLE);
         mPickTime.setVisibility(View.VISIBLE);
 
     }
+
 }
