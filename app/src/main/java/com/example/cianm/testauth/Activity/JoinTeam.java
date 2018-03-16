@@ -1,19 +1,16 @@
-package com.example.cianm.testauth.Fragment;
+package com.example.cianm.testauth.Activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cianm.testauth.Activity.CreateTeam;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.ManagerHome;
@@ -31,11 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by cianm on 13/03/2018.
- */
-
-public class JoinTeamFragment extends Fragment {
+public class JoinTeam extends AppCompatActivity {
 
     private DatabaseReference mDatabaseT, mDatabaseU;
     private FirebaseAuth mAuth;
@@ -48,21 +41,13 @@ public class JoinTeamFragment extends Fragment {
     User user;
     String teamID, userName, userType;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
-        //change R.layout.yourlayoutfilename for each of your fragments
-        return inflater.inflate(R.layout.fragment_join_team, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Join Team");
-        lv = (ListView) getView().findViewById(R.id.teamListView);
-        mNoTeam = (TextView) getView().findViewById(R.id.noTeamTextView);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_join_team);
+        setTitle("Join Team");
+        lv = (ListView) findViewById(R.id.teamListView);
+        mNoTeam = (TextView) findViewById(R.id.noTeamTextView);
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
@@ -90,13 +75,13 @@ public class JoinTeamFragment extends Fragment {
                     if (userType.equalsIgnoreCase("Manager")){
                         lv.setVisibility(View.INVISIBLE);
                         mNoTeam.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"No teams created, you need to create a team first before joining it", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getActivity(), CreateTeam.class));
+                        Toast.makeText(JoinTeam.this,"No teams created, you need to create a team first before joining it", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(JoinTeam.this, CreateTeam.class));
                     } else if (userType.equalsIgnoreCase("Player")){
                         lv.setVisibility(View.INVISIBLE);
                         mNoTeam.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"No teams have been created yet" + teamID, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), PlayerHome.class));
+                        Toast.makeText(JoinTeam.this,"No teams have been created yet" + teamID, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(JoinTeam.this, PlayerHome.class));
                     }
                 } else {
                     collectTeamNames((Map<String, Object>) dataSnapshot.getValue());
@@ -120,7 +105,7 @@ public class JoinTeamFragment extends Fragment {
             teamNames.add((String) singleTeam.get("name"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, teamNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, teamNames);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -134,10 +119,10 @@ public class JoinTeamFragment extends Fragment {
                         userName = user.getName();
                         if (user.getType().equalsIgnoreCase("Manager")) {
                             mDatabaseT.child(teamID).child("manager").child(fbUser.getUid()).setValue(userName);
-                            startActivity(new Intent(getActivity(), ManagerHome.class));
+                            startActivity(new Intent(JoinTeam.this, ManagerHome.class));
                         } else if (user.getType().equalsIgnoreCase("Player")){
                             mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
-                            startActivity(new Intent(getActivity(), PlayerHome.class));
+                            startActivity(new Intent(JoinTeam.this, PlayerHome.class));
                         }
                         mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
                     }
@@ -147,8 +132,8 @@ public class JoinTeamFragment extends Fragment {
 
                     }
                 });
-                Toast.makeText(getActivity(),"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
-                ((GlobalVariables) getActivity().getApplicationContext()).setCurrentTeam(teamID);
+                Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
+                ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
             }
         });
     }

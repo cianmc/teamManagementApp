@@ -26,7 +26,7 @@
         <activity android:name=".Activity.ResetPassword" />
         <activity
             android:name=".ManagerHome"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -34,14 +34,16 @@
 
         <activity
             android:name=".PlayerHome"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activity.SelectTeam" />
         <activity android:name=".Activity.ViewIndividualTraining" />
         <activity android:name=".Activity.ViewIndividualFixture" />
         <activity android:name=".Activity.ViewAttendeesTraining" />
         <activity android:name=".Activity.ViewAttendeesFixture" />
         <activity android:name=".Activity.FixtureRating" />
-        <activity android:name=".Activity.TrainingRating"/>
+        <activity android:name=".Activity.TrainingRating" />
+        <activity android:name=".Activity.CreateTeam" />
+        <activity android:name=".Activity.JoinTeam"></activity>
     </application>
 
 </manifest>

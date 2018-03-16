@@ -52,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreateEventFragment extends Fragment {
 
-    private static final String TAG = "CreateEvent";
+    private static final String TAG = "CreateTeam";
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;

@@ -127,7 +127,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                                 // Change availibility to unattending
                                 String newAvailability = "No";
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
-                                mDatabase.child(eventKey).child("attenedee").removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
                                 Toast.makeText(ViewIndividualFixture.this, "Availability updated: Not Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualFixture.this, PlayerHome.class));
 
@@ -136,7 +138,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                                 String newAvailability = "Yes";
                                 userID = fbUser.getUid();
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
-                                mDatabase.child(eventKey).child("attenedee").child(userID).setValue(userName);
+                                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
+                                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                                 Toast.makeText(ViewIndividualFixture.this, "Availability updated: Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualFixture.this, PlayerHome.class));
                             }
@@ -159,7 +163,8 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 availability = "Yes";
                 userID = fbUser.getUid();
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
-                mDatabase.child(eventKey).child("attenedee").child(userID).setValue(userName);
+                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
+                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                 attendenceRef.child(attendeeID).setValue(attendee);
                 mAvailable.setVisibility(View.INVISIBLE);
                 mNotAvailable.setVisibility(View.INVISIBLE);
@@ -175,6 +180,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 String attendeeID = attendenceRef.push().getKey();
                 availability = "No";
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
+                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
                 attendenceRef.child(attendeeID).setValue(attendee);
                 mAvailable.setVisibility(View.INVISIBLE);
                 mNotAvailable.setVisibility(View.INVISIBLE);

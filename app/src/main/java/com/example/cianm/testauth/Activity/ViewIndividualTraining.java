@@ -126,7 +126,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                                 // Change availibility to unattending
                                 String newAvailability = "No";
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
-                                mDatabase.child(eventKey).child("attenedee").removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
                                 Toast.makeText(ViewIndividualTraining.this, "Availability updated: Not Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualTraining.this, PlayerHome.class));
 
@@ -135,7 +137,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                                 String newAvailability = "Yes";
                                 userID = fbUser.getUid();
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
-                                mDatabase.child(eventKey).child("attenedee").child(userID).setValue(userName);
+                                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).removeValue();
+                                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
+                                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                                 Toast.makeText(ViewIndividualTraining.this, "Availability updated: Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualTraining.this, PlayerHome.class));
                             }
@@ -158,7 +162,8 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                 availability = "Yes";
                 userID = fbUser.getUid();
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
-                mDatabase.child(eventKey).child("attenedee").child(userID).setValue(userName);
+                mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
+                mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                 attendenceRef.child(attendeeID).setValue(attendee);
                 mAvailable.setVisibility(View.INVISIBLE);
                 mNotAvailable.setVisibility(View.INVISIBLE);
@@ -175,6 +180,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                 availability = "No";
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
                 attendenceRef.child(attendeeID).setValue(attendee);
+                mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
                 mAvailable.setVisibility(View.INVISIBLE);
                 mNotAvailable.setVisibility(View.INVISIBLE);
                 Toast.makeText(ViewIndividualTraining.this, "Availability updated: Not Attending", Toast.LENGTH_SHORT).show();

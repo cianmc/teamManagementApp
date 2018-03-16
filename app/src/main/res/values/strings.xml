@@ -65,6 +65,9 @@
     <string name="account">Account</string>
     <string name="home">Home</string>
     <string name="updatePassword">Update Password</string>
+    <string name="going">Going</string>
+    <string name="notGoing">Not Going</string>
+    <string name="statsSaved">Stats recorded</string>
 
     <!-- Fix Ratings Text Views -->
     <string name="fixPoint">Points</string>
@@ -94,7 +97,9 @@
     <string name="attendeeDetails">Below is a list of all the attendees for this event. Press the button below to begin recording the attendees stats</string>
     <string name="ratingDetails">Please use the drop down menu to select the player you want to record stats for</string>
     <string name="noTeam">You haven\'t joined any teams yet, please select Join Team</string>
-    <string name="noAttendee">No players have confirmed their availability yet</string>
+    <string name="noGoing">No players have confirmed their availability yet</string>
+    <string name="noNotGoing">No players unable to attend </string>
+    <string name="noSaved">You haven\'t save any players stats yet</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

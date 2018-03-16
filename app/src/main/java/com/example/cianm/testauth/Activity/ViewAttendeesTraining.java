@@ -21,14 +21,14 @@ import java.util.ArrayList;
 
 public class ViewAttendeesTraining extends AppCompatActivity {
 
-    private DatabaseReference mDatabase, mAttendeeReference;
+    private DatabaseReference mDatabase, mAttendeeGoing, mAttendeeNotGoing, mAttendeeSaved;
 
     String eventKey;
-    ArrayList<String> attendeeNames;
+    ArrayList<String> goingNames, notGoingNames, savedNames;
 
-    ListView lvAttendees;
+    ListView mGoingLV, mNotGoingLV, mSavedLV;
     Button mSubmitRating;
-    TextView mNoAttendee;
+    TextView mNoDataGoing, mNoDataNotGoing, mNoDataSaved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +38,21 @@ public class ViewAttendeesTraining extends AppCompatActivity {
         setTitle("Attendees for Training");
 
         final String currentEvent = ((GlobalVariables) ViewAttendeesTraining.this.getApplication()).getCurrentEvent();
-        attendeeNames = new ArrayList<>();
+        goingNames = new ArrayList<>();
+        notGoingNames = new ArrayList<>();
+        savedNames = new ArrayList<>();
 
-        lvAttendees = (ListView) findViewById(R.id.attendeesListView);
+        mGoingLV = (ListView) findViewById(R.id.goingTrainingLV);
+        mNotGoingLV = (ListView) findViewById(R.id.notGoingTrainingLV);
+        mSavedLV = (ListView) findViewById(R.id.savedTrainingLV);
         mSubmitRating = (Button) findViewById(R.id.submitStats);
-        mNoAttendee = (TextView) findViewById(R.id.noAttendeeTraining);
+        mNoDataGoing = (TextView) findViewById(R.id.noDataGoingTrainingTV);
+        mNoDataNotGoing = (TextView) findViewById(R.id.noDataNotGoingTrainingTV);
+        mNoDataSaved = (TextView) findViewById(R.id.noDataSavedTrainingTV);
 
-        mNoAttendee.setVisibility(View.INVISIBLE);
+        mNoDataGoing.setVisibility(View.INVISIBLE);
+        mNoDataNotGoing.setVisibility(View.INVISIBLE);
+        mNoDataSaved.setVisibility(View.INVISIBLE);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -52,21 +60,95 @@ public class ViewAttendeesTraining extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot child : dataSnapshot.getChildren()){
                     eventKey = child.getKey();
-                    mAttendeeReference = mDatabase.child(eventKey).child("attenedee");
-                    mAttendeeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    mAttendeeGoing = mDatabase.child(eventKey).child("attenedee").child("attending");
+                    mAttendeeGoing.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
-                                lvAttendees.setVisibility(View.INVISIBLE);
+                                mGoingLV.setVisibility(View.INVISIBLE);
                                 mSubmitRating.setVisibility(View.INVISIBLE);
-                                mNoAttendee.setVisibility(View.VISIBLE);
+                                mNoDataGoing.setVisibility(View.VISIBLE);
                             } else {
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                     String attendeeName = ds.getValue(String.class);
-                                    attendeeNames.add(attendeeName);
+                                    goingNames.add(attendeeName);
                                 }
-                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ViewAttendeesTraining.this, android.R.layout.simple_list_item_1, attendeeNames);
-                                lvAttendees.setAdapter(arrayAdapter);
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ViewAttendeesTraining.this, android.R.layout.simple_list_item_1, goingNames);
+                                mGoingLV.setAdapter(arrayAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
+        mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    eventKey = child.getKey();
+                    mAttendeeNotGoing = mDatabase.child(eventKey).child("attenedee").child("notAttending");
+                    mAttendeeNotGoing.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()) {
+                                mNotGoingLV.setVisibility(View.INVISIBLE);
+                                mNoDataNotGoing.setVisibility(View.VISIBLE);
+                            } else {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    String attendeeName = ds.getValue(String.class);
+                                    notGoingNames.add(attendeeName);
+                                }
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ViewAttendeesTraining.this, android.R.layout.simple_list_item_1, notGoingNames);
+                                mNotGoingLV.setAdapter(arrayAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
+        mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    eventKey = child.getKey();
+                    mAttendeeSaved = mDatabase.child(eventKey).child("attenedee").child("saved");
+                    mAttendeeSaved.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()) {
+                                mSavedLV.setVisibility(View.INVISIBLE);
+                                mNoDataSaved.setVisibility(View.VISIBLE);
+                            } else {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    String attendeeName = ds.getValue(String.class);
+                                    savedNames.add(attendeeName);
+                                }
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ViewAttendeesTraining.this, android.R.layout.simple_list_item_1, savedNames);
+                                mSavedLV.setAdapter(arrayAdapter);
                             }
                         }
 
@@ -87,7 +169,7 @@ public class ViewAttendeesTraining extends AppCompatActivity {
         mSubmitRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ViewAttendeesTraining.this, TrainingRating.class));
+                startActivity(new Intent(ViewAttendeesTraining.this, FixtureRating.class));
             }
         });
     }
