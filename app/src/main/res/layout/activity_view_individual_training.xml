@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cianm.testauth.Activity.ViewIndividualTraining">
+    tools:context="com.example.cianm.testauth.Activity.ViewIndividualFixture">
 
     <TextView
         android:id="@+id/trainingDateTextView"
@@ -15,7 +15,8 @@
         android:text="@string/eventDate"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingDate"
@@ -28,18 +29,21 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingDateTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/trainingTimeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:text="@string/eventTime"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDateTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDateTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingTime"
@@ -47,23 +51,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:text="@string/loading"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingTimeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDate" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDate"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="16dp" />
 
     <TextView
-        android:id="@+id/trainingDescriptionTextView"
+        android:id="@+id/trainingDetailsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:text="@string/eventDescription"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingTimeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingTimeTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingDescription"
@@ -71,23 +78,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:text="@string/loading"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/trainingDescriptionTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingTime" />
+        app:layout_constraintStart_toEndOf="@+id/trainingDetailsTextView"
+        app:layout_constraintTop_toBottomOf="@+id/trainingTime"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/trainingLocationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="26dp"
         android:text="@string/eventLocation"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDetailsTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingLocation"
@@ -95,22 +105,24 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="26dp"
         android:text="@string/loading"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingLocationTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDescription"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="16dp" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="140dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trainingLocation"
@@ -146,28 +158,28 @@
     <Button
         android:id="@+id/availableBtn"
         style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-        android:layout_width="0dp"
+        android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="12dp"
-        android:background="@color/yesBtn"
-        android:text="@string/available"
+        android:background="@drawable/ic_check"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView"
+        android:layout_marginLeft="75dp" />
 
     <Button
         android:id="@+id/notAvailableBtn"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="51dp"
+        android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="75dp"
         android:layout_marginTop="12dp"
-        android:background="@color/noBtn"
-        android:text="@string/notAvailable"
+        android:background="@drawable/ic_clear"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView"
+        android:layout_marginRight="75dp" />
 
     <TextView
         android:id="@+id/availabilityStatusTextView"
@@ -197,5 +209,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

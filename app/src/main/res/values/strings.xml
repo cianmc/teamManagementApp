@@ -67,7 +67,7 @@
     <string name="updatePassword">Update Password</string>
     <string name="going">Going</string>
     <string name="notGoing">Not Going</string>
-    <string name="statsSaved">Stats recorded</string>
+    <string name="statsSaved">Saved</string>
 
     <!-- Fix Ratings Text Views -->
     <string name="fixPoint">Points</string>
@@ -94,12 +94,13 @@
     <string name="selectTeam">Please select one of the teams below. If there are no teams please select Join Team</string>
     <string name="eventDetails">Please select the event you wish to view. Select either training or fixture</string>
     <string name="confirmAvailabilty">Please confirm availability below (Yes/No)</string>
-    <string name="attendeeDetails">Below is a list of all the attendees for this event. Press the button below to begin recording the attendees stats</string>
+    <string name="attendeeDetails">Use the tabs to navigate between the lists. Press the button below to begin recording the attendees stats</string>
     <string name="ratingDetails">Please use the drop down menu to select the player you want to record stats for</string>
     <string name="noTeam">You haven\'t joined any teams yet, please select Join Team</string>
     <string name="noGoing">No players have confirmed their availability yet</string>
     <string name="noNotGoing">No players unable to attend </string>
     <string name="noSaved">You haven\'t save any players stats yet</string>
+    <string name="clickDirections">Click here for directions</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -207,4 +208,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_directions">Map</string>
+    <string name="title_activity_directions_training">Map</string>
 </resources>

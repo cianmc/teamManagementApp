@@ -168,16 +168,14 @@ public class CreateEventFragment extends Fragment {
         mPickLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter).build(getActivity());
+                pickPlace();
+            }
+        });
 
-                } catch (GooglePlayServicesRepairableException e) {
-
-                } catch (GooglePlayServicesNotAvailableException e) {
-
-                }
-                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                mPickLocation.setVisibility(View.GONE);
+        mViewPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickPlace();
             }
         });
 
@@ -185,45 +183,28 @@ public class CreateEventFragment extends Fragment {
         mPickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPickTime.setVisibility(View.GONE);
-                mViewTime.setVisibility(View.VISIBLE);
-                Calendar mcurrentTime = Calendar.getInstance();
-                mHour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                mMinute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        mViewTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
-                        time = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute);
-                    }
-                }, mHour, mMinute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
+                pickTime();
+            }
+        });
 
+        mViewTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickTime();
             }
         });
 
         mPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPickDate.setVisibility(View.GONE);
-                mViewDate.setVisibility(View.VISIBLE);
-                Calendar myCalendar = Calendar.getInstance();
-                mYear = myCalendar.get(Calendar.YEAR);
-                mMonth = myCalendar.get(Calendar.MONTH) + 1;
-                mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog mDatePicker;
-                mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int day, int month, int year) {
-                        mViewDate.setText(year + "/" + (month + 1) + "/" + day);
-                        date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(day);
-                    }
-                }, mDay, mMonth, mYear);
-                mDatePicker.setTitle("Select Date");
-                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() -1000);
-                mDatePicker.show();
+            pickDate();
+            }
+        });
+
+        mViewDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickDate();
             }
         });
 
@@ -294,6 +275,57 @@ public class CreateEventFragment extends Fragment {
                 // The user canceled the operation.
             }
         }
+    }
+
+    public void pickPlace(){
+        try {
+            intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(typeFilter).build(getActivity());
+
+        } catch (GooglePlayServicesRepairableException e) {
+
+        } catch (GooglePlayServicesNotAvailableException e) {
+
+        }
+        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        mPickLocation.setVisibility(View.GONE);
+    }
+
+    public void pickTime(){
+        mPickTime.setVisibility(View.GONE);
+        mViewTime.setVisibility(View.VISIBLE);
+        Calendar mcurrentTime = Calendar.getInstance();
+        mHour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        mMinute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                mViewTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
+                time = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute);
+            }
+        }, mHour, mMinute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
+    }
+
+    public void pickDate(){
+        mPickDate.setVisibility(View.GONE);
+        mViewDate.setVisibility(View.VISIBLE);
+        Calendar myCalendar = Calendar.getInstance();
+        mYear = myCalendar.get(Calendar.YEAR);
+        mMonth = myCalendar.get(Calendar.MONTH) + 1;
+        mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog mDatePicker;
+        mDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int day, int month, int year) {
+                mViewDate.setText(year + "/" + (month + 1) + "/" + day);
+                date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(day);
+            }
+        }, mDay, mMonth, mYear);
+        mDatePicker.setTitle("Select Date");
+        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() -1000);
+        mDatePicker.show();
     }
 
     @Override

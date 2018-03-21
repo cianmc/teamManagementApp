@@ -14,10 +14,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:contentDescription="@string/home"
+        app:srcCompat="@drawable/pic" />
 
     <TextView
         android:id="@+id/phNameTextView"

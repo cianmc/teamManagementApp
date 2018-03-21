@@ -31,7 +31,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        tools:layout_conversion_absoluteWidth="0dp"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/teamNameView"
@@ -44,7 +45,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamTypeView"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        tools:layout_conversion_absoluteWidth="0dp"
+        android:layout_marginLeft="16dp" />
 
     <Button
         android:id="@+id/createTeamBtn"
@@ -86,7 +88,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp" />
+        tools:layout_conversion_absoluteWidth="0dp"
+        android:layout_marginRight="16dp" />
 
     <RadioGroup
         android:id="@+id/radioGroup2"
@@ -96,7 +99,8 @@
         android:layout_marginTop="50dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="24dp">
 
         <RadioButton
             android:id="@+id/radioFootball"

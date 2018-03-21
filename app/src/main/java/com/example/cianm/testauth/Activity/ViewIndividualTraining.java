@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,12 +14,15 @@ import com.example.cianm.testauth.Entity.Attendee;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.Fragment.ViewEventFragment;
 import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.regex.Pattern;
 
 public class ViewIndividualTraining extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -42,7 +48,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
     private FirebaseUser fbUser;
 
     private Double mLat, mLong;
-    String userType, userName, eventType, userID, availability, eventKey;
+    String userType, userName, eventType, userID, availability, eventKey, time;
+    Pattern timePattern;
+    ProgressBar mProgressBar;
 
     User user;
     Attendee attendee;
@@ -58,6 +66,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
 
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
+        userID = fbUser.getUid();
 
         mDate = (TextView) findViewById(R.id.trainingDate);
         mTime = (TextView) findViewById(R.id.trainingTime);
@@ -69,9 +78,13 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mAvailable = (Button) findViewById(R.id.availableBtn);
         mNotAvailable = (Button) findViewById(R.id.notAvailableBtn);
         mUpdateAvailibility = (Button) findViewById(R.id.updateAvailibilityBtn);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        timePattern = Pattern.compile("\\d{2}:\\d{2}");
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
-        attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee");
+        attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee").child(userID);
 
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,7 +92,12 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Training training = child.getValue(Training.class);
                     mDate.setText(training.getDate());
-                    mTime.setText(training.getTime());
+                    if (!timePattern.matcher(training.getTime().toString()).matches()){
+                        time = training.getTime().toString() + "0";
+                        mTime.setText(time);
+                    } else {
+                        mTime.setText(training.getTime());
+                    }
                     mDescription.setText(training.getDescription());
                     mLocation.setText(training.getLocation());
                     eventType = training.getType();
@@ -254,6 +272,8 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mViewAttendees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mViewAttendees.setVisibility(View.INVISIBLE);
                 startActivity(new Intent(ViewIndividualTraining.this, ViewAttendeesTraining.class));
             }
         });
@@ -266,13 +286,35 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             if (googleMap != null) {
                 mGoogleMap = googleMap;
                 LatLng location = new LatLng(mLat, mLong);
-                mGoogleMap.addMarker(new MarkerOptions().position(location).title("Training Location"));
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                setupGoogleMapScreenSettings(googleMap);
+                mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(location).title("Training Location"));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
             }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("ERROR", "GOOGLE MAPS NOT LOCATED");
         }
+    }
+
+    private void setupGoogleMapScreenSettings(GoogleMap mMap) {
+        mMap.setBuildingsEnabled(true);
+        mMap.setIndoorEnabled(true);
+        mMap.setTrafficEnabled(true);
+        UiSettings mUiSettings = mMap.getUiSettings();
+        mUiSettings.setZoomControlsEnabled(true);
+        mUiSettings.setCompassEnabled(true);
+        mUiSettings.setMyLocationButtonEnabled(true);
+        mUiSettings.setScrollGesturesEnabled(true);
+        mUiSettings.setZoomGesturesEnabled(true);
+        mUiSettings.setTiltGesturesEnabled(true);
+        mUiSettings.setRotateGesturesEnabled(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mViewAttendees.setVisibility(View.VISIBLE);
     }
 }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cianm.testauth.Activity.ViewIndividualFixture;
@@ -37,7 +38,8 @@ public class ViewEventFragment extends Fragment {
 
     ListView mTrainingLV, mFixtureLV;
     String cEvent;
-    TextView mNoTraining, mNoFixture;
+    TextView mNoTraining, mNoFixture, mTraining, mFixture;
+    ProgressBar mProgressBar;
 
     @Nullable
     @Override
@@ -58,9 +60,13 @@ public class ViewEventFragment extends Fragment {
         mFixtureLV = (ListView) getView().findViewById(R.id.fixtureListView);
         mNoTraining = (TextView) getView().findViewById(R.id.noTrainingsData);
         mNoFixture = (TextView) getView().findViewById(R.id.noFixturesData);
+        mFixture = (TextView) getView().findViewById(R.id.fixtureTextView);
+        mTraining = (TextView) getView().findViewById(R.id.trainingTextView);
+        mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
 
         mNoTraining.setVisibility(View.INVISIBLE);
         mNoFixture.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         mDatabaseQueryT = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         mDatabaseQueryT.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,7 +103,6 @@ public class ViewEventFragment extends Fragment {
 
             }
         });
-
     }
 
     private void collectTrainingEvents(Map<String, Object> trainEvents){
@@ -110,11 +115,16 @@ public class ViewEventFragment extends Fragment {
             trainings.add((String) singleTraining.get("date"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_singlechoice, trainings);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_item, trainings);
         mTrainingLV.setAdapter(arrayAdapter);
         mTrainingLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mTrainingLV.setVisibility(View.INVISIBLE);
+                mTraining.setVisibility(View.INVISIBLE);
+                mFixtureLV.setVisibility(View.INVISIBLE);
+                mFixture.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 cEvent = adapterView.getItemAtPosition(i).toString();
                 ((GlobalVariables) getActivity().getApplicationContext()).setCurrentEvent(cEvent);
                 startActivity(new Intent(getActivity(), ViewIndividualTraining.class));
@@ -132,15 +142,30 @@ public class ViewEventFragment extends Fragment {
             fixtures.add((String) singleFixture.get("date"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_singlechoice, fixtures);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.select_dialog_item, fixtures);
         mFixtureLV.setAdapter(arrayAdapter);
         mFixtureLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mTrainingLV.setVisibility(View.INVISIBLE);
+                mTraining.setVisibility(View.INVISIBLE);
+                mFixtureLV.setVisibility(View.INVISIBLE);
+                mFixture.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 cEvent = adapterView.getItemAtPosition(i).toString();
                 ((GlobalVariables) getActivity().getApplicationContext()).setCurrentEvent(cEvent);
                 startActivity(new Intent(getActivity(), ViewIndividualFixture.class));
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTrainingLV.setVisibility(View.VISIBLE);
+        mTraining.setVisibility(View.VISIBLE);
+        mFixtureLV.setVisibility(View.VISIBLE);
+        mFixture.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 }

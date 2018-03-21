@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
-import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.R;
 
 /**

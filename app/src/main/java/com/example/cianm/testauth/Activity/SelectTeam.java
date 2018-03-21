@@ -78,7 +78,7 @@ public class SelectTeam extends AppCompatActivity {
                         String teamName = ds.getValue(String.class);
                         teamNames.add(teamName);
                     }
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SelectTeam.this, android.R.layout.select_dialog_singlechoice, teamNames);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SelectTeam.this, android.R.layout.select_dialog_item, teamNames);
                     lv.setAdapter(arrayAdapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override

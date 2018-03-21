@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,12 +14,15 @@ import com.example.cianm.testauth.Entity.Attendee;
 import com.example.cianm.testauth.Entity.Fixture;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.Fragment.ViewEventFragment;
 import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.regex.Pattern;
 
 public class ViewIndividualFixture extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -42,7 +48,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     private FirebaseUser fbUser;
 
     private Double mLat, mLong;
-    private String userType, userName, eventType, userID, availability, eventKey;
+    private String userType, userName, eventType, userID, availability, eventKey, time;
+    Pattern timePattern;
+    ProgressBar mProgressBar;
 
     private User user;
     private Attendee attendee;
@@ -70,6 +78,10 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mAvailable = (Button) findViewById(R.id.availableBtn);
         mNotAvailable = (Button) findViewById(R.id.notAvailableBtn);
         mUpdateAvailibility = (Button) findViewById(R.id.updateAvailibilityBtn);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        timePattern = Pattern.compile("\\d{2}:\\d{2}");
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
         attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee").child(userID);
@@ -80,7 +92,12 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Fixture fixture = child.getValue(Fixture.class);
                     mDate.setText(fixture.getDate());
-                    mTime.setText(fixture.getTime());
+                    if (!timePattern.matcher(fixture.getTime().toString()).matches()){
+                        time = fixture.getTime().toString() + "0";
+                        mTime.setText(time);
+                    } else {
+                        mTime.setText(fixture.getTime());
+                    }
                     mOpposition.setText(fixture.getOpposition());
                     mLocation.setText(fixture.getLocation());
                     eventType = fixture.getType();
@@ -255,9 +272,12 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mViewAttendees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mViewAttendees.setVisibility(View.INVISIBLE);
                 startActivity(new Intent(ViewIndividualFixture.this, ViewAttendeesFixture.class));
             }
         });
+
 
     }
 
@@ -267,12 +287,34 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             if (googleMap != null) {
                 mGoogleMap = googleMap;
                 LatLng location = new LatLng(mLat, mLong);
-                mGoogleMap.addMarker(new MarkerOptions().position(location).title("Training Location"));
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+                setupGoogleMapScreenSettings(googleMap);
+                mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(location).title("Training Location"));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
             }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("ERROR", "GOOGLE MAPS NOT LOCATED");
         }
+    }
+
+    private void setupGoogleMapScreenSettings(GoogleMap mMap) {
+        mMap.setBuildingsEnabled(true);
+        mMap.setIndoorEnabled(true);
+        mMap.setTrafficEnabled(true);
+        UiSettings mUiSettings = mMap.getUiSettings();
+        mUiSettings.setZoomControlsEnabled(true);
+        mUiSettings.setCompassEnabled(true);
+        mUiSettings.setMyLocationButtonEnabled(true);
+        mUiSettings.setScrollGesturesEnabled(true);
+        mUiSettings.setZoomGesturesEnabled(true);
+        mUiSettings.setTiltGesturesEnabled(true);
+        mUiSettings.setRotateGesturesEnabled(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mViewAttendees.setVisibility(View.VISIBLE);
     }
 }

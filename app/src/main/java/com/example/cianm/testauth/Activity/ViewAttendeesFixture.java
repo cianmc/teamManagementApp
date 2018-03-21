@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
@@ -23,21 +24,21 @@ public class ViewAttendeesFixture extends AppCompatActivity {
 
     private DatabaseReference mDatabase, mAttendeeGoing, mAttendeeNotGoing, mAttendeeSaved;
 
-    String eventKey;
     ArrayList<String> goingNames, notGoingNames, savedNames;
 
     ListView mGoingLV, mNotGoingLV, mSavedLV;
-    Button mSubmitRating;
+    Button mSubmitRating, mGoing, mNotGoing, mSaved;
     TextView mNoDataGoing, mNoDataNotGoing, mNoDataSaved;
+    String currentTeam, currentEvent, eventKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String currentTeam = ((GlobalVariables) ViewAttendeesFixture.this.getApplication()).getCurrentTeam();
+        currentTeam = ((GlobalVariables) ViewAttendeesFixture.this.getApplication()).getCurrentTeam();
         setContentView(R.layout.activity_view_attendees_fixture);
         setTitle("Attendees for Fixture");
 
-        final String currentEvent = ((GlobalVariables) ViewAttendeesFixture.this.getApplication()).getCurrentEvent();
+        currentEvent = ((GlobalVariables) ViewAttendeesFixture.this.getApplication()).getCurrentEvent();
         goingNames = new ArrayList<>();
         notGoingNames = new ArrayList<>();
         savedNames = new ArrayList<>();
@@ -49,11 +50,55 @@ public class ViewAttendeesFixture extends AppCompatActivity {
         mNoDataGoing = (TextView) findViewById(R.id.noDataGoingFixtureTV);
         mNoDataNotGoing = (TextView) findViewById(R.id.noDataNotGoingFixtureTV);
         mNoDataSaved = (TextView) findViewById(R.id.noDataSavedFixtureTV);
+        mGoing = (Button) findViewById(R.id.goingBtn);
+        mNotGoing = (Button) findViewById(R.id.notGoingBtn);
+        mSaved = (Button) findViewById(R.id.savedBtn);
 
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
+        mGoingLV.setVisibility(View.INVISIBLE);
+        mNotGoingLV.setVisibility(View.INVISIBLE);
+        mSavedLV.setVisibility(View.INVISIBLE);
 
+        goingLV();
+
+        mGoing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goingLV();
+            }
+        });
+
+        mNotGoing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notGoingLV();
+            }
+        });
+
+        mSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savedLV();
+            }
+        });
+
+        mSubmitRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ViewAttendeesFixture.this, FixtureRating.class));
+            }
+        });
+    }
+
+    public void goingLV(){
+        mNoDataGoing.setVisibility(View.INVISIBLE);
+        mNoDataNotGoing.setVisibility(View.INVISIBLE);
+        mNoDataSaved.setVisibility(View.INVISIBLE);
+        mGoingLV.setVisibility(View.VISIBLE);
+        mNotGoingLV.setVisibility(View.INVISIBLE);
+        mSavedLV.setVisibility(View.INVISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,7 +136,15 @@ public class ViewAttendeesFixture extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void notGoingLV(){
+        mNoDataGoing.setVisibility(View.INVISIBLE);
+        mNoDataNotGoing.setVisibility(View.INVISIBLE);
+        mNoDataSaved.setVisibility(View.INVISIBLE);
+        mGoingLV.setVisibility(View.INVISIBLE);
+        mNotGoingLV.setVisibility(View.VISIBLE);
+        mSavedLV.setVisibility(View.INVISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -129,6 +182,15 @@ public class ViewAttendeesFixture extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void savedLV(){
+        mNoDataGoing.setVisibility(View.INVISIBLE);
+        mNoDataNotGoing.setVisibility(View.INVISIBLE);
+        mNoDataSaved.setVisibility(View.INVISIBLE);
+        mGoingLV.setVisibility(View.INVISIBLE);
+        mNotGoingLV.setVisibility(View.INVISIBLE);
+        mSavedLV.setVisibility(View.VISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -163,13 +225,6 @@ public class ViewAttendeesFixture extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        mSubmitRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ViewAttendeesFixture.this, FixtureRating.class));
             }
         });
     }
