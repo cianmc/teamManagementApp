@@ -38,13 +38,17 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static java.lang.Math.toIntExact;
 
 /**
  * Created by cianm on 13/03/2018.
@@ -56,7 +60,7 @@ public class CreateEventFragment extends Fragment {
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
-    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam;
+    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser;
 
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTextView;
@@ -70,7 +74,7 @@ public class CreateEventFragment extends Fragment {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String time, date, location, opposition, description, latlong, currentTeam;
+    String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID;
     Fixture fixture;
     Training training;
 
@@ -92,6 +96,7 @@ public class CreateEventFragment extends Fragment {
 
         mFirebaseDatabaseF = FirebaseDatabase.getInstance().getReference("Fixture");
         mFirebaseDatabaseT = FirebaseDatabase.getInstance().getReference("Training");
+        mFirebaseUser = FirebaseDatabase.getInstance().getReference("User");
         mFirebaseDatabaseTeam = FirebaseDatabase.getInstance().getReference("Team").child(currentTeam);
 
         // Progress bar
@@ -171,7 +176,6 @@ public class CreateEventFragment extends Fragment {
                 pickPlace();
             }
         });
-
         mViewPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,7 +190,6 @@ public class CreateEventFragment extends Fragment {
                 pickTime();
             }
         });
-
         mViewTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,13 +197,13 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
+        // Date picker dialog
         mPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             pickDate();
             }
         });
-
         mViewDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -227,10 +230,26 @@ public class CreateEventFragment extends Fragment {
                 mProgressBar.setVisibility(View.VISIBLE);
                 if (rTraining.isChecked()){
                     String userID = mFirebaseDatabaseT.push().getKey();
+                    final String pendingKey = mFirebaseUser.push().getKey();
                     String type = "Training";
                     description = mDescription.getText().toString();
                     if (description.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a description", Toast.LENGTH_SHORT).show(); }
                     training = new Training(date, description, location, time, latlong, type);
+                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                playerName = ds.getValue(String.class);
+                                playerUID = ds.getKey();
+                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child(pendingKey).setValue(training);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
                     mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
                     mCreateEvent.setVisibility(View.GONE);
@@ -238,10 +257,26 @@ public class CreateEventFragment extends Fragment {
                     Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
                 } else if (rFixture.isChecked()){
                     String userID = mFirebaseDatabaseF.push().getKey();
+                    final String pendingKey = mFirebaseUser.push().getKey();
                     String type = "Fixture";
                     opposition = mOppositionTextView.getText().toString();
                     if (opposition.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a  opponent", Toast.LENGTH_SHORT).show();}
                     fixture = new Fixture (date, location, time, opposition, latlong, type);
+                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                playerName = ds.getValue(String.class);
+                                playerUID = ds.getKey();
+                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child(pendingKey).setValue(fixture);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
                     mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
                     mCreateEvent.setVisibility(View.GONE);
@@ -272,7 +307,8 @@ public class CreateEventFragment extends Fragment {
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
+                mPickLocation.setVisibility(View.VISIBLE);
+                mViewPlace.setVisibility(View.INVISIBLE);
             }
         }
     }

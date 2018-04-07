@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in" + user.getUid());
                     Toast.makeText(getApplicationContext(), "Sucessfully signed in with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, CheckValidation.class));
+                    startActivity(new Intent(MainActivity.this, SelectTeam.class));
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");

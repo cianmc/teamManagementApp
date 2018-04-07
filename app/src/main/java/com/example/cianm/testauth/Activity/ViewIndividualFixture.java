@@ -42,13 +42,13 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     private TextView mDate, mTime, mOpposition, mLocation, mAvailInfo, mAvailabilityStatus;
     private Button mViewAttendees, mAvailable, mNotAvailable, mUpdateAvailibility;
 
-    private DatabaseReference mDatabase, attendenceRef;
+    private DatabaseReference mDatabase, attendenceRef, mUserRef, mUserRefP, mUserRefC;
     DatabaseReference userReference;
     FirebaseAuth mAuth;
     private FirebaseUser fbUser;
 
     private Double mLat, mLong;
-    private String userType, userName, eventType, userID, availability, eventKey, time;
+    private String userType, userName, eventType, userID, availability, eventKey, time, confirmKey;
     Pattern timePattern;
     ProgressBar mProgressBar;
 
@@ -85,6 +85,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Fixture").child(currentTeam);
         attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee").child(userID);
+        mUserRefP = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid()).child("pending").child(currentTeam).child("Fixture");
+        mUserRefC = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid()).child("confirmed").child(currentTeam).child("Fixture");
+        mUserRef = FirebaseDatabase.getInstance().getReference("User").child(userID);
 
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -133,6 +136,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mUpdateAvailibility.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 attendenceRef.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,24 +146,52 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                             Attendee attendee = ds.getValue(Attendee.class);
                             String key = ds.getKey();
                             String availabilityCheck = attendee.getAvailability();
-                            if (availabilityCheck.equalsIgnoreCase("Yes")) {
+                            if (availabilityCheck.equalsIgnoreCase("Going")) {
                                 // Change availibility to unattending
-                                String newAvailability = "No";
+                                final String newAvailability = "Not going";
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
                                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
+                                mUserRefC.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                            confirmKey = ds.getKey();
+                                            mUserRefC.child(confirmKey).child("availability").setValue(newAvailability);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(ViewIndividualFixture.this, "Availability updated: Not Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualFixture.this, PlayerHome.class));
 
-                            } else if (availabilityCheck.equalsIgnoreCase("No")) {
+                            } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
                                 // Change availibility to attending
-                                String newAvailability = "Yes";
+                                final String newAvailability = "Going";
                                 userID = fbUser.getUid();
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
                                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
                                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
+                                mUserRefC.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                            confirmKey = ds.getKey();
+                                            mUserRefC.child(confirmKey).child("availability").setValue(newAvailability);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(ViewIndividualFixture.this, "Availability updated: Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualFixture.this, PlayerHome.class));
                             }
@@ -176,10 +210,15 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailInfo.setVisibility(View.INVISIBLE);
+                mAvailable.setVisibility(View.INVISIBLE);
+                mNotAvailable.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 String attendeeID = attendenceRef.push().getKey();
-                availability = "Yes";
+                availability = "Going";
                 userID = fbUser.getUid();
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
+                changePendingFixture();
                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                 attendenceRef.child(attendeeID).setValue(attendee);
@@ -194,10 +233,15 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mNotAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailInfo.setVisibility(View.INVISIBLE);
+                mAvailable.setVisibility(View.INVISIBLE);
+                mNotAvailable.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 String attendeeID = attendenceRef.push().getKey();
-                availability = "No";
+                availability = "Not going";
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
+                changePendingFixture();
                 attendenceRef.child(attendeeID).setValue(attendee);
                 mAvailable.setVisibility(View.INVISIBLE);
                 mNotAvailable.setVisibility(View.INVISIBLE);
@@ -235,14 +279,14 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                                 String availabilityCheck = attendee.getAvailability();
                                 String attendeeType = attendee.getUserType();
                                 if (attendeeType.equalsIgnoreCase("Player")) {
-                                    if (availabilityCheck.equalsIgnoreCase("Yes")) {
+                                    if (availabilityCheck.equalsIgnoreCase("Going")) {
                                         mAvailInfo.setVisibility(View.INVISIBLE);
                                         mAvailable.setVisibility(View.INVISIBLE);
                                         mNotAvailable.setVisibility(View.INVISIBLE);
                                         mUpdateAvailibility.setVisibility(View.VISIBLE);
                                         mAvailabilityStatus.setVisibility(View.VISIBLE);
                                         mAvailabilityStatus.setText("Availability confirmed, You are attending this event");
-                                    } else if (availabilityCheck.equalsIgnoreCase("No")) {
+                                    } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
                                         mAvailInfo.setVisibility(View.INVISIBLE);
                                         mAvailable.setVisibility(View.INVISIBLE);
                                         mNotAvailable.setVisibility(View.INVISIBLE);
@@ -288,7 +332,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 mGoogleMap = googleMap;
                 LatLng location = new LatLng(mLat, mLong);
                 setupGoogleMapScreenSettings(googleMap);
-                mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(location).title("Training Location"));
+                mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker()).position(location).title("Fixture Location"));
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 14));
             }
         } catch (Exception e) {
@@ -309,6 +353,27 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setTiltGesturesEnabled(true);
         mUiSettings.setRotateGesturesEnabled(true);
+    }
+
+    public void changePendingFixture(){
+        final String currentEvent = ((GlobalVariables) ViewIndividualFixture.this.getApplication()).getCurrentEvent();
+        final String currentTeam = ((GlobalVariables) ViewIndividualFixture.this.getApplication()).getCurrentTeam();
+        String confirmedID = mUserRef.push().getKey();
+        mUserRefP.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String pendingKey = ds.getKey();
+                    mUserRefP.child(pendingKey).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mUserRef.child("confirmed").child(currentTeam).child("Fixture").child(confirmedID).setValue(attendee);
     }
 
     @Override

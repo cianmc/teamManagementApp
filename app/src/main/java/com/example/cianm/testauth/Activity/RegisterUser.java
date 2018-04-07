@@ -75,29 +75,6 @@ public class RegisterUser extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
                 String name = mName.getText().toString();
-                if (email.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in a email address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (password.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in a password address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (name.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in your name address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (!rManager.isChecked() && !rPlayer.isChecked()) {
-                    Toast.makeText(RegisterUser.this, "You must select either player or manager", Toast.LENGTH_LONG).show();
-                }
 
                 String type = "";
                 //radio buttons
@@ -106,10 +83,28 @@ public class RegisterUser extends AppCompatActivity {
                 } else if (rPlayer.isChecked()) {
                     type = "Player";
                 }
-                mProgressbar.setVisibility(View.VISIBLE);
-                mAuth.createUserWithEmailAndPassword(email, password);
-                user = new User(name, email, password, type);
-                mRegister.setVisibility(View.INVISIBLE);
+
+                if (email.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please enter in a email address", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (password.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please enter in a password address", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (name.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please enter in your name address", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (password.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!rManager.isChecked() && !rPlayer.isChecked()) {
+                    Toast.makeText(RegisterUser.this, "You must select either player or manager", Toast.LENGTH_LONG).show();
+                } else {
+
+                    mProgressbar.setVisibility(View.VISIBLE);
+                    mAuth.createUserWithEmailAndPassword(email, password);
+                    user = new User(name, email, password, type);
+                    mRegister.setVisibility(View.INVISIBLE);
+                }
 
             }
         });

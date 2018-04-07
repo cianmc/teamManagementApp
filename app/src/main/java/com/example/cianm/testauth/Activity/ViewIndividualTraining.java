@@ -42,13 +42,13 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
     private TextView mDate, mTime, mDescription, mLocation, mAvailInfo, mAvailabilityStatus;
     private Button mViewAttendees, mAvailable, mNotAvailable, mUpdateAvailibility;
 
-    private DatabaseReference mDatabase, attendenceRef;
+    private DatabaseReference mDatabase, attendenceRef, mUserRef, mUserRefP, mUserRefC;
     DatabaseReference userReference;
     FirebaseAuth mAuth;
     private FirebaseUser fbUser;
 
     private Double mLat, mLong;
-    String userType, userName, eventType, userID, availability, eventKey, time;
+    String userType, userName, eventType, userID, availability, eventKey, time, confirmKey;
     Pattern timePattern;
     ProgressBar mProgressBar;
 
@@ -85,6 +85,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
 
         mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         attendenceRef = FirebaseDatabase.getInstance().getReference("Attendee").child(userID);
+        mUserRefP = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid()).child("pending").child(currentTeam).child("Training");
+        mUserRefC = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid()).child("confirmed").child(currentTeam).child("Training");
+        mUserRef = FirebaseDatabase.getInstance().getReference("User").child(userID);
 
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -133,6 +136,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mUpdateAvailibility.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 attendenceRef.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,24 +146,52 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                             Attendee attendee = ds.getValue(Attendee.class);
                             String key = ds.getKey();
                             String availabilityCheck = attendee.getAvailability();
-                            if (availabilityCheck.equalsIgnoreCase("Yes")) {
+                            if (availabilityCheck.equalsIgnoreCase("Going")) {
                                 // Change availibility to unattending
-                                String newAvailability = "No";
+                                final String newAvailability = "Not going";
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
                                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
+                                mUserRefC.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                            confirmKey = ds.getKey();
+                                            mUserRefC.child(confirmKey).child("availability").setValue(newAvailability);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(ViewIndividualTraining.this, "Availability updated: Not Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualTraining.this, PlayerHome.class));
 
-                            } else if (availabilityCheck.equalsIgnoreCase("No")) {
+                            } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
                                 // Change availibility to attending
-                                String newAvailability = "Yes";
+                                final String newAvailability = "Going";
                                 userID = fbUser.getUid();
                                 attendenceRef.child(key).child("availability").setValue(newAvailability);
                                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).removeValue();
                                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
                                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
+                                mUserRefC.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                                            confirmKey = ds.getKey();
+                                            mUserRefC.child(confirmKey).child("availability").setValue(newAvailability);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 Toast.makeText(ViewIndividualTraining.this, "Availability updated: Attending", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(ViewIndividualTraining.this, PlayerHome.class));
                             }
@@ -176,10 +210,15 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailInfo.setVisibility(View.INVISIBLE);
+                mAvailable.setVisibility(View.INVISIBLE);
+                mNotAvailable.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 String attendeeID = attendenceRef.push().getKey();
-                availability = "Yes";
+                availability = "Going";
                 userID = fbUser.getUid();
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
+                changePendingTraining();
                 mDatabase.child(eventKey).child("attenedee").child("attending").child(userID).setValue(userName);
                 mDatabase.child(eventKey).child("attenedee").child("notSaved").child(userID).setValue(userName);
                 attendenceRef.child(attendeeID).setValue(attendee);
@@ -194,9 +233,14 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mNotAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAvailInfo.setVisibility(View.INVISIBLE);
+                mAvailable.setVisibility(View.INVISIBLE);
+                mNotAvailable.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 String attendeeID = attendenceRef.push().getKey();
-                availability = "No";
+                availability = "Not going";
                 attendee = new Attendee(currentEvent, userName, availability, eventType, userType, currentTeam);
+                changePendingTraining();
                 attendenceRef.child(attendeeID).setValue(attendee);
                 mDatabase.child(eventKey).child("attenedee").child("notAttending").child(userID).setValue(userName);
                 mAvailable.setVisibility(View.INVISIBLE);
@@ -235,14 +279,14 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                                 String availabilityCheck = attendee.getAvailability();
                                 String attendeeType = attendee.getUserType();
                                 if (attendeeType.equalsIgnoreCase("Player")) {
-                                    if (availabilityCheck.equalsIgnoreCase("Yes")) {
+                                    if (availabilityCheck.equalsIgnoreCase("Going")) {
                                         mAvailInfo.setVisibility(View.INVISIBLE);
                                         mAvailable.setVisibility(View.INVISIBLE);
                                         mNotAvailable.setVisibility(View.INVISIBLE);
                                         mUpdateAvailibility.setVisibility(View.VISIBLE);
                                         mAvailabilityStatus.setVisibility(View.VISIBLE);
                                         mAvailabilityStatus.setText("Availability confirmed, You are attending this event");
-                                    } else if (availabilityCheck.equalsIgnoreCase("No")) {
+                                    } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
                                         mAvailInfo.setVisibility(View.INVISIBLE);
                                         mAvailable.setVisibility(View.INVISIBLE);
                                         mNotAvailable.setVisibility(View.INVISIBLE);
@@ -308,6 +352,25 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setTiltGesturesEnabled(true);
         mUiSettings.setRotateGesturesEnabled(true);
+    }
+
+    public void changePendingTraining(){
+        final String currentEvent = ((GlobalVariables) ViewIndividualTraining.this.getApplication()).getCurrentEvent();
+        final String currentTeam = ((GlobalVariables) ViewIndividualTraining.this.getApplication()).getCurrentTeam();
+        String confirmedID = mUserRef.push().getKey();
+        mUserRefP.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String pendingKey = dataSnapshot.getKey();
+                mUserRefP.child(pendingKey).removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        mUserRef.child("confirmed").child(currentTeam).child("Training").child(confirmedID).setValue(attendee);
     }
 
     @Override

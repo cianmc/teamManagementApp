@@ -93,6 +93,9 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void goingLV(){
+        mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));
+        mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
+        mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
@@ -139,6 +142,9 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void notGoingLV(){
+        mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
+        mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));
+        mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
@@ -185,6 +191,9 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void savedLV(){
+        mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
+        mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
+        mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);

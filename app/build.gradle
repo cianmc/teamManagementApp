@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.cianm.testauth"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.google.maps:google-maps-services:0.1.20'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
+    implementation 'commons-validator:commons-validator:1.6'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

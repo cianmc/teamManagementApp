@@ -22,6 +22,7 @@ import com.example.cianm.testauth.Fragment.JoinTeamFragment;
 import com.example.cianm.testauth.Fragment.PlayerHomeFragment;
 import com.example.cianm.testauth.Fragment.SettingsFragment;
 import com.example.cianm.testauth.Fragment.ViewEventFragment;
+import com.example.cianm.testauth.Fragment.ViewEventPlayerFragment;
 import com.example.cianm.testauth.Fragment.ViewRatingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -121,7 +122,7 @@ public class PlayerHome extends AppCompatActivity implements NavigationView.OnNa
                 fragment = new JoinTeamFragment();
                 break;
             case R.id.navP_view_event:
-                fragment = new ViewEventFragment();
+                fragment = new ViewEventPlayerFragment();
                 break;
             case R.id.navP_view_ratings:
                 fragment = new ViewRatingsFragment();

@@ -57,6 +57,7 @@ public class SelectTeam extends AppCompatActivity {
         mProgressBar.setVisibility(View.INVISIBLE);
         mNoTeam.setVisibility(View.INVISIBLE);
         lv.setVisibility(View.VISIBLE);
+        mJoinTeam.setVisibility(View.INVISIBLE);
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
@@ -72,8 +73,10 @@ public class SelectTeam extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     mNoTeam.setVisibility(View.VISIBLE);
+                    mJoinTeam.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.INVISIBLE);
                 } else {
+                    mJoinTeam.setVisibility(View.INVISIBLE);
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String teamName = ds.getValue(String.class);
                         teamNames.add(teamName);
@@ -121,6 +124,8 @@ public class SelectTeam extends AppCompatActivity {
         mJoinTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mJoinTeam.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 startActivity(new Intent(SelectTeam.this, JoinTeam.class));
             }
         });
@@ -129,7 +134,7 @@ public class SelectTeam extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mProgressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.INVISIBLE);
         mJoinTeam.setVisibility(View.VISIBLE);
     }
 
