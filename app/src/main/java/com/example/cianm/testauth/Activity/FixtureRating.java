@@ -49,6 +49,7 @@ public class FixtureRating extends AppCompatActivity {
     Double attackerRating, defenderRating, overallRating;
     String currentTeam, currentEvent, eventKey, tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards, position, teamType, savedName, sPoints, sGoals, sWides, sTackles, sTurnovers, sYellowCards, sRedCards, sBlackCards, sAttacker, sDefender, sOverall, userUID;
     Long stillToSave;
+    int playerName, positionRef;
 
     ArrayList<String> attendees;
     Team team;
@@ -479,8 +480,9 @@ public class FixtureRating extends AppCompatActivity {
                         teamType = team.getType();
                         if(teamType.equalsIgnoreCase("Hurling")){
                             finalSaveHurling();
-                        } else
+                        } else if (teamType.equalsIgnoreCase("Football")){
                             finalSaveFootball();
+                        }
                     }
 
                     @Override
@@ -488,7 +490,7 @@ public class FixtureRating extends AppCompatActivity {
 
                     }
                 });
-;
+                ;
             }
         });
     }
@@ -497,7 +499,7 @@ public class FixtureRating extends AppCompatActivity {
         mChooseAttendeeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               // final String position;
+                // final String position;
                 position = Integer.toString(i);
                 mTempRatingF = FirebaseDatabase.getInstance().getReference("TempRatingF");
                 mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -539,19 +541,7 @@ public class FixtureRating extends AppCompatActivity {
                             mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateF);
 
                         } else {
-                            newTempRatingButtonsF();
-                            tPoints = mPointsValue.getText().toString();
-                            tGoals = mGoalsValue.getText().toString();
-                            tWides = mWidesValue.getText().toString();
-                            tTackles = mTacklesValue.getText().toString();
-                            tTurnovers = mTurnoversValue.getText().toString();
-                            tYellowCards = mYellowCardsValue.getText().toString();
-                            tRedCards = mRedCardsValue.getText().toString();
-                            tBlackCards = mBlackCardsValue.getText().toString();
-
-                            tempRateF = new TempRatingFootball(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards);
-                            mTempRatingF = FirebaseDatabase.getInstance().getReference("TempRatingF");
-                            mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateF);
+                            loadFootball();
                         }
                     }
 
@@ -573,7 +563,7 @@ public class FixtureRating extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // final String position;
-                position = Integer.toString(i );
+                position = Integer.toString(i);
                 mTempRatingH = FirebaseDatabase.getInstance().getReference("TempRatingH");
                 mTempRatingH.child(currentTeam).child(fbUser.getUid()).child(position).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -611,18 +601,7 @@ public class FixtureRating extends AppCompatActivity {
                             mTempRatingH.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateH);
 
                         } else {
-                            newTempRatingButtonsH();
-                            tPoints = mPointsValue.getText().toString();
-                            tGoals = mGoalsValue.getText().toString();
-                            tWides = mWidesValue.getText().toString();
-                            tTackles = mTacklesValue.getText().toString();
-                            tTurnovers = mTurnoversValue.getText().toString();
-                            tYellowCards = mYellowCardsValue.getText().toString();
-                            tRedCards = mRedCardsValue.getText().toString();
-
-                            tempRateH = new TempRatingHurling(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards);
-                            mTempRatingH = FirebaseDatabase.getInstance().getReference("TempRatingH");
-                            mTempRatingH.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateH);
+                            loadHurling();
                         }
                     }
 
@@ -647,6 +626,7 @@ public class FixtureRating extends AppCompatActivity {
                 teamType = team.getType();
                 if (teamType.equalsIgnoreCase("Hurling")){
                     saveTempRatingHurling();
+                    loadHurling();
                 } else if (teamType.equalsIgnoreCase("Football")){
                     saveTempRatingFootball();
                 }
@@ -657,6 +637,43 @@ public class FixtureRating extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void loadFootball(){
+        int pos = 0;
+        for(int i=0; i<=attendees.size(); i++) {
+            newTempRatingButtonsF();
+            tPoints = mPointsValue.getText().toString();
+            tGoals = mGoalsValue.getText().toString();
+            tWides = mWidesValue.getText().toString();
+            tTackles = mTacklesValue.getText().toString();
+            tTurnovers = mTurnoversValue.getText().toString();
+            tYellowCards = mYellowCardsValue.getText().toString();
+            tRedCards = mRedCardsValue.getText().toString();
+            tBlackCards = mBlackCardsValue.getText().toString();
+
+            tempRateF = new TempRatingFootball(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards, tBlackCards);
+            mTempRatingF = FirebaseDatabase.getInstance().getReference("TempRatingF");
+            mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(Integer.toString(pos)).setValue(tempRateF);
+            pos++;
+        }
+    }
+
+    public void loadHurling(){
+        for(int i=0; i<attendees.size(); i++) {
+            newTempRatingButtonsH();
+            tPoints = mPointsValue.getText().toString();
+            tGoals = mGoalsValue.getText().toString();
+            tWides = mWidesValue.getText().toString();
+            tTackles = mTacklesValue.getText().toString();
+            tTurnovers = mTurnoversValue.getText().toString();
+            tYellowCards = mYellowCardsValue.getText().toString();
+            tRedCards = mRedCardsValue.getText().toString();
+
+            tempRateH = new TempRatingHurling(tPoints, tGoals, tWides, tTackles, tTurnovers, tYellowCards, tRedCards);
+            mTempRatingH = FirebaseDatabase.getInstance().getReference("TempRatingH");
+            mTempRatingH.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateH);
+        }
     }
 
     public void newTempRatingButtonsF(){
@@ -956,55 +973,74 @@ public class FixtureRating extends AppCompatActivity {
 
     }
 
-    public void finalSaveFootball(){
+    public void finalSaveFootball() {
 
-        savedName = mChooseAttendeeSpinner.getSelectedItem().toString();
-
-        savePoints = Integer.parseInt(mPointsValue.getText().toString());
-        saveGoals = Integer.parseInt(mGoalsValue.getText().toString());
-        saveWides = Integer.parseInt(mWidesValue.getText().toString());
-        saveTackles = Integer.parseInt(mTacklesValue.getText().toString());
-        saveTurnovers = Integer.parseInt(mTurnoversValue.getText().toString());
-        saveYellowCards = Integer.parseInt(mYellowCardsValue.getText().toString());
-        saveRedCards = Integer.parseInt(mRedCardsValue.getText().toString());
-        saveBlackCards = Integer.parseInt(mBlackCardsValue.getText().toString());
-
-        calAttackerRating();
-        calDefenderRating();
-        calTotalRating();
-
-        sPoints = Integer.toString(savePoints);
-        sGoals = Integer.toString(saveGoals);
-        sWides = Integer.toString(saveWides);
-        sTackles = Integer.toString(saveTackles);
-        sTurnovers = Integer.toString(saveTurnovers);
-        sYellowCards = Integer.toString(saveYellowCards);
-        sRedCards = Integer.toString(saveRedCards);
-        sBlackCards = Integer.toString(saveBlackCards);
-        sAttacker = Double.toString(attackerRating);
-        sDefender = Double.toString(defenderRating);
-        sOverall = Double.toString(overallRating);
-
-        FixtureRatingFootball rating = new FixtureRatingFootball(sPoints, sGoals, sWides, sTackles, sTurnovers, sYellowCards, sRedCards, sBlackCards, sAttacker, sDefender, sOverall, currentEvent, savedName);
-        String ratingID = mSaveRef.push().getKey();
-        mSaveRef.child(currentTeam).child("Fixture").child(ratingID).setValue(rating);
-        mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).removeValue();
-        mUserRef.orderByChild("name").equalTo(savedName).addListenerForSingleValueEvent(new ValueEventListener() {
+        playerName = 0;
+        positionRef = 1;
+        mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(Integer.toString(positionRef)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    userUID = child.getKey();
+                //for(DataSnapshot ds : dataSnapshot.getChildren()){
+                for (int i = 0; i < attendees.size(); i++) {
+                    TempRatingFootball tempF = dataSnapshot.getValue(TempRatingFootball.class);
+                    savePoints = Integer.parseInt(tempF.getPoints());
+                    saveGoals = Integer.parseInt(tempF.getGoals());
+                    saveWides = Integer.parseInt(tempF.getWides());
+                    saveTackles = Integer.parseInt(tempF.getTackles());
+                    saveTurnovers = Integer.parseInt(tempF.getTurnovers());
+                    saveYellowCards = Integer.parseInt(tempF.getYellowCards());
+                    saveRedCards = Integer.parseInt(tempF.getRedCards());
+                    saveBlackCards = Integer.parseInt(tempF.getBlackCards());
+
+                    calAttackerRating();
+                    calDefenderRating();
+                    calTotalRating();
+
+                    savedName = attendees.get(playerName).toString();
+                    sPoints = Integer.toString(savePoints);
+                    sGoals = Integer.toString(saveGoals);
+                    sWides = Integer.toString(saveWides);
+                    sTackles = Integer.toString(saveTackles);
+                    sTurnovers = Integer.toString(saveTurnovers);
+                    sYellowCards = Integer.toString(saveYellowCards);
+                    sRedCards = Integer.toString(saveRedCards);
+                    sBlackCards = Integer.toString(saveBlackCards);
+                    sAttacker = Double.toString(attackerRating);
+                    sDefender = Double.toString(defenderRating);
+                    sOverall = Double.toString(overallRating);
+                    final FixtureRatingFootball rating = new FixtureRatingFootball(sPoints, sGoals, sWides, sTackles, sTurnovers, sYellowCards, sRedCards, sBlackCards, sAttacker, sDefender, sOverall, currentEvent, savedName);
+                    final String ratingID = mSaveRef.push().getKey();
+                    //mSaveRef.child(currentTeam).child("Fixture").child().child(ratingID).setValue(rating);
+                    mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(Integer.toString(positionRef)).removeValue();
+                    positionRef++;
+                    playerName++;
+                    mUserRef.orderByChild("name").equalTo(savedName).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                userUID = child.getKey();
+                                mSaveRef.child(currentTeam).child("Fixture").child(userUID).child(ratingID).setValue(rating);
+                                mAttendeeReferenceNS.child(userUID).removeValue();
+                                mAttendeeReferenceS = mDatabase.child(eventKey).child("attenedee").child("saved");
+                                mAttendeeReferenceS.child(userUID).setValue(savedName);
+                            }
+                            startActivity(new Intent(FixtureRating.this, ViewAttendeesFixture.class));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-                mAttendeeReferenceNS.child(userUID).removeValue();
-                mAttendeeReferenceS = mDatabase.child(eventKey).child("attenedee").child("saved");
-                mAttendeeReferenceS.child(userUID).setValue(savedName);
-                startActivity(new Intent(FixtureRating.this, ViewAttendeesFixture.class));
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
+
 }
 
