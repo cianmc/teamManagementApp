@@ -44,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -60,7 +61,7 @@ public class CreateEventFragment extends Fragment {
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
-    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser;
+    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser, mDateRef;
 
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTextView;
@@ -75,6 +76,7 @@ public class CreateEventFragment extends Fragment {
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
     String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID;
+    ArrayList<String> dates;
     Fixture fixture;
     Training training;
 
@@ -98,6 +100,16 @@ public class CreateEventFragment extends Fragment {
         mFirebaseDatabaseT = FirebaseDatabase.getInstance().getReference("Training");
         mFirebaseUser = FirebaseDatabase.getInstance().getReference("User");
         mFirebaseDatabaseTeam = FirebaseDatabase.getInstance().getReference("Team").child(currentTeam);
+        mDateRef = FirebaseDatabase.getInstance().getReference("CheckDate");
+
+        String id1 = mFirebaseDatabaseF.push().getKey();
+        String id2 = mFirebaseDatabaseT.push().getKey();
+
+        mDateRef.child(currentTeam).child(id1).setValue("15/5/2018");
+        mDateRef.child(currentTeam).child(id2).setValue("21/7/2018");
+
+        dates = new ArrayList<>();
+        getDates();
 
         // Progress bar
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
@@ -201,7 +213,7 @@ public class CreateEventFragment extends Fragment {
         mPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            pickDate();
+                pickDate();
             }
         });
         mViewDate.setOnClickListener(new View.OnClickListener() {
@@ -216,72 +228,81 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View view) {
                 if (!rFixture.isChecked() && !rTraining.isChecked()){
                     Toast.makeText(getActivity(), "You must select a type of event", Toast.LENGTH_SHORT).show();
-                }
-                if (location.isEmpty()){
+                } else if (location.isEmpty()){
                     Toast.makeText(getActivity(), "Please select a location", Toast.LENGTH_SHORT).show();
-                }
-                if (date.isEmpty()){
+                } else if (date.isEmpty()){
                     Toast.makeText(getActivity(), "Please select a date for the event", Toast.LENGTH_SHORT).show();
-                }
-                if (time.isEmpty()){
+                } else if (time.isEmpty()){
                     Toast.makeText(getActivity(), "Please select a time for the event", Toast.LENGTH_SHORT).show();
-                }
+                } else if (dates.contains(date)) {
+                    Toast.makeText(getActivity(), "There is an event already on this date", Toast.LENGTH_SHORT).show();
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    if (rTraining.isChecked()) {
+                        String userID = mFirebaseDatabaseT.push().getKey();
+                        String dateID = mDateRef.push().getKey();
+                        final String pendingKey = mFirebaseUser.push().getKey();
+                        String type = "Training";
+                        description = mDescription.getText().toString();
+                        if (description.isEmpty()) {
+                            Toast.makeText(getActivity(), "Please enter in a description", Toast.LENGTH_SHORT).show();
+                        } else {
+                            training = new Training(date, description, location, time, latlong, type);
+                            mDateRef.child(currentTeam).child(dateID).setValue(date);
+                            mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        playerName = ds.getValue(String.class);
+                                        playerUID = ds.getKey();
+                                        mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Training").child(pendingKey).setValue(training);
+                                    }
+                                }
 
-                mProgressBar.setVisibility(View.VISIBLE);
-                if (rTraining.isChecked()){
-                    String userID = mFirebaseDatabaseT.push().getKey();
-                    final String pendingKey = mFirebaseUser.push().getKey();
-                    String type = "Training";
-                    description = mDescription.getText().toString();
-                    if (description.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a description", Toast.LENGTH_SHORT).show(); }
-                    training = new Training(date, description, location, time, latlong, type);
-                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                playerName = ds.getValue(String.class);
-                                playerUID = ds.getKey();
-                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child(pendingKey).setValue(training);
-                            }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
+                            mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
+                            mCreateEvent.setVisibility(View.GONE);
+                            startActivity(new Intent(getActivity(), ManagerHome.class));
+                            Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
                         }
+                    } else if (rFixture.isChecked()) {
+                        String userID = mFirebaseDatabaseF.push().getKey();
+                        String dateID = mDateRef.push().getKey();
+                        final String pendingKey = mFirebaseUser.push().getKey();
+                        String type = "Fixture";
+                        opposition = mOppositionTextView.getText().toString();
+                        if (opposition.isEmpty()) {
+                            Toast.makeText(getActivity(), "Please enter in a  opponent", Toast.LENGTH_SHORT).show();
+                        } else {
+                            fixture = new Fixture(date, location, time, opposition, latlong, type);
+                            mDateRef.child(currentTeam).child(dateID).setValue(date);
+                            mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        playerName = ds.getValue(String.class);
+                                        playerUID = ds.getKey();
+                                        mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Fixture").child(pendingKey).setValue(fixture);
+                                    }
+                                }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
+                                }
+                            });
+                            mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
+                            mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
+                            mCreateEvent.setVisibility(View.GONE);
+                            startActivity(new Intent(getActivity(), ManagerHome.class));
+                            Toast.makeText(getActivity(), "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                    mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
-                    mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
-                    mCreateEvent.setVisibility(View.GONE);
-                    startActivity(new Intent(getActivity(), ManagerHome.class));
-                    Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
-                } else if (rFixture.isChecked()){
-                    String userID = mFirebaseDatabaseF.push().getKey();
-                    final String pendingKey = mFirebaseUser.push().getKey();
-                    String type = "Fixture";
-                    opposition = mOppositionTextView.getText().toString();
-                    if (opposition.isEmpty()){ Toast.makeText(getActivity(), "Please enter in a  opponent", Toast.LENGTH_SHORT).show();}
-                    fixture = new Fixture (date, location, time, opposition, latlong, type);
-                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                playerName = ds.getValue(String.class);
-                                playerUID = ds.getKey();
-                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child(pendingKey).setValue(fixture);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                    mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
-                    mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
-                    mCreateEvent.setVisibility(View.GONE);
-                    startActivity(new Intent(getActivity(), ManagerHome.class));
-                    Toast.makeText(getActivity(), "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -356,12 +377,32 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mViewDate.setText(year + "/" + (month + 1) + "/" + day);
-                date = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(day);
+                date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
             }
         }, mDay, mMonth, mYear);
         mDatePicker.setTitle("Select Date");
         mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() -1000);
         mDatePicker.show();
+    }
+
+    // gets all the dates of events previously created
+    // add them to an arraylist so we can check if the new date
+    // entered has an event on it already
+    public void getDates(){
+        mDateRef.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String date = ds.getValue(String.class);
+                    dates.add(date);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
