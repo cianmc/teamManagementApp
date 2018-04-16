@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,18 +62,22 @@ public class CreateTeamFragment extends Fragment {
 
         mCreteTeam.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final int value = Integer.valueOf(mTeamNumber.getText().toString());
-                if (value == 0) {
-                    Toast.makeText(getActivity(), "Division has to be between 1 and 9", Toast.LENGTH_SHORT).show();
+                String division = mTeamNumber.getText().toString();
+                final int divisionInt = Integer.valueOf(mTeamNumber.getText().toString());
+                if (divisionInt == 0) {
+                    mTeamNumber.setError("Division cannot be equal to zero");
+                    return;
+                } else if (TextUtils.isEmpty(division)){
+                    mTeamNumber.setError("Please enter in a division");
+                    return;
                 } else if (!rFootball.isChecked() && !rHurling.isChecked()) {
                     Toast.makeText(getActivity(), "You must select a team type", Toast.LENGTH_SHORT).show();
                 } else {
-                    division = Integer.toString(value);
                     selectType();
                     if (type.equals("Football")) {
                         code = "AFL";
                         name = code + division;
-                        team = new Team(name, type, division);
+                        team = new Team(name, type, divisionInt);
                         mFirebaseDatabase.child(name).setValue(team);
                         Toast.makeText(getActivity(), "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);
@@ -81,7 +86,7 @@ public class CreateTeamFragment extends Fragment {
                     } else if (type.equals("Hurling")) {
                         code = "AHL";
                         name = code + division;
-                        team = new Team(name, type, division);
+                        team = new Team(name, type, divisionInt);
                         mFirebaseDatabase.child(name).setValue(team);
                         Toast.makeText(getActivity(), "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);

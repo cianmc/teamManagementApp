@@ -93,6 +93,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void goingLV(){
+        goingNames.clear();
         mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));
         mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
@@ -142,6 +143,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void notGoingLV(){
+        notGoingNames.clear();
         mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));
         mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));

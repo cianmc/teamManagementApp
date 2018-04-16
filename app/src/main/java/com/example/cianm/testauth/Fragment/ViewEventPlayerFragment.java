@@ -45,7 +45,7 @@ public class ViewEventPlayerFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser fbUser;
 
-    Button mResponded, mPending;
+    Button mResponded, mPending, mStillPending;
     ListView mTrainingRespondedLV, mFixtureRespondedLV, mTrainingPendingLV, mFixturePendingLV;
     TextView mNoDataRespTrain, mNoDataRespFix;
     LinearLayout mResponderLayout, mPendingLayout;
@@ -84,6 +84,7 @@ public class ViewEventPlayerFragment extends Fragment {
         mFixtureRespondedLV = getView().findViewById(R.id.fixtureResponedLV);
 
         // Pending tab elements
+        mStillPending = getView().findViewById(R.id.newPendingBtn);
         mPendingLayout = getView().findViewById(R.id.pendingLayout);
         mTrainingPendingLV = getView().findViewById(R.id.trainingPendingLV);
         mFixturePendingLV = getView().findViewById(R.id.fixturePendingLV);
@@ -96,6 +97,7 @@ public class ViewEventPlayerFragment extends Fragment {
         mResponderLayout.setVisibility(View.VISIBLE);
         mPendingLayout.setVisibility(View.INVISIBLE);
 
+        checkPending();
         loadResponded();
 
         mResponded.setOnClickListener(new View.OnClickListener() {
@@ -305,5 +307,13 @@ public class ViewEventPlayerFragment extends Fragment {
 
             }
         });
+    }
+
+    public void checkPending(){
+        if(mTrainingPendingLV.getVisibility() == View.VISIBLE && mFixturePendingLV.getVisibility() == View.VISIBLE){
+            mStillPending.setVisibility(View.VISIBLE);
+        } else {
+            mStillPending.setVisibility(View.INVISIBLE);
+        }
     }
 }

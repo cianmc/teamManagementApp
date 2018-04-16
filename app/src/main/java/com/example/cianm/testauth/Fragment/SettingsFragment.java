@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,28 +109,23 @@ public class SettingsFragment extends Fragment {
         newPass = mNewPass.getText().toString();
         cofirmPass = mCofirmPass.getText().toString();
 
-        if (oldPass.equals("") || oldPass == null){
-            Toast.makeText(getActivity(),"Enter in password", Toast.LENGTH_SHORT).show();
-        }
-        if (newPass.equals("") || newPass == null){
-            Toast.makeText(getActivity(),"Enter in new password", Toast.LENGTH_SHORT).show();
-        }
-        if (cofirmPass.equals("") || cofirmPass == null){
-            Toast.makeText(getActivity(),"Please confirm password", Toast.LENGTH_SHORT).show();
-        }
-        if (!oldPass.equals(oldPassDB)){
-            Toast.makeText(getActivity(),"Incorrect password", Toast.LENGTH_SHORT).show();
-        }
-        if (!newPass.equals(cofirmPass)){
+        if (TextUtils.isEmpty(oldPass)){
+            mOldPass.setError("Please enter in your password");
+        } else if (TextUtils.isEmpty(newPass)){
+            mNewPass.setError("Please enter in a new password");
+        } else if (TextUtils.isEmpty(cofirmPass)){
+            mCofirmPass.setError("Please confirm your password");
+        } else if (!oldPass.equals(oldPassDB)){
+            mOldPass.setError("Incorrect password");
+        } else if (!newPass.equals(cofirmPass)){
             Toast.makeText(getActivity(),"Password don't match", Toast.LENGTH_SHORT).show();
+        } else if (newPass.length() < 6){
+            mNewPass.setError("Password must be at least 6 characters");
+        } else {
+            mDatabase.child(mUser.getUid()).child("password").setValue(newPass);
+            mUser.updatePassword(newPass);
+            Toast.makeText(getActivity(), "Password updated", Toast.LENGTH_SHORT).show();
         }
-        if (newPass.length() < 6){
-            Toast.makeText(getActivity(),"Password much be at least 6 characters in length", Toast.LENGTH_SHORT).show();
-        }
-
-        mDatabase.child(mUser.getUid()).child("password").setValue(newPass);
-        mUser.updatePassword(newPass);
-        Toast.makeText(getActivity(),"Password updated", Toast.LENGTH_SHORT).show();
     }
 
     public void deleteAccountManager(){

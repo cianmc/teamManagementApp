@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,7 @@ public class CreateTeam extends AppCompatActivity {
     ProgressBar mProgressBar;
     Fragment fragment = null;
 
-    String division, code, name, type;
+    String code, name, type;
     Team team;
 
     @Override
@@ -46,9 +47,14 @@ public class CreateTeam extends AppCompatActivity {
 
         mCreteTeam.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                String division = mTeamNumber.getText().toString();
                 final int value = Integer.valueOf(mTeamNumber.getText().toString());
                 if (value == 0) {
-                    Toast.makeText(CreateTeam.this, "Division has to be between 1 and 9", Toast.LENGTH_SHORT).show();
+                    mTeamNumber.setError("Division cannot be equal to zero");
+                    return;
+                } else if (TextUtils.isEmpty(division)){
+                    mTeamNumber.setError("Please enter in a division");
+                    return;
                 } else if (!rFootball.isChecked() && !rHurling.isChecked()) {
                     Toast.makeText(CreateTeam.this, "You must select a team type", Toast.LENGTH_SHORT).show();
                 } else {
@@ -57,7 +63,7 @@ public class CreateTeam extends AppCompatActivity {
                     if (type.equals("Football")) {
                         code = "AFL";
                         name = code + division;
-                        team = new Team(name, type, division);
+                        team = new Team(name, type, value);
                         mFirebaseDatabase.child(name).setValue(team);
                         Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);
@@ -66,7 +72,7 @@ public class CreateTeam extends AppCompatActivity {
                     } else if (type.equals("Hurling")) {
                         code = "AHL";
                         name = code + division;
-                        team = new Team(name, type, division);
+                        team = new Team(name, type, value);
                         mFirebaseDatabase.child(name).setValue(team);
                         Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);

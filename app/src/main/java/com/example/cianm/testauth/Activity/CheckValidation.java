@@ -53,25 +53,7 @@ public class CheckValidation extends AppCompatActivity {
         if(emailVerified == true) {
             mVerifyAccount.setVisibility(View.GONE);
             mUser.setVisibility(View.GONE);
-           startActivity(new Intent(CheckValidation.this, SelectTeam.class));
-//            mDatabase.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                    user = dataSnapshot.getValue(User.class);
-//                    if (user.getType().equalsIgnoreCase("Manager")) {
-//                        startActivity(new Intent(CheckValidation.this, ManagerHome.class));
-//                    } else if (user.getType().equalsIgnoreCase("Player")){
-//                        startActivity(new Intent(CheckValidation.this, PlayerHome.class));
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError error) {
-//                    // Failed to read value
-//                    Log.w(TAG, "Failed to read value.", error.toException());
-//                }
-//            });
+            startActivity(new Intent(CheckValidation.this, SelectTeam.class));
         }
 
         mVerifyAccount.setOnClickListener(new View.OnClickListener() {
@@ -82,31 +64,6 @@ public class CheckValidation extends AppCompatActivity {
         });
 
         }
-
-//        deleteAcc.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                progressBar.setVisibility(View.VISIBLE);
-//                //               mDatabase.child(fbUser.getUid()).removeValue();
-//                if (fbUser !=null){
-//                    mDatabase.child(fbUser.getUid()).removeValue();
-//                    fbUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()){
-//                                startActivity(new Intent(CheckValidation.this, RegisterUser.class));
-//                                finish();
-//                                progressBar.setVisibility(View.GONE);
-//                            } else {
-//                                Toast.makeText(CheckValidation.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-//                                progressBar.setVisibility(View.GONE);
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-
 
     public void sendVerificationEmail() {
         fbUser.sendEmailVerification()

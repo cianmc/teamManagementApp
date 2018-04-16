@@ -12,13 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="224dp"
         android:ems="10"
         android:hint="@string/email_field"
-        android:inputType="textEmailAddress"
         android:imeOptions="actionDone"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="@string/password_field"
         android:inputType="textPassword"
@@ -44,10 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="115dp"
         android:layout_marginStart="115dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="568dp"
         android:text="@string/register_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="@string/name"
         android:inputType="textPersonName"
@@ -84,7 +83,7 @@
         android:layout_height="34dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,5 +103,17 @@
             android:layout_weight="1"
             android:text="@string/player" />
     </RadioGroup>
+
+    <ImageView
+        android:id="@+id/imageViewLogin"
+        android:layout_width="300dp"
+        android:layout_height="173dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pic" />
 
 </android.support.constraint.ConstraintLayout>

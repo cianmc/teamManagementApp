@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -244,8 +245,8 @@ public class CreateEventFragment extends Fragment {
                         final String pendingKey = mFirebaseUser.push().getKey();
                         String type = "Training";
                         description = mDescription.getText().toString();
-                        if (description.isEmpty()) {
-                            Toast.makeText(getActivity(), "Please enter in a description", Toast.LENGTH_SHORT).show();
+                        if (TextUtils.isEmpty(description)) {
+                            mDescription.setError("Enter in a training description");
                         } else {
                             training = new Training(date, description, location, time, latlong, type);
                             mDateRef.child(currentTeam).child(dateID).setValue(date);
@@ -276,8 +277,8 @@ public class CreateEventFragment extends Fragment {
                         final String pendingKey = mFirebaseUser.push().getKey();
                         String type = "Fixture";
                         opposition = mOppositionTextView.getText().toString();
-                        if (opposition.isEmpty()) {
-                            Toast.makeText(getActivity(), "Please enter in a  opponent", Toast.LENGTH_SHORT).show();
+                        if (TextUtils.isEmpty(opposition)) {
+                            mOppositionTextView.setError("Choose an opposition");
                         } else {
                             fixture = new Fixture(date, location, time, opposition, latlong, type);
                             mDateRef.child(currentTeam).child(dateID).setValue(date);

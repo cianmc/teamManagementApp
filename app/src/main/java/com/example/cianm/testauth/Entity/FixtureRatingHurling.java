@@ -9,102 +9,24 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class FixtureRatingHurling {
 
-    String goals, points, wides, tackles, turnovers, yellowCards, redCards, attackerRating, defenderRating, overallRating, dateOfEvent, playerName;
+    String dateOfEvent, playerName;
+    int goals, points, wides, tackles, turnovers, yellowCards, redCards;
+    double attackerRating, defenderRating, overallRating;
 
     public FixtureRatingHurling(){}
 
-    public FixtureRatingHurling(String goals, String points, String wides, String tackles, String turnovers, String yellowCards, String redCards, String attackerRating, String defenderRating, String overallRating, String dateOfEvent, String playerName) {
-        this.goals = goals;
-        this.points = points;
-        this.wides = wides;
-        this.tackles = tackles;
-        this.turnovers = turnovers;
-        this.yellowCards = yellowCards;
-        this.redCards = redCards;
-        this.attackerRating = attackerRating;
-        this.defenderRating = defenderRating;
-        this.overallRating = overallRating;
+    public FixtureRatingHurling(String dateOfEvent, String playerName, int goals, int points, int wides, int tackles, int turnovers, int yellowCards, int redCards, double attackerRating, double defenderRating, double overallRating) {
         this.dateOfEvent = dateOfEvent;
         this.playerName = playerName;
-    }
-
-    public String getGoals() {
-        return goals;
-    }
-
-    public void setGoals(String goals) {
         this.goals = goals;
-    }
-
-    public String getPoints() {
-        return points;
-    }
-
-    public void setPoints(String points) {
         this.points = points;
-    }
-
-    public String getWides() {
-        return wides;
-    }
-
-    public void setWides(String wides) {
         this.wides = wides;
-    }
-
-    public String getTackles() {
-        return tackles;
-    }
-
-    public void setTackles(String tackles) {
         this.tackles = tackles;
-    }
-
-    public String getTurnovers() {
-        return turnovers;
-    }
-
-    public void setTurnovers(String turnovers) {
         this.turnovers = turnovers;
-    }
-
-    public String getYellowCards() {
-        return yellowCards;
-    }
-
-    public void setYellowCards(String yellowCards) {
         this.yellowCards = yellowCards;
-    }
-
-    public String getRedCards() {
-        return redCards;
-    }
-
-    public void setRedCards(String redCards) {
         this.redCards = redCards;
-    }
-
-    public String getAttackerRating() {
-        return attackerRating;
-    }
-
-    public void setAttackerRating(String attackerRating) {
         this.attackerRating = attackerRating;
-    }
-
-    public String getDefenderRating() {
-        return defenderRating;
-    }
-
-    public void setDefenderRating(String defenderRating) {
         this.defenderRating = defenderRating;
-    }
-
-    public String getOverallRating() {
-        return overallRating;
-    }
-
-    public void setOverallRating(String overallRating) {
         this.overallRating = overallRating;
     }
 
@@ -122,5 +44,85 @@ public class FixtureRatingHurling {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public int getGoals() {
+        return goals;
+    }
+
+    public void setGoals(int goals) {
+        this.goals = goals;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getWides() {
+        return wides;
+    }
+
+    public void setWides(int wides) {
+        this.wides = wides;
+    }
+
+    public int getTackles() {
+        return tackles;
+    }
+
+    public void setTackles(int tackles) {
+        this.tackles = tackles;
+    }
+
+    public int getTurnovers() {
+        return turnovers;
+    }
+
+    public void setTurnovers(int turnovers) {
+        this.turnovers = turnovers;
+    }
+
+    public int getYellowCards() {
+        return yellowCards;
+    }
+
+    public void setYellowCards(int yellowCards) {
+        this.yellowCards = yellowCards;
+    }
+
+    public int getRedCards() {
+        return redCards;
+    }
+
+    public void setRedCards(int redCards) {
+        this.redCards = redCards;
+    }
+
+    public double getAttackerRating() {
+        return attackerRating;
+    }
+
+    public void setAttackerRating(double attackerRating) {
+        this.attackerRating = attackerRating;
+    }
+
+    public double getDefenderRating() {
+        return defenderRating;
+    }
+
+    public void setDefenderRating(double defenderRating) {
+        this.defenderRating = defenderRating;
+    }
+
+    public double getOverallRating() {
+        return overallRating;
+    }
+
+    public void setOverallRating(double overallRating) {
+        this.overallRating = overallRating;
     }
 }

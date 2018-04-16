@@ -23,104 +23,95 @@
         android:id="@+id/pickLocationBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="175dp"
         android:text="@string/pickLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="140dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/locationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="175dp"
         android:text="@string/eventLocation"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/pickLocationBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="44dp"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/showLocationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="185dp"
         android:text="@string/createEvent"
         android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="120dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/pickTimeBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="125dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="300dp"
         android:text="@string/pickTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="140dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/timeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="135dp"
+        android:layout_marginTop="305dp"
         android:text="@string/eventTime"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/pickTimeBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="80dp"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/showTimeView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="305dp"
         android:text="@string/createEvent"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="60dp"
-        android:layout_marginLeft="170dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/pickDateBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="425dp"
         android:text="@string/pickDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.017"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="140dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dateTextView"
@@ -128,49 +119,49 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="240dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="430dp"
         android:text="@string/eventDate"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="240dp"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/showDateView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="65dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="430dp"
         android:text="@string/createEvent"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="65dp"
-        android:layout_marginLeft="170dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/createEventBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="116dp"
         android:layout_marginEnd="95dp"
         android:layout_marginStart="95dp"
         android:text="@string/createEvent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
         android:id="@+id/createEventRadioGroup"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -181,14 +172,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/training" />
+            android:text="@string/training"
+            android:textSize="30sp" />
 
         <RadioButton
             android:id="@+id/fixtureRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fixture" />
+            android:text="@string/fixture"
+            android:textSize="30sp" />
     </RadioGroup>
 
     <ProgressBar
@@ -196,11 +189,12 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="112dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -209,15 +203,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="550dp"
         android:text="@string/eventDescription"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:visibility="gone"
+        android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/descriptionEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="14dp"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/descriptionEditText"
@@ -225,31 +218,29 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="255dp"
+        android:layout_marginTop="550dp"
+        android:background="@drawable/back"
         android:ems="10"
         android:hint="@string/trainingDescription"
         android:inputType="textMultiLine"
-        android:visibility="gone"
         android:textSize="14sp"
-        android:background="@drawable/back"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/descriptionTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="28dp"
-        android:layout_marginLeft="5dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/oppositionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="550dp"
         android:text="@string/eventOpposition"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:visibility="gone"
+        android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/oppositionAutoTextView"
@@ -257,17 +248,15 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="120dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="550dp"
         android:ems="10"
         android:hint="@string/opposition_field"
+        android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textSize="14sp"
-        android:visibility="gone"
-        android:imeOptions="actionDone"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="120dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

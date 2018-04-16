@@ -9,12 +9,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Team {
 
-    String name, type, division;
+    String name, type;
+    int division;
 
     public Team(){
     }
 
-    public Team(String name, String type, String division) {
+    public Team(String name, String type, int division) {
         this.name = name;
         this.type = type;
         this.division = division;
@@ -36,11 +37,11 @@ public class Team {
         this.name = name;
     }
 
-    public String getDivision() {
+    public int getDivision() {
         return division;
     }
 
-    public void setDivision(String division) {
+    public void setDivision(int division) {
         this.division = division;
     }
 }

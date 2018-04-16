@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -84,14 +85,14 @@ public class RegisterUser extends AppCompatActivity {
                     type = "Player";
                 }
 
-                if (email.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in a email address", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email)) {
+                    mEmail.setError("Please enter in a email address");
                     return;
-                } else if (password.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in a password address", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(password)) {
+                    mPassword.setError("Please enter in a password");
                     return;
-                } else if (name.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please enter in your name address", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(name)) {
+                    mName.setError("Please enter in a name");
                     return;
                 } else if (password.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();

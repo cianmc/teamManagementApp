@@ -9,11 +9,11 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class TempRatingFootball {
 
-    String points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards;
+    int points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards;
 
     public TempRatingFootball(){}
 
-    public TempRatingFootball(String points, String goals, String wides, String tackles, String turnovers, String yellowCards, String redCards, String blackCards) {
+    public TempRatingFootball(int points, int goals, int wides, int tackles, int turnovers, int yellowCards, int redCards, int blackCards) {
         this.points = points;
         this.goals = goals;
         this.wides = wides;
@@ -24,67 +24,67 @@ public class TempRatingFootball {
         this.blackCards = blackCards;
     }
 
-    public String getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(String points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 
-    public String getGoals() {
+    public int getGoals() {
         return goals;
     }
 
-    public void setGoals(String goals) {
+    public void setGoals(int goals) {
         this.goals = goals;
     }
 
-    public String getWides() {
+    public int getWides() {
         return wides;
     }
 
-    public void setWides(String wides) {
+    public void setWides(int wides) {
         this.wides = wides;
     }
 
-    public String getTackles() {
+    public int getTackles() {
         return tackles;
     }
 
-    public void setTackles(String tackles) {
+    public void setTackles(int tackles) {
         this.tackles = tackles;
     }
 
-    public String getTurnovers() {
+    public int getTurnovers() {
         return turnovers;
     }
 
-    public void setTurnovers(String turnovers) {
+    public void setTurnovers(int turnovers) {
         this.turnovers = turnovers;
     }
 
-    public String getYellowCards() {
+    public int getYellowCards() {
         return yellowCards;
     }
 
-    public void setYellowCards(String yellowCards) {
+    public void setYellowCards(int yellowCards) {
         this.yellowCards = yellowCards;
     }
 
-    public String getRedCards() {
+    public int getRedCards() {
         return redCards;
     }
 
-    public void setRedCards(String redCards) {
+    public void setRedCards(int redCards) {
         this.redCards = redCards;
     }
 
-    public String getBlackCards() {
+    public int getBlackCards() {
         return blackCards;
     }
 
-    public void setBlackCards(String blackCards) {
+    public void setBlackCards(int blackCards) {
         this.blackCards = blackCards;
     }
 }

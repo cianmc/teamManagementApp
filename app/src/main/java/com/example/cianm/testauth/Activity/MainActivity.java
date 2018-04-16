@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +68,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
-                if(!email.equals("") && !password.equals("")){
+                if(TextUtils.isEmpty(email)){
+                    mEmail.setError("Please enter in your email");
+                    return;
+                } else if (TextUtils.isEmpty(password)) {
+                    mPassword.setError("Please enter in your password");
+                    return;
+                } else {
                     mProgressbar.setVisibility(View.VISIBLE);
                     mSignIn.setVisibility(View.GONE);
                     mForgotPass.setVisibility(View.GONE);
@@ -87,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "You didn't fill in all the fields!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

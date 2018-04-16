@@ -43,7 +43,7 @@ public class ResetPassword extends AppCompatActivity {
                 String email = inputEmail.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+                    inputEmail.setError("Please enter in a email address");
                     return;
                 }
                 btnReset.setVisibility(View.INVISIBLE);

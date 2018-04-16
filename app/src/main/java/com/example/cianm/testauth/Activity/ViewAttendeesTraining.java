@@ -93,6 +93,7 @@ public class ViewAttendeesTraining extends AppCompatActivity {
     }
 
     public void goingLV(){
+        goingNames.clear();
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
@@ -139,6 +140,7 @@ public class ViewAttendeesTraining extends AppCompatActivity {
     }
 
     public void notGoingLV(){
+        notGoingNames.clear();
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);

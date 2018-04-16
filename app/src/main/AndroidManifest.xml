@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.MainActivity"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,9 +22,10 @@
         </activity>
         <activity
             android:name=".Activity.RegisterUser"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
         <activity android:name=".Activity.CheckValidation" />
-        <activity android:name=".Activity.ResetPassword" />
+        <activity android:name=".Activity.ResetPassword"
+            android:windowSoftInputMode="adjustNothing|stateHidden"/>
         <activity
             android:name=".ManagerHome"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -42,7 +44,8 @@
         <activity android:name=".Activity.ViewAttendeesFixture" />
         <activity android:name=".Activity.FixtureRating" />
         <activity android:name=".Activity.TrainingRating" />
-        <activity android:name=".Activity.CreateTeam" />
+        <activity android:name=".Activity.CreateTeam"
+            android:windowSoftInputMode="stateHidden|adjustNothing"/>
         <activity android:name=".Activity.JoinTeam" />
     </application>
 
