@@ -281,6 +281,7 @@ public class ViewEventPlayerFragment extends Fragment {
                 if(!dataSnapshot.exists()){
                     mTrainingPendingLV.setVisibility(View.INVISIBLE);
                     mNoDataRespTrain.setVisibility(View.VISIBLE);
+                    checkPending();
                 } else {
                     collectPendingTrainingEvents((Map<String, Object>) dataSnapshot.getValue());
                 }
@@ -297,6 +298,7 @@ public class ViewEventPlayerFragment extends Fragment {
                 if(!dataSnapshot.exists()){
                     mFixturePendingLV.setVisibility(View.INVISIBLE);
                     mNoDataRespFix.setVisibility(View.VISIBLE);
+                    checkPending();
                 } else {
                     collectPendingFixtureEvents((Map<String, Object>) dataSnapshot.getValue());
                 }
@@ -310,7 +312,7 @@ public class ViewEventPlayerFragment extends Fragment {
     }
 
     public void checkPending(){
-        if(mTrainingPendingLV.getVisibility() == View.VISIBLE && mFixturePendingLV.getVisibility() == View.VISIBLE){
+        if(mTrainingPendingLV.getVisibility() == View.VISIBLE || mFixturePendingLV.getVisibility() == View.VISIBLE){
             mStillPending.setVisibility(View.VISIBLE);
         } else {
             mStillPending.setVisibility(View.INVISIBLE);

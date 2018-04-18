@@ -22,12 +22,12 @@ import java.util.ArrayList;
 
 public class ViewAttendeesTraining extends AppCompatActivity {
 
-    private DatabaseReference mDatabase, mAttendeeGoing, mAttendeeNotGoing, mAttendeeSaved;
+    private DatabaseReference mDatabase, mAttendeeGoing, mAttendeeNotGoing;
 
-    ArrayList<String> goingNames, notGoingNames, savedNames;
+    ArrayList<String> goingNames, notGoingNames;
 
-    ListView mGoingLV, mNotGoingLV, mSavedLV;
-    Button mSubmitRating, mGoing, mNotGoing, mSaved;
+    ListView mGoingLV, mNotGoingLV;
+    Button mGoing, mNotGoing;
     TextView mNoDataGoing, mNoDataNotGoing, mNoDataSaved;
     String currentTeam, currentEvent, eventKey;
 
@@ -41,25 +41,20 @@ public class ViewAttendeesTraining extends AppCompatActivity {
         currentEvent = ((GlobalVariables) ViewAttendeesTraining.this.getApplication()).getCurrentEvent();
         goingNames = new ArrayList<>();
         notGoingNames = new ArrayList<>();
-        savedNames = new ArrayList<>();
 
         mGoingLV = (ListView) findViewById(R.id.goingTrainingLV);
         mNotGoingLV = (ListView) findViewById(R.id.notGoingTrainingLV);
-        mSavedLV = (ListView) findViewById(R.id.savedTrainingLV);
-        mSubmitRating = (Button) findViewById(R.id.submitStats);
         mNoDataGoing = (TextView) findViewById(R.id.noDataGoingTrainingTV);
         mNoDataNotGoing = (TextView) findViewById(R.id.noDataNotGoingTrainingTV);
         mNoDataSaved = (TextView) findViewById(R.id.noDataSavedTrainingTV);
         mGoing = (Button) findViewById(R.id.goingBtn);
         mNotGoing = (Button) findViewById(R.id.notGoingBtn);
-        mSaved = (Button) findViewById(R.id.savedBtn);
 
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
         mGoingLV.setVisibility(View.INVISIBLE);
         mNotGoingLV.setVisibility(View.INVISIBLE);
-        mSavedLV.setVisibility(View.INVISIBLE);
 
         goingLV();
 
@@ -76,20 +71,6 @@ public class ViewAttendeesTraining extends AppCompatActivity {
                 notGoingLV();
             }
         });
-
-        mSaved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                savedLV();
-            }
-        });
-
-        mSubmitRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ViewAttendeesTraining.this, TrainingRating.class));
-            }
-        });
     }
 
     public void goingLV(){
@@ -99,7 +80,6 @@ public class ViewAttendeesTraining extends AppCompatActivity {
         mNoDataSaved.setVisibility(View.INVISIBLE);
         mGoingLV.setVisibility(View.VISIBLE);
         mNotGoingLV.setVisibility(View.INVISIBLE);
-        mSavedLV.setVisibility(View.INVISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -112,7 +92,6 @@ public class ViewAttendeesTraining extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
                                 mGoingLV.setVisibility(View.INVISIBLE);
-                                mSubmitRating.setVisibility(View.INVISIBLE);
                                 mNoDataGoing.setVisibility(View.VISIBLE);
                             } else {
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -146,7 +125,6 @@ public class ViewAttendeesTraining extends AppCompatActivity {
         mNoDataSaved.setVisibility(View.INVISIBLE);
         mGoingLV.setVisibility(View.INVISIBLE);
         mNotGoingLV.setVisibility(View.VISIBLE);
-        mSavedLV.setVisibility(View.INVISIBLE);
         mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
         mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -186,48 +164,5 @@ public class ViewAttendeesTraining extends AppCompatActivity {
 
     }
 
-    public void savedLV(){
-        mNoDataGoing.setVisibility(View.INVISIBLE);
-        mNoDataNotGoing.setVisibility(View.INVISIBLE);
-        mNoDataSaved.setVisibility(View.INVISIBLE);
-        mGoingLV.setVisibility(View.INVISIBLE);
-        mNotGoingLV.setVisibility(View.INVISIBLE);
-        mSavedLV.setVisibility(View.VISIBLE);
-        mDatabase = FirebaseDatabase.getInstance().getReference("Training").child(currentTeam);
-        mDatabase.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-                    eventKey = child.getKey();
-                    mAttendeeSaved = mDatabase.child(eventKey).child("attenedee").child("saved");
-                    mAttendeeSaved.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (!dataSnapshot.exists()) {
-                                mSavedLV.setVisibility(View.INVISIBLE);
-                                mNoDataSaved.setVisibility(View.VISIBLE);
-                            } else {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    String attendeeName = ds.getValue(String.class);
-                                    savedNames.add(attendeeName);
-                                }
-                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ViewAttendeesTraining.this, android.R.layout.simple_list_item_1, savedNames);
-                                mSavedLV.setAdapter(arrayAdapter);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 }
+

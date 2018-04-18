@@ -64,6 +64,9 @@ public class SelectTeam extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
 
+        final String id = mDatabaseU.push().getKey();
+//        mDatabaseU.child("savedDates").child("AFL2").child(id).setValue("30/9/2018");
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userTeamRef = rootRef.child("User").child(uid).child("team");
@@ -88,6 +91,7 @@ public class SelectTeam extends AppCompatActivity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             mProgressBar.setVisibility(View.VISIBLE);
                             mJoinTeam.setVisibility(View.GONE);
+                            mDatabaseU.child(fbUser.getUid()).child("savedDates").child("AFL2").child(id).setValue("30/9/2018");
                             teamID = adapterView.getItemAtPosition(i).toString();
                             mDatabaseU.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                                 @Override

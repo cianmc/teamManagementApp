@@ -28,7 +28,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
 
     ListView mGoingLV, mNotGoingLV, mSavedLV;
     Button mSubmitRating, mGoing, mNotGoing, mSaved;
-    TextView mNoDataGoing, mNoDataNotGoing, mNoDataSaved;
+    TextView mNoDataGoing, mNoDataNotGoing, mNoDataSaved, mAllSaved;
     String currentTeam, currentEvent, eventKey;
 
     @Override
@@ -49,6 +49,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
         mSubmitRating = (Button) findViewById(R.id.submitStats);
         mNoDataGoing = (TextView) findViewById(R.id.noDataGoingFixtureTV);
         mNoDataNotGoing = (TextView) findViewById(R.id.noDataNotGoingFixtureTV);
+        mAllSaved = (TextView) findViewById(R.id.allPlayersSaved);
         mNoDataSaved = (TextView) findViewById(R.id.noDataSavedFixtureTV);
         mGoing = (Button) findViewById(R.id.goingBtn);
         mNotGoing = (Button) findViewById(R.id.notGoingBtn);
@@ -60,6 +61,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
         mGoingLV.setVisibility(View.INVISIBLE);
         mNotGoingLV.setVisibility(View.INVISIBLE);
         mSavedLV.setVisibility(View.INVISIBLE);
+        mAllSaved.setVisibility(View.INVISIBLE);
 
         goingLV();
 
@@ -193,6 +195,7 @@ public class ViewAttendeesFixture extends AppCompatActivity {
     }
 
     public void savedLV(){
+        savedNames.clear();
         mGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mNotGoing.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.not_selected));
         mSaved.setBackground(ViewAttendeesFixture.this.getResources().getDrawable(R.drawable.bkg));

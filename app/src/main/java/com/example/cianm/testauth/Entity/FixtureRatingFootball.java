@@ -14,7 +14,7 @@ public class FixtureRatingFootball {
     double attackerRating, defenderRating, overallRating;
     public FixtureRatingFootball(){}
 
-    public FixtureRatingFootball(String dateOfEvent, String playerName, int goals, int points, int wides, int tackles, int turnovers, int yellowCards, int redCards, int blackCards, double attackerRating, double defenderRating, double overallRating) {
+    public FixtureRatingFootball(String dateOfEvent, String playerName, int points, int goals, int wides, int tackles, int turnovers, int yellowCards, int redCards, int blackCards, double attackerRating, double defenderRating, double overallRating) {
         this.dateOfEvent = dateOfEvent;
         this.playerName = playerName;
         this.goals = goals;

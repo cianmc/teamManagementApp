@@ -35,10 +35,14 @@ dependencies {
     implementation 'org.slf4j:slf4j-nop:1.7.25'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'commons-validator:commons-validator:1.6'
+    implementation 'com.jjoe64:graphview:4.2.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
+
+
+
 
 
 

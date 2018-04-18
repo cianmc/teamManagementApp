@@ -9,12 +9,20 @@ import android.view.ViewGroup;
 
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by cianm on 14/03/2018.
  */
 
 public class PlayerHomeFragment extends Fragment {
+
+    DatabaseReference mSaved;
+    FirebaseAuth mAuth;
+    FirebaseUser fbUser;
 
     @Nullable
     @Override
@@ -30,6 +38,9 @@ public class PlayerHomeFragment extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         String currentTeam = ((GlobalVariables) getActivity().getApplicationContext()).getCurrentTeam();
         getActivity().setTitle("Home Page: " + currentTeam);
+
+        mAuth = FirebaseAuth.getInstance();
+        fbUser = mAuth.getCurrentUser();
     }
 
 }

@@ -361,8 +361,10 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mUserRefP.orderByChild("date").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String pendingKey = dataSnapshot.getKey();
-                mUserRefP.child(pendingKey).removeValue();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String pendingKey = ds.getKey();
+                    mUserRefP.child(pendingKey).removeValue();
+                }
             }
 
             @Override

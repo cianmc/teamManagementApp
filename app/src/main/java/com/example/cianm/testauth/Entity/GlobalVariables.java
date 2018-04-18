@@ -8,7 +8,7 @@ import android.app.Application;
 
 public class GlobalVariables extends Application {
 
-    String currentTeam, currentEvent;
+    String currentTeam, currentEvent, currentPlayer;
 
     public String getCurrentTeam(){
         return currentTeam;
@@ -24,5 +24,13 @@ public class GlobalVariables extends Application {
 
     public void setCurrentEvent(String currentEvent) {
         this.currentEvent = currentEvent;
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 }

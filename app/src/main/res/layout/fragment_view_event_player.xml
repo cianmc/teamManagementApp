@@ -76,7 +76,7 @@
         <ListView
             android:id="@+id/trainingRespondedLV"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="284dp" />
 
         <TextView
             android:id="@+id/fixtureViewResponded"
@@ -89,7 +89,7 @@
         <ListView
             android:id="@+id/fixtureResponedLV"
             android:layout_width="match_parent"
-            android:layout_height="152dp" />
+            android:layout_height="285dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,7 +117,7 @@
         <ListView
             android:id="@+id/trainingPendingLV"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="286dp" />
 
         <TextView
             android:id="@+id/fixtureViewPending"
@@ -130,7 +130,7 @@
         <ListView
             android:id="@+id/fixturePendingLV"
             android:layout_width="match_parent"
-            android:layout_height="152dp" />
+            android:layout_height="280dp" />
     </LinearLayout>
 
     <TextView
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="275dp"
+        android:layout_marginTop="350dp"
         android:text="@string/noDataTraining"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
@@ -153,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="475dp"
+        android:layout_marginTop="700dp"
         android:text="@string/noDataFixture"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
@@ -165,8 +165,8 @@
         android:id="@+id/newPendingBtn"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginEnd="72dp"
+        android:layout_marginTop="108dp"
         android:background="@drawable/ic_alert"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
