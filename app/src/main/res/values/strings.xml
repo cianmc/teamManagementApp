@@ -51,6 +51,8 @@
     <string name="viewRatings">View Ratings</string>
     <string name="pending">Pending</string>
     <string name="responded">Responded</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 
     <!-- Short Text Views -->
     <string name="teamType">Team type</string>
@@ -111,6 +113,7 @@
     <string name="noEventsSaved">No events stats have benn saved yet</string>
     <string name="playerRating">Please select the player you want to view</string>
     <string name="selectPlayer">Please select the players stats you want to view</string>
+    <string name="editInstructions">Click on the item you want to change</string>
 
     <!-- Graph Labels -->
     <string name="defender">Defender Rating</string>

@@ -106,9 +106,6 @@ public class CreateEventFragment extends Fragment {
         String id1 = mFirebaseDatabaseF.push().getKey();
         String id2 = mFirebaseDatabaseT.push().getKey();
 
-        mDateRef.child(currentTeam).child(id1).setValue("15/5/2018");
-        mDateRef.child(currentTeam).child(id2).setValue("21/7/2018");
-
         dates = new ArrayList<>();
         getDates();
 

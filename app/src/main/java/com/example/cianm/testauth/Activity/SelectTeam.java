@@ -91,7 +91,6 @@ public class SelectTeam extends AppCompatActivity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             mProgressBar.setVisibility(View.VISIBLE);
                             mJoinTeam.setVisibility(View.GONE);
-                            mDatabaseU.child(fbUser.getUid()).child("savedDates").child("AFL2").child(id).setValue("30/9/2018");
                             teamID = adapterView.getItemAtPosition(i).toString();
                             mDatabaseU.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                                 @Override
