@@ -2,20 +2,14 @@ package com.example.cianm.testauth.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.cianm.testauth.Entity.FixtureRatingFootball;
 import com.example.cianm.testauth.Entity.GlobalVariables;
-import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.ManagerHome;
-import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,19 +18,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LabelFormatter;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.Viewport;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
-import org.w3c.dom.Text;
-
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ViewRating extends AppCompatActivity {
@@ -70,12 +57,12 @@ public class ViewRating extends AppCompatActivity {
 
         mGraph = (GraphView) findViewById(R.id.graph);
         mPoints = (TextView) findViewById(R.id.pointsViewR);
-        mGoals = (TextView) findViewById(R.id.goalsViewR);
-        mWides = (TextView) findViewById(R.id.widesViewR);
+        mGoals = (TextView) findViewById(R.id.goalsPlayerHome);
+        mWides = (TextView) findViewById(R.id.widesPlayerHome);
         mTackles = (TextView) findViewById(R.id.tacklesViewR);
-        mTurnovers = (TextView) findViewById(R.id.turnoversViewR);
-        mYellowCards = (TextView) findViewById(R.id.yellowCardsViewR);
-        mRedCards = (TextView) findViewById(R.id.redCardsViewR);
+        mTurnovers = (TextView) findViewById(R.id.turnoversPlayerHome);
+        mYellowCards = (TextView) findViewById(R.id.yellowCardsPlayerHome);
+        mRedCards = (TextView) findViewById(R.id.redCardsPlayerHome);
         mBlackCards = (TextView) findViewById(R.id.blackCardsViewR);
         tvBC = (TextView) findViewById(R.id.textView11);
         mHome = (Button) findViewById(R.id.ratingHomeBtn);
@@ -169,7 +156,7 @@ public class ViewRating extends AppCompatActivity {
                                     turnovers = ds.child("turnovers").getValue(Integer.class);
                                     yellowCards = ds.child("yellowCards").getValue(Integer.class);
                                     redCards = ds.child("redCards").getValue(Integer.class);
-                                    blackCards = ds.child("blackCards").getValue(Integer.class);
+                                  //  blackCards = ds.child("blackCards").getValue(Integer.class);
 
                                     mPoints.setText(String.valueOf(points));
                                     mGoals.setText(String.valueOf(goals));
@@ -178,7 +165,7 @@ public class ViewRating extends AppCompatActivity {
                                     mTurnovers.setText(String.valueOf(turnovers));
                                     mYellowCards.setText(String.valueOf(yellowCards));
                                     mRedCards.setText(String.valueOf(redCards));
-                                    mBlackCards.setText(String.valueOf(blackCards));
+                                   // mBlackCards.setText(String.valueOf(blackCards));
 
                                     attackerRating = ds.child("attackerRating").getValue(Double.class);
                                     defenderRating = ds.child("defenderRating").getValue(Double.class);

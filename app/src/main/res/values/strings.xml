@@ -114,6 +114,8 @@
     <string name="playerRating">Please select the player you want to view</string>
     <string name="selectPlayer">Please select the players stats you want to view</string>
     <string name="editInstructions">Click on the item you want to change</string>
+    <string name="careerOverView">All-time stats for:</string>
+    <string name="totalGames">Number of games played: </string>
 
     <!-- Graph Labels -->
     <string name="defender">Defender Rating</string>

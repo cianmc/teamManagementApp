@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.cianm.testauth.Activity.ViewIndividualFixture;
 import com.example.cianm.testauth.Entity.Fixture;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
@@ -326,8 +327,8 @@ public class CreateEventFragment extends Fragment {
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-                mPickLocation.setVisibility(View.VISIBLE);
-                mViewPlace.setVisibility(View.INVISIBLE);
+                Toast.makeText(getActivity(), "You must enter in a location", Toast.LENGTH_SHORT).show();
+                pickPlace();
             }
         }
     }

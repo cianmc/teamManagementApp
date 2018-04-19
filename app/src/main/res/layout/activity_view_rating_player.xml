@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
     <TextView
-        android:id="@+id/goalsViewR"
+        android:id="@+id/goalsPlayerHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pointsViewR" />
 
     <TextView
-        android:id="@+id/widesViewR"
+        android:id="@+id/widesPlayerHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
@@ -98,7 +98,7 @@
         android:text="@string/loading"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goalsViewR" />
+        app:layout_constraintTop_toBottomOf="@+id/goalsPlayerHome" />
 
     <TextView
         android:id="@+id/tacklesViewR"
@@ -109,7 +109,7 @@
         android:text="@string/loading"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widesViewR" />
+        app:layout_constraintTop_toBottomOf="@+id/widesPlayerHome" />
 
     <TextView
         android:id="@+id/textView8"
@@ -160,7 +160,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/turnoversViewR"
+        android:id="@+id/turnoversPlayerHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="550dp"
@@ -171,7 +171,7 @@
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
     <TextView
-        android:id="@+id/yellowCardsViewR"
+        android:id="@+id/yellowCardsPlayerHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="550dp"
@@ -179,10 +179,10 @@
         android:text="@string/loading"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/turnoversViewR" />
+        app:layout_constraintTop_toBottomOf="@+id/turnoversPlayerHome" />
 
     <TextView
-        android:id="@+id/redCardsViewR"
+        android:id="@+id/redCardsPlayerHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="550dp"
@@ -190,7 +190,7 @@
         android:text="@string/loading"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yellowCardsViewR" />
+        app:layout_constraintTop_toBottomOf="@+id/yellowCardsPlayerHome" />
 
     <TextView
         android:id="@+id/blackCardsViewR"
@@ -201,7 +201,7 @@
         android:text="@string/loading"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/redCardsViewR" />
+        app:layout_constraintTop_toBottomOf="@+id/redCardsPlayerHome" />
 
     <Button
         android:id="@+id/ratingHomeBtn"
@@ -214,6 +214,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/defender"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/attacker"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="600dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/overall"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -64,7 +64,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTV;
 
-    private DatabaseReference mDatabase, attendenceRef, mUserRef, mUserRefP, mUserRefC, mSavedDates;
+    private DatabaseReference mDatabase, attendenceRef, mUserRef, mUserRefP, mUserRefC, mSavedDates, mCheckDates;
     DatabaseReference userReference;
     FirebaseAuth mAuth;
     private FirebaseUser fbUser;
@@ -75,7 +75,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     private String userType, userName, eventType, userID, availability, eventKey, time, confirmKey, date, latlong, location;
     Pattern timePattern;
     ProgressBar mProgressBar;
-    private ArrayList<String> savedDates;
+    private ArrayList<String> savedDates, checkDates;
     Intent intent;
 
     private User user;
@@ -126,6 +126,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         timePattern = Pattern.compile("\\d{2}:\\d{2}");
         mProgressBar.setVisibility(View.INVISIBLE);
         savedDates = new ArrayList<>();
+        checkDates = new ArrayList<>();
 
         // Construct a GeoDataClient
         mGeoDataClient = Places.getGeoDataClient(ViewIndividualFixture.this, null);
@@ -140,6 +141,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mUserRefC = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid()).child("confirmed").child(currentTeam).child("Fixture");
         mUserRef = FirebaseDatabase.getInstance().getReference("User").child(userID);
         mSavedDates = FirebaseDatabase.getInstance().getReference("SavedDates");
+        mCheckDates = FirebaseDatabase.getInstance().getReference("CheckDate");
 
         mSavedDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -151,6 +153,23 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                     }
                 } else {
 
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mCheckDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        String dates = ds.getValue(String.class);
+                        checkDates.add(dates);
+                    }
                 }
             }
 
@@ -515,27 +534,33 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     }
 
     public void saveDetails(){
-        mSave.setVisibility(View.INVISIBLE);
-        mEditInfo.setVisibility(View.INVISIBLE);
-        mEdit.setVisibility(View.VISIBLE);
-        mDate.setClickable(false);
-        mTime.setClickable(false);
-        mOpposition.setClickable(false);
-        mLocation.setClickable(false);
-        mOppositionTV.setText(mOpposition.getText().toString());
-        String time = mTime.getText().toString();
-        String date = mDate.getText().toString();
-        String opposition = mOppositionTV.getText().toString();
-        mLocation.setText(location);
-        mDatabase.child(eventKey).child("location").setValue(location);
-        mDatabase.child(eventKey).child("latlong").setValue(latlong);
-        mDatabase.child(eventKey).child("time").setValue(time);
-        mDatabase.child(eventKey).child("date").setValue(date);
-        mDatabase.child(eventKey).child("opposition").setValue(opposition);
-        mOpposition.setVisibility(View.VISIBLE);
-        mOppositionTV.setVisibility(View.INVISIBLE);
-        mOpposition.setText(opposition);
-        mViewAttendees.setVisibility(View.INVISIBLE);
+        if(checkDates.contains(date)){
+            Toast.makeText(ViewIndividualFixture.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
+            pickDate();
+        } else {
+            mSave.setVisibility(View.INVISIBLE);
+            mEditInfo.setVisibility(View.INVISIBLE);
+            mEdit.setVisibility(View.VISIBLE);
+            mDate.setClickable(false);
+            mTime.setClickable(false);
+            mOpposition.setClickable(false);
+            mLocation.setClickable(false);
+            mLocation.setText(mLocation.getText().toString());
+            mOppositionTV.setText(mOpposition.getText().toString());
+            String time = mTime.getText().toString();
+            String date = mDate.getText().toString();
+            String opposition = mOppositionTV.getText().toString();
+            mLocation.setText(location);
+            mDatabase.child(eventKey).child("location").setValue(mLocation.getText().toString());
+            mDatabase.child(eventKey).child("latlong").setValue(latlong);
+            mDatabase.child(eventKey).child("time").setValue(time);
+            mDatabase.child(eventKey).child("date").setValue(date);
+            mDatabase.child(eventKey).child("opposition").setValue(opposition);
+            mOpposition.setVisibility(View.VISIBLE);
+            mOppositionTV.setVisibility(View.INVISIBLE);
+            mOpposition.setText(opposition);
+            mViewAttendees.setVisibility(View.VISIBLE);
+        }
     }
 
     public void pickTime(){
@@ -605,7 +630,8 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-
+                Toast.makeText(ViewIndividualFixture.this, "You must enter in a location", Toast.LENGTH_SHORT).show();
+                pickPlace();
             }
         }
     }
