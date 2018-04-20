@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -72,7 +73,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     private Double mLat, mLong;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private String userType, userName, eventType, userID, availability, eventKey, time, confirmKey, date, latlong, location;
+    private String userType, userName, eventType, userID, availability, eventKey, time, confirmKey, date, latlong, location, oldDate, currentTeam, key;
     Pattern timePattern;
     ProgressBar mProgressBar;
     private ArrayList<String> savedDates, checkDates;
@@ -85,7 +86,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_individual_fixture);
-        final String currentTeam = ((GlobalVariables) ViewIndividualFixture.this.getApplication()).getCurrentTeam();
+        currentTeam = ((GlobalVariables) ViewIndividualFixture.this.getApplication()).getCurrentTeam();
         setTitle("View fixtures for " + currentTeam);
 
         final String currentEvent = ((GlobalVariables) ViewIndividualFixture.this.getApplication()).getCurrentEvent();
@@ -143,6 +144,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mSavedDates = FirebaseDatabase.getInstance().getReference("SavedDates");
         mCheckDates = FirebaseDatabase.getInstance().getReference("CheckDate");
 
+        // get dates that have stats saved so user can't confirm availibility for them
         mSavedDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -162,12 +164,13 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             }
         });
 
+        // get dates of events previously created
         mCheckDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        String dates = ds.getValue(String.class);
+                        String dates = ds.child("date").getValue(String.class);
                         checkDates.add(dates);
                     }
                 }
@@ -184,7 +187,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Fixture fixture = child.getValue(Fixture.class);
-                    mDate.setText(fixture.getDate());
+                    oldDate = fixture.getDate();
+                    date = fixture.getDate();
+                    mDate.setText(oldDate);
                     if (!timePattern.matcher(fixture.getTime().toString()).matches()){
                         time = fixture.getTime().toString() + "0";
                         mTime.setText(time);
@@ -192,7 +197,10 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                         mTime.setText(fixture.getTime());
                     }
                     mOpposition.setText(fixture.getOpposition());
+                    mOppositionTV.setText(fixture.getOpposition());
                     mLocation.setText(fixture.getLocation());
+                    location = fixture.getLocation();
+                    latlong = fixture.getLatlong();
                     eventType = fixture.getType();
                     eventKey = child.getKey();
 
@@ -534,9 +542,12 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     }
 
     public void saveDetails(){
+        String opposition = mOppositionTV.getText().toString();
         if(checkDates.contains(date)){
             Toast.makeText(ViewIndividualFixture.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
             pickDate();
+        } else if (TextUtils.isEmpty(opposition)) {
+            mOppositionTV.setError("You must enter in a opponent");
         } else {
             mSave.setVisibility(View.INVISIBLE);
             mEditInfo.setVisibility(View.INVISIBLE);
@@ -547,19 +558,28 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             mLocation.setClickable(false);
             mLocation.setText(mLocation.getText().toString());
             mOppositionTV.setText(mOpposition.getText().toString());
-            String time = mTime.getText().toString();
-            String date = mDate.getText().toString();
-            String opposition = mOppositionTV.getText().toString();
+            final String id = mDatabase.push().getKey();
             mLocation.setText(location);
-            mDatabase.child(eventKey).child("location").setValue(mLocation.getText().toString());
-            mDatabase.child(eventKey).child("latlong").setValue(latlong);
-            mDatabase.child(eventKey).child("time").setValue(time);
-            mDatabase.child(eventKey).child("date").setValue(date);
             mDatabase.child(eventKey).child("opposition").setValue(opposition);
             mOpposition.setVisibility(View.VISIBLE);
             mOppositionTV.setVisibility(View.INVISIBLE);
             mOpposition.setText(opposition);
             mViewAttendees.setVisibility(View.VISIBLE);
+            mCheckDates.child(currentTeam).orderByChild("date").equalTo(oldDate).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        key = ds.getKey();
+                    }
+                    mCheckDates.child(currentTeam).child(key).removeValue();
+                    mCheckDates.child(currentTeam).child(id).child("date").setValue(date);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -573,6 +593,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 mTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
                 time = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute);
+                mDatabase.child(eventKey).child("time").setValue(time);
             }
         }, mHour, mMinute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -591,6 +612,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mDate.setText(year + "/" + (month + 1) + "/" + day);
                 date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+                mDatabase.child(eventKey).child("date").setValue(date);
             }
         }, mDay, mMonth, mYear);
         mDatePicker.setTitle("Select Date");
@@ -619,6 +641,9 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                 latLongB = latLongB.substring(latLongB.indexOf(",") + 1);
                 latLongB = latLongB.substring(0, latLongB.indexOf(")"));
                 mLong = Double.parseDouble(latLongB);
+
+                mDatabase.child(eventKey).child("location").setValue(location);
+                mDatabase.child(eventKey).child("latlong").setValue(latlong);
 
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(ViewIndividualFixture.this);

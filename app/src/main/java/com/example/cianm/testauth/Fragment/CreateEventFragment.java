@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.cianm.testauth.Activity.ViewIndividualFixture;
+import com.example.cianm.testauth.Activity.MainActivity;
 import com.example.cianm.testauth.Entity.Fixture;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
@@ -51,7 +51,6 @@ import java.util.Calendar;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static java.lang.Math.toIntExact;
 
 /**
  * Created by cianm on 13/03/2018.
@@ -63,7 +62,7 @@ public class CreateEventFragment extends Fragment {
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
-    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser, mDateRef;
+    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser, mDateRef, mTeamEmails;
 
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTextView;
@@ -77,8 +76,8 @@ public class CreateEventFragment extends Fragment {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID;
-    ArrayList<String> dates;
+    String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID, emailOut;
+    ArrayList<String> dates, emails;
     Fixture fixture;
     Training training;
 
@@ -103,12 +102,15 @@ public class CreateEventFragment extends Fragment {
         mFirebaseUser = FirebaseDatabase.getInstance().getReference("User");
         mFirebaseDatabaseTeam = FirebaseDatabase.getInstance().getReference("Team").child(currentTeam);
         mDateRef = FirebaseDatabase.getInstance().getReference("CheckDate");
+        mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
 
         String id1 = mFirebaseDatabaseF.push().getKey();
         String id2 = mFirebaseDatabaseT.push().getKey();
 
         dates = new ArrayList<>();
+        emails = new ArrayList<>();
         getDates();
+        getEmails();
 
         // Progress bar
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
@@ -165,6 +167,7 @@ public class CreateEventFragment extends Fragment {
                 }
             }
         });
+
 
         // Set values for AutoCompleteTextView
         String [] clubs = getResources().getStringArray(R.array.dublinClubs);
@@ -225,84 +228,7 @@ public class CreateEventFragment extends Fragment {
         mCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!rFixture.isChecked() && !rTraining.isChecked()){
-                    Toast.makeText(getActivity(), "You must select a type of event", Toast.LENGTH_SHORT).show();
-                } else if (location.isEmpty()){
-                    Toast.makeText(getActivity(), "Please select a location", Toast.LENGTH_SHORT).show();
-                } else if (date.isEmpty()){
-                    Toast.makeText(getActivity(), "Please select a date for the event", Toast.LENGTH_SHORT).show();
-                } else if (time.isEmpty()){
-                    Toast.makeText(getActivity(), "Please select a time for the event", Toast.LENGTH_SHORT).show();
-                } else if (dates.contains(date)) {
-                    Toast.makeText(getActivity(), "There is an event already on this date", Toast.LENGTH_SHORT).show();
-                } else {
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    if (rTraining.isChecked()) {
-                        String userID = mFirebaseDatabaseT.push().getKey();
-                        String dateID = mDateRef.push().getKey();
-                        final String pendingKey = mFirebaseUser.push().getKey();
-                        String type = "Training";
-                        description = mDescription.getText().toString();
-                        if (TextUtils.isEmpty(description)) {
-                            mDescription.setError("Enter in a training description");
-                        } else {
-                            training = new Training(date, description, location, time, latlong, type);
-                            mDateRef.child(currentTeam).child(dateID).setValue(date);
-                            mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        playerName = ds.getValue(String.class);
-                                        playerUID = ds.getKey();
-                                        mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Training").child(pendingKey).setValue(training);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                            mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
-                            mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
-                            mCreateEvent.setVisibility(View.GONE);
-                            startActivity(new Intent(getActivity(), ManagerHome.class));
-                            Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (rFixture.isChecked()) {
-                        String userID = mFirebaseDatabaseF.push().getKey();
-                        String dateID = mDateRef.push().getKey();
-                        final String pendingKey = mFirebaseUser.push().getKey();
-                        String type = "Fixture";
-                        opposition = mOppositionTextView.getText().toString();
-                        if (TextUtils.isEmpty(opposition)) {
-                            mOppositionTextView.setError("Choose an opposition");
-                        } else {
-                            fixture = new Fixture(date, location, time, opposition, latlong, type);
-                            mDateRef.child(currentTeam).child(dateID).setValue(date);
-                            mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        playerName = ds.getValue(String.class);
-                                        playerUID = ds.getKey();
-                                        mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Fixture").child(pendingKey).setValue(fixture);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                            mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
-                            mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
-                            mCreateEvent.setVisibility(View.GONE);
-                            startActivity(new Intent(getActivity(), ManagerHome.class));
-                            Toast.makeText(getActivity(), "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
+                createEvent();
             }
         });
 
@@ -392,7 +318,7 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String date = ds.getValue(String.class);
+                    String date = ds.child("date").getValue(String.class);
                     dates.add(date);
                 }
             }
@@ -402,6 +328,110 @@ public class CreateEventFragment extends Fragment {
 
             }
         });
+    }
+
+    public void getEmails(){
+        mTeamEmails.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String email = ds.getValue(String.class);
+                    emails.add(email);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void createEvent(){
+        if (!rFixture.isChecked() && !rTraining.isChecked()){
+            Toast.makeText(getActivity(), "You must select a type of event", Toast.LENGTH_SHORT).show();
+        } else if (location.isEmpty()){
+            Toast.makeText(getActivity(), "Please select a location", Toast.LENGTH_SHORT).show();
+        } else if (date.isEmpty()){
+            Toast.makeText(getActivity(), "Please select a date for the event", Toast.LENGTH_SHORT).show();
+        } else if (time.isEmpty()){
+            Toast.makeText(getActivity(), "Please select a time for the event", Toast.LENGTH_SHORT).show();
+        } else if (dates.contains(date)) {
+            Toast.makeText(getActivity(), "There is an event already on this date", Toast.LENGTH_SHORT).show();
+        } else {
+            mProgressBar.setVisibility(View.VISIBLE);
+            if (rTraining.isChecked()) {
+                String userID = mFirebaseDatabaseT.push().getKey();
+                String dateID = mDateRef.push().getKey();
+                final String pendingKey = mFirebaseUser.push().getKey();
+                String type = "Training";
+                description = mDescription.getText().toString();
+                if (TextUtils.isEmpty(description)) {
+                    mDescription.setError("Enter in a training description");
+                } else {
+                    training = new Training(date, description, location, time, latlong, type);
+                    mDateRef.child(currentTeam).child(dateID).child("date").setValue(date);
+                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                playerName = ds.getValue(String.class);
+                                playerUID = ds.getKey();
+                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Training").child(pendingKey).setValue(training);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
+                    mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
+                    mCreateEvent.setVisibility(View.GONE);
+                    //newEvent();
+                    Intent intent = new Intent (getActivity(), ManagerHome.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    Toast.makeText(getActivity(), "Training sucessfully created", Toast.LENGTH_SHORT).show();
+                }
+            } else if (rFixture.isChecked()) {
+                String userID = mFirebaseDatabaseF.push().getKey();
+                String dateID = mDateRef.push().getKey();
+                final String pendingKey = mFirebaseUser.push().getKey();
+                String type = "Fixture";
+                opposition = mOppositionTextView.getText().toString();
+                if (TextUtils.isEmpty(opposition)) {
+                    mOppositionTextView.setError("Choose an opposition");
+                } else {
+                    fixture = new Fixture(date, location, time, opposition, latlong, type);
+                    mDateRef.child(currentTeam).child(dateID).child("date").setValue(date);
+                    mFirebaseDatabaseTeam.child("player").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                playerName = ds.getValue(String.class);
+                                playerUID = ds.getKey();
+                                mFirebaseUser.child(playerUID).child("pending").child(currentTeam).child("Fixture").child(pendingKey).setValue(fixture);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
+                    mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
+                    mCreateEvent.setVisibility(View.GONE);
+                    Intent intent = new Intent (getActivity(), ManagerHome.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    Toast.makeText(getActivity(), "Fixture sucessfully created", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override

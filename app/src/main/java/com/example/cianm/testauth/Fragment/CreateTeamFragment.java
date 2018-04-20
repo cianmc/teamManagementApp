@@ -82,7 +82,9 @@ public class CreateTeamFragment extends Fragment {
                         Toast.makeText(getActivity(), "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);
                         mCreteTeam.setVisibility(View.GONE);
-                        startActivity(new Intent(getActivity(), ManagerHome.class));
+                        Intent intent = new Intent (getActivity(), ManagerHome.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     } else if (type.equals("Hurling")) {
                         code = "AHL";
                         name = code + division;
@@ -91,7 +93,9 @@ public class CreateTeamFragment extends Fragment {
                         Toast.makeText(getActivity(), "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.VISIBLE);
                         mCreteTeam.setVisibility(View.GONE);
-                        startActivity(new Intent(getActivity(), ManagerHome.class));
+                        Intent intent = new Intent (getActivity(), ManagerHome.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
 
                 }

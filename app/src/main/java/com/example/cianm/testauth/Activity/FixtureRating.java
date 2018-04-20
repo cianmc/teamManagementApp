@@ -668,7 +668,7 @@ public class FixtureRating extends AppCompatActivity {
     }
 
     public void loadHurling(){
-        for(int i=0; i<attendees.size(); i++) {
+        for(int i=0; i<=attendees.size(); i++) {
             newTempRatingButtonsH();
             points = Integer.parseInt(mPointsValue.getText().toString());
             goals = Integer.parseInt(mGoalsValue.getText().toString());

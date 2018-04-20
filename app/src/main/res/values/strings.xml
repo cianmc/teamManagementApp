@@ -110,7 +110,7 @@
     <string name="noDataFixture">No fixtures to show</string>
     <string name="allPlayersSaved">All attendees stats have been recorded for this event</string>
     <string name="selectEvent">Please select the event stats you wish to view</string>
-    <string name="noEventsSaved">No events stats have benn saved yet</string>
+    <string name="noEventsSaved">No events stats have been saved yet</string>
     <string name="playerRating">Please select the player you want to view</string>
     <string name="selectPlayer">Please select the players stats you want to view</string>
     <string name="editInstructions">Click on the item you want to change</string>

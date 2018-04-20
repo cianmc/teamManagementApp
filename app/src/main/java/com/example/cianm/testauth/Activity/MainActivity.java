@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in" + user.getUid());
                     Toast.makeText(getApplicationContext(), "Sucessfully signed in with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, SelectTeam.class));
+                    Intent intent = new Intent (MainActivity.this, SelectTeam.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");

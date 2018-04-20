@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -71,7 +72,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
     private Double mLat, mLong;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String userType, userName, eventType, userID, availability, eventKey, time, confirmKey, date, latlong, location;;
+    String userType, userName, eventType, userID, availability, eventKey, time, confirmKey, date, latlong, location, key, oldDate, currentTeam;
     Pattern timePattern;
     ProgressBar mProgressBar;
     private ArrayList<String> checkDates;
@@ -84,7 +85,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_individual_training);
-        final String currentTeam = ((GlobalVariables) ViewIndividualTraining.this.getApplication()).getCurrentTeam();
+        currentTeam = ((GlobalVariables) ViewIndividualTraining.this.getApplication()).getCurrentTeam();
         setTitle("View trainings for " + currentTeam);
 
         final String currentEvent = ((GlobalVariables) ViewIndividualTraining.this.getApplication()).getCurrentEvent();
@@ -135,12 +136,13 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
         mUserRef = FirebaseDatabase.getInstance().getReference("User").child(userID);
         mCheckDates = FirebaseDatabase.getInstance().getReference("CheckDate");
 
+        // get dates of events previously created
         mCheckDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        String dates = ds.getValue(String.class);
+                        String dates = ds.child("date").getValue(String.class);
                         checkDates.add(dates);
                     }
                 }
@@ -157,6 +159,8 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Training training = child.getValue(Training.class);
+                    oldDate = training.getDate();
+                    date = training.getDate();
                     mDate.setText(training.getDate());
                     if (!timePattern.matcher(training.getTime().toString()).matches()){
                         time = training.getTime().toString() + "0";
@@ -165,7 +169,10 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                         mTime.setText(training.getTime());
                     }
                     mDescription.setText(training.getDescription());
+                    mDescriptionET.setText(training.getDescription());
                     mLocation.setText(training.getLocation());
+                    location = training.getLocation();
+                    latlong = training.getLatlong();
                     eventType = training.getType();
                     eventKey = child.getKey();
 
@@ -494,12 +501,12 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
     }
 
     public void saveDetails(){
+        String description = mDescriptionET.getText().toString();
         if(checkDates.contains(date)){
             Toast.makeText(ViewIndividualTraining.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
             pickDate();
-        } else if (location == null) {
-            Toast.makeText(ViewIndividualTraining.this, "You must enter in a location", Toast.LENGTH_SHORT).show();
-            pickPlace();
+        } else if (TextUtils.isEmpty(description)) {
+            mDescriptionET.setError("Please enter in a description");
         } else {
             mSave.setVisibility(View.INVISIBLE);
             mEditInfo.setVisibility(View.INVISIBLE);
@@ -510,19 +517,28 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             mLocation.setClickable(false);
             mLocation.setText(mLocation.getText().toString());
             mDescriptionET.setText(mDescription.getText().toString());
-            String time = mTime.getText().toString();
-            String date = mDate.getText().toString();
-            String description = mDescriptionET.getText().toString();
+            final String id = mDatabase.push().getKey();
             mLocation.setText(location);
-            mDatabase.child(eventKey).child("location").setValue(location);
-            mDatabase.child(eventKey).child("latlong").setValue(latlong);
-            mDatabase.child(eventKey).child("time").setValue(time);
-            mDatabase.child(eventKey).child("date").setValue(date);
             mDatabase.child(eventKey).child("description").setValue(description);
             mDescription.setVisibility(View.VISIBLE);
             mDescriptionET.setVisibility(View.INVISIBLE);
             mDescription.setText(description);
             mViewAttendees.setVisibility(View.VISIBLE);
+            mCheckDates.child(currentTeam).orderByChild("date").equalTo(oldDate).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        key = ds.getKey();
+                    }
+                    mCheckDates.child(currentTeam).child(key).removeValue();
+                    mCheckDates.child(currentTeam).child(id).child("date").setValue(date);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -536,6 +552,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 mTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
                 time = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute);
+                mDatabase.child(eventKey).child("time").setValue(time);
             }
         }, mHour, mMinute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -554,6 +571,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mDate.setText(year + "/" + (month + 1) + "/" + day);
                 date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+                mDatabase.child(eventKey).child("date").setValue(date);
             }
         }, mDay, mMonth, mYear);
         mDatePicker.setTitle("Select Date");
@@ -582,6 +600,9 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                 latLongB = latLongB.substring(latLongB.indexOf(",") + 1);
                 latLongB = latLongB.substring(0, latLongB.indexOf(")"));
                 mLong = Double.parseDouble(latLongB);
+
+                mDatabase.child(eventKey).child("location").setValue(location);
+                mDatabase.child(eventKey).child("latlong").setValue(latlong);
 
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(ViewIndividualTraining.this);

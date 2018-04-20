@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.cianm.testauth.Entity.User;
+import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +63,9 @@ public class RegisterUser extends AppCompatActivity {
                     mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("User");
                     mFirebaseDatabase.child(fbUser.getUid()).setValue(user);
                     Toast.makeText(getApplicationContext(), "Sucessfully signed in with: " + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterUser.this, CheckValidation.class));
+                    Intent intent = new Intent (RegisterUser.this, CheckValidation.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");

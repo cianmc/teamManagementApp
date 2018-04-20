@@ -119,6 +119,7 @@ public class PlayerHomeFragment extends Fragment {
                     mYellowCards.setText("-");
                     mRedCards.setText("-");
                     mBlackCards.setText("-");
+                    mPlayerName.setText(name);
                 }
             }
 

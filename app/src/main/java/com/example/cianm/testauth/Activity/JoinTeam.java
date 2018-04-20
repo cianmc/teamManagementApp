@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class JoinTeam extends AppCompatActivity {
 
-    private DatabaseReference mDatabaseT, mDatabaseU;
+    private DatabaseReference mDatabaseT, mDatabaseU, mTeamEmails;
     private FirebaseAuth mAuth;
     private FirebaseUser fbUser;
     private Query mDatabaseQuery;
@@ -42,7 +42,7 @@ public class JoinTeam extends AppCompatActivity {
     TextView mNoTeam;
 
     User user;
-    String teamID, userName, userType;
+    String teamID, userName, userType, email;
     Fixture fixture;
     Training training;
 
@@ -57,6 +57,7 @@ public class JoinTeam extends AppCompatActivity {
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
+        mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
 
@@ -82,12 +83,16 @@ public class JoinTeam extends AppCompatActivity {
                         lv.setVisibility(View.INVISIBLE);
                         mNoTeam.setVisibility(View.VISIBLE);
                         Toast.makeText(JoinTeam.this,"No teams created, you need to create a team first before joining it", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(JoinTeam.this, CreateTeam.class));
+                        Intent intent = new Intent (JoinTeam.this, CreateTeam.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     } else if (userType.equalsIgnoreCase("Player")){
                         lv.setVisibility(View.INVISIBLE);
                         mNoTeam.setVisibility(View.VISIBLE);
                         Toast.makeText(JoinTeam.this,"No teams have been created yet" + teamID, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(JoinTeam.this, PlayerHome.class));
+                        Intent intent = new Intent (JoinTeam.this, PlayerHome.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
                 } else {
                     collectTeamNames((Map<String, Object>) dataSnapshot.getValue());
@@ -123,27 +128,32 @@ public class JoinTeam extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final String userTeamID = mDatabaseU.push().getKey();
+                        String id = mTeamEmails.push().getKey();
                         user = dataSnapshot.getValue(User.class);
                         userName = user.getName();
+                        email = user.getEmail();
                         if (user.getType().equalsIgnoreCase("Manager")) {
                             mDatabaseT.child(teamID).child("manager").child(fbUser.getUid()).setValue(userName);
+                            mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
+                            Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
+                            ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
                             startActivity(new Intent(JoinTeam.this, ManagerHome.class));
                         } else if (user.getType().equalsIgnoreCase("Player")){
                             addFixtures();
-                            addTrainigs();
+                            addTrainings();
+                            mTeamEmails.child(teamID).child(id).setValue(email);
                             mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
+                            mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
+                            Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
+                            ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
                             startActivity(new Intent(JoinTeam.this, PlayerHome.class));
                         }
-                        mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
-                Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
-                ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
             }
         });
     }
@@ -170,7 +180,7 @@ public class JoinTeam extends AppCompatActivity {
         });
     }
 
-    public void addTrainigs(){
+    public void addTrainings(){
         mDatabaseT.child(teamID).child("trainings").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

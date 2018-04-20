@@ -3,6 +3,8 @@
     package="com.example.cianm.testauth">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:name=".Entity.GlobalVariables"
@@ -52,6 +54,7 @@
         <activity android:name=".Activity.SelectPlayer" />
         <activity android:name=".Activity.ViewRating" />
         <activity android:name=".Activity.ViewRatingPlayer"></activity>
+
     </application>
 
 </manifest>
