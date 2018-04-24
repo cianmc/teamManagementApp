@@ -520,6 +520,10 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             final String id = mDatabase.push().getKey();
             mLocation.setText(location);
             mDatabase.child(eventKey).child("description").setValue(description);
+            mDatabase.child(eventKey).child("time").setValue(time);
+            mDatabase.child(eventKey).child("date").setValue(date);
+            mDatabase.child(eventKey).child("location").setValue(location);
+            mDatabase.child(eventKey).child("latlong").setValue(latlong);
             mDescription.setVisibility(View.VISIBLE);
             mDescriptionET.setVisibility(View.INVISIBLE);
             mDescription.setText(description);
@@ -552,7 +556,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                 mTime.setText(String.format("%02d:%02d",selectedHour, selectedMinute));
                 time = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute);
-                mDatabase.child(eventKey).child("time").setValue(time);
+                //mDatabase.child(eventKey).child("time").setValue(time);
             }
         }, mHour, mMinute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -571,7 +575,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mDate.setText(year + "/" + (month + 1) + "/" + day);
                 date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
-                mDatabase.child(eventKey).child("date").setValue(date);
+                //mDatabase.child(eventKey).child("date").setValue(date);
             }
         }, mDay, mMonth, mYear);
         mDatePicker.setTitle("Select Date");
@@ -601,8 +605,8 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                 latLongB = latLongB.substring(0, latLongB.indexOf(")"));
                 mLong = Double.parseDouble(latLongB);
 
-                mDatabase.child(eventKey).child("location").setValue(location);
-                mDatabase.child(eventKey).child("latlong").setValue(latlong);
+//                mDatabase.child(eventKey).child("location").setValue(location);
+//                mDatabase.child(eventKey).child("latlong").setValue(latlong);
 
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(ViewIndividualTraining.this);

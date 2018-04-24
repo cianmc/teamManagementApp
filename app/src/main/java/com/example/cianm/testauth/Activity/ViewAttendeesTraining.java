@@ -75,6 +75,8 @@ public class ViewAttendeesTraining extends AppCompatActivity {
 
     public void goingLV(){
         goingNames.clear();
+        mGoing.setBackground(ViewAttendeesTraining.this.getResources().getDrawable(R.drawable.bkg));
+        mNotGoing.setBackground(ViewAttendeesTraining.this.getResources().getDrawable(R.drawable.not_selected));
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);
@@ -120,6 +122,8 @@ public class ViewAttendeesTraining extends AppCompatActivity {
 
     public void notGoingLV(){
         notGoingNames.clear();
+        mGoing.setBackground(ViewAttendeesTraining.this.getResources().getDrawable(R.drawable.not_selected));
+        mNotGoing.setBackground(ViewAttendeesTraining.this.getResources().getDrawable(R.drawable.bkg));
         mNoDataGoing.setVisibility(View.INVISIBLE);
         mNoDataNotGoing.setVisibility(View.INVISIBLE);
         mNoDataSaved.setVisibility(View.INVISIBLE);

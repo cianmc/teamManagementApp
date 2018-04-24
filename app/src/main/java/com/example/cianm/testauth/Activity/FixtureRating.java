@@ -920,10 +920,10 @@ public class FixtureRating extends AppCompatActivity {
     public void calTotalRating(){
 
         double cards = 0.00;
-        if (saveYellowCards == 1){ cards = 10; }
-        if (saveBlackCards == 1){ cards = 15; }
-        if (saveYellowCards == 2 || saveBlackCards == 1 && saveYellowCards == 1){ cards = 20; }
-        if (saveRedCards == 1){ cards = 40; }
+        if (saveYellowCards == 1){ cards = 5; }
+        if (saveBlackCards == 1){ cards = 10; }
+        if (saveYellowCards == 2 || saveBlackCards == 1 && saveYellowCards == 1){ cards = 15; }
+        if (saveRedCards == 1){ cards = 25; }
 
         overallRating = (defenderRating/2) + (attackerRating/2) - cards;
         if (overallRating <= 0.00){
@@ -967,7 +967,7 @@ public class FixtureRating extends AppCompatActivity {
                     mAttendeeReferenceS = mDatabase.child(eventKey).child("attenedee").child("saved");
                     mAttendeeReferenceS.child(userUID).setValue(savedName);
                     mTempRatingH.child(currentTeam).child(fbUser.getUid()).child(Integer.toString(positionRef)).removeValue();
-                    positionRef++;
+                    uidName++;
                     playerName++;
                 }
                 startActivity(new Intent(FixtureRating.this, ViewAttendeesFixture.class));

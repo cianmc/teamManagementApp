@@ -1,6 +1,7 @@
 package com.example.cianm.testauth.Activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,8 +43,10 @@ public class JoinTeam extends AppCompatActivity {
     ListView lv;
     TextView mNoTeam;
 
-    User user;
     String teamID, userName, userType, email;
+    ArrayList<String> teams;
+
+    User user;
     Fixture fixture;
     Training training;
 
@@ -60,6 +64,7 @@ public class JoinTeam extends AppCompatActivity {
         mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
+        teams = new ArrayList<>();
 
         mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -106,7 +111,7 @@ public class JoinTeam extends AppCompatActivity {
         });
     }
 
-    private void collectTeamNames(Map<String, Object> teams){
+    private void collectTeamNames(final Map<String, Object> teams){
 
         final ArrayList<String> teamNames = new ArrayList<>();
 
@@ -116,7 +121,8 @@ public class JoinTeam extends AppCompatActivity {
             teamNames.add((String) singleTeam.get("name"));
 
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, teamNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, teamNames);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,36 +130,47 @@ public class JoinTeam extends AppCompatActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
                 lv.setVisibility(View.INVISIBLE);
                 teamID = adapterView.getItemAtPosition(i).toString();
-                mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        final String userTeamID = mDatabaseU.push().getKey();
-                        String id = mTeamEmails.push().getKey();
-                        user = dataSnapshot.getValue(User.class);
-                        userName = user.getName();
-                        email = user.getEmail();
-                        if (user.getType().equalsIgnoreCase("Manager")) {
-                            mDatabaseT.child(teamID).child("manager").child(fbUser.getUid()).setValue(userName);
-                            mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
-                            Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
-                            ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
-                            startActivity(new Intent(JoinTeam.this, ManagerHome.class));
-                        } else if (user.getType().equalsIgnoreCase("Player")){
-                            addFixtures();
-                            addTrainings();
-                            mTeamEmails.child(teamID).child(id).setValue(email);
-                            mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
-                            mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
-                            Toast.makeText(JoinTeam.this,"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
-                            ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
-                            startActivity(new Intent(JoinTeam.this, PlayerHome.class));
+                if (teams.containsValue(teamID)) {
+                    Toast.makeText(JoinTeam.this,"You're already a member of this team", Toast.LENGTH_LONG).show();
+                } else {
+                    mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final String userTeamID = mDatabaseU.push().getKey();
+                            String id = mTeamEmails.push().getKey();
+                            user = dataSnapshot.getValue(User.class);
+                            userName = user.getName();
+                            email = user.getEmail();
+                            if (user.getType().equalsIgnoreCase("Manager")) {
+                                mDatabaseT.child(teamID).child("manager").child(fbUser.getUid()).setValue(userName);
+                                mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
+                                Toast.makeText(JoinTeam.this, "Joining team: " + teamID, Toast.LENGTH_SHORT).show();
+                                ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
+                                FirebaseMessaging.getInstance().subscribeToTopic(teamID);
+                                Intent intent = new Intent(JoinTeam.this, ManagerHome.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            } else if (user.getType().equalsIgnoreCase("Player")) {
+                                addFixtures();
+                                addTrainings();
+                                mTeamEmails.child(teamID).child(id).setValue(email);
+                                mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
+                                mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
+                                Toast.makeText(JoinTeam.this, "Joining team: " + teamID, Toast.LENGTH_SHORT).show();
+                                ((GlobalVariables) JoinTeam.this.getApplication()).setCurrentTeam(teamID);
+                                FirebaseMessaging.getInstance().subscribeToTopic(teamID);
+                                Intent intent = new Intent(JoinTeam.this, PlayerHome.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
         });
     }
@@ -163,12 +180,19 @@ public class JoinTeam extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    Toast.makeText(JoinTeam.this,"No previous trainings created", Toast.LENGTH_LONG).show();
+                    Toast.makeText(JoinTeam.this,
+                            "No previous trainings created",
+                            Toast.LENGTH_LONG).show();
                 } else {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String userTeamID = mDatabaseU.push().getKey();
                         fixture = ds.getValue(Fixture.class);
-                        mDatabaseU.child(fbUser.getUid()).child("pending").child(teamID).child("Fixture").child(userTeamID).setValue(fixture);
+                        mDatabaseU.child(fbUser.getUid())
+                                .child("pending")
+                                .child(teamID)
+                                .child("Fixture")
+                                .child(userTeamID)
+                                .setValue(fixture);
                     }
                 }
             }
@@ -191,6 +215,27 @@ public class JoinTeam extends AppCompatActivity {
                         String userTeamID = mDatabaseU.push().getKey();
                         training = ds.getValue(Training.class);
                         mDatabaseU.child(fbUser.getUid()).child("pending").child(teamID).child("Training").child(userTeamID).setValue(training);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getCurrentTeams(){
+        mDatabaseU.child(fbUser.getUid()).child("team").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    Toast.makeText(JoinTeam.this,"No teams joined", Toast.LENGTH_LONG).show();
+                } else {
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        String team = ds.getValue(String.class);
+                        teams.add(team);
                     }
                 }
             }

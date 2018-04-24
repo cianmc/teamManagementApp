@@ -98,7 +98,7 @@ public class ViewEventPlayerFragment extends Fragment {
         mPendingLayout.setVisibility(View.INVISIBLE);
 
         checkPending();
-        loadResponded();
+        loadPending();
 
         mResponded.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 public class JoinTeamFragment extends Fragment {
 
-    private DatabaseReference mDatabaseT, mDatabaseU, mTeamEmails;
+    private DatabaseReference mDatabaseT, mDatabaseU;
     private FirebaseAuth mAuth;
     private FirebaseUser fbUser;
     private Query mDatabaseQuery;
@@ -74,7 +75,6 @@ public class JoinTeamFragment extends Fragment {
 
         mDatabaseT = FirebaseDatabase.getInstance().getReference("Team");
         mDatabaseU = FirebaseDatabase.getInstance().getReference("User");
-        mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
 
@@ -145,7 +145,6 @@ public class JoinTeamFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String userTeamID = mDatabaseU.push().getKey();
-                        String id = mTeamEmails.push().getKey();
                         user = dataSnapshot.getValue(User.class);
                         userName = user.getName();
                         email = user.getEmail();
@@ -154,17 +153,18 @@ public class JoinTeamFragment extends Fragment {
                             mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
                             Toast.makeText(getActivity(),"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
                             ((GlobalVariables) getActivity().getApplicationContext()).setCurrentTeam(teamID);
+                            FirebaseMessaging.getInstance().subscribeToTopic(teamID);
                             Intent intent = new Intent (getActivity(), ManagerHome.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else if (user.getType().equalsIgnoreCase("Player")){
                             addTrainings();
                             addFixtures();
-                            mTeamEmails.child(teamID).child(id).setValue(email);
                             mDatabaseU.child(fbUser.getUid()).child("team").child(userTeamID).setValue(teamID);
                             Toast.makeText(getActivity(),"Joining team: " + teamID, Toast.LENGTH_SHORT).show();
                             mDatabaseT.child(teamID).child("player").child(fbUser.getUid()).setValue(userName);
                             ((GlobalVariables) getActivity().getApplicationContext()).setCurrentTeam(teamID);
+                            FirebaseMessaging.getInstance().subscribeToTopic(teamID);
                             Intent intent = new Intent (getActivity(), PlayerHome.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

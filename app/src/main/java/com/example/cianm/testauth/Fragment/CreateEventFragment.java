@@ -62,7 +62,7 @@ public class CreateEventFragment extends Fragment {
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
-    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser, mDateRef, mTeamEmails;
+    private DatabaseReference mFirebaseDatabaseT, mFirebaseDatabaseF, mFirebaseDatabaseTeam, mFirebaseUser, mDateRef;
 
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTextView;
@@ -76,7 +76,7 @@ public class CreateEventFragment extends Fragment {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID, emailOut;
+    String time, date, location, opposition, description, latlong, currentTeam, playerName, playerUID;
     ArrayList<String> dates, emails;
     Fixture fixture;
     Training training;
@@ -102,15 +102,10 @@ public class CreateEventFragment extends Fragment {
         mFirebaseUser = FirebaseDatabase.getInstance().getReference("User");
         mFirebaseDatabaseTeam = FirebaseDatabase.getInstance().getReference("Team").child(currentTeam);
         mDateRef = FirebaseDatabase.getInstance().getReference("CheckDate");
-        mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
-
-        String id1 = mFirebaseDatabaseF.push().getKey();
-        String id2 = mFirebaseDatabaseT.push().getKey();
 
         dates = new ArrayList<>();
         emails = new ArrayList<>();
         getDates();
-        getEmails();
 
         // Progress bar
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
@@ -330,24 +325,6 @@ public class CreateEventFragment extends Fragment {
         });
     }
 
-    public void getEmails(){
-        mTeamEmails.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String email = ds.getValue(String.class);
-                    emails.add(email);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
     public void createEvent(){
         if (!rFixture.isChecked() && !rTraining.isChecked()){
             Toast.makeText(getActivity(), "You must select a type of event", Toast.LENGTH_SHORT).show();
@@ -390,7 +367,6 @@ public class CreateEventFragment extends Fragment {
                     mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
                     mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
                     mCreateEvent.setVisibility(View.GONE);
-                    //newEvent();
                     Intent intent = new Intent (getActivity(), ManagerHome.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
