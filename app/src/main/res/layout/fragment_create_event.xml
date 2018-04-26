@@ -29,7 +29,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/showLocationView"
@@ -44,7 +45,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="200dp" />
 
     <TextView
         android:id="@+id/timeTextView"
@@ -56,7 +59,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/showTimeView"
@@ -71,7 +75,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="200dp" />
 
     <TextView
         android:id="@+id/dateTextView"
@@ -86,7 +92,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="240dp"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/showDateView"
@@ -101,7 +109,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="200dp" />
 
     <Button
         android:id="@+id/createEventBtn"
@@ -171,7 +181,9 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/descriptionEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="16dp" />
 
     <EditText
         android:id="@+id/descriptionEditText"
@@ -188,7 +200,9 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/descriptionTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="28dp"
+        android:layout_marginLeft="5dp" />
 
     <TextView
         android:id="@+id/oppositionTextView"
@@ -201,7 +215,8 @@
         android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/oppositionAutoTextView"
@@ -218,7 +233,9 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="120dp" />
 
     <Button
         android:id="@+id/pickLocationBtn"
@@ -228,7 +245,8 @@
         android:layout_marginTop="166dp"
         android:background="@drawable/ic_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="376dp" />
 
     <TextView
         android:id="@+id/locationPick"
@@ -239,7 +257,8 @@
         android:text="@string/pickLocation"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/pickLocationBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
     <Button
         android:id="@+id/pickTimeBtn"
@@ -249,7 +268,8 @@
         android:layout_marginTop="300dp"
         android:background="@drawable/ic_access_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="376dp" />
 
     <TextView
         android:id="@+id/timePick"
@@ -260,7 +280,8 @@
         android:text="@string/pickTime"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/pickTimeBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
     <Button
         android:id="@+id/pickDateBtn"
@@ -270,7 +291,8 @@
         android:layout_marginTop="425dp"
         android:background="@drawable/ic_date_range"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="376dp" />
 
     <TextView
         android:id="@+id/datePick"
@@ -281,6 +303,7 @@
         android:text="@string/pickDate"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/pickDateBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
 </android.support.constraint.ConstraintLayout>

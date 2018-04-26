@@ -87,6 +87,10 @@
     <string name="fixYellow">Yellow Cards</string>
     <string name="fixRed">Red Cards</string>
     <string name="fixBlack">Black Cards</string>
+    <string name="fixAway">Away</string>
+    <string name="fixHome">Home</string>
+    <string name="fixTotal">Total Score</string>
+    <string name="nothingSelected">[Select a Player…]</string>
 
     <!-- Long Text Views -->
     <string name="dontHave">No account? Sign up here!</string>
@@ -118,6 +122,8 @@
     <string name="totalGames">Number of games played: </string>
     <string name="statsSavedView">Statistics have been recorded you cannot edit event</string>
     <string name="noDataHome">There are no statistics saved yet</string>
+    <string name="goalsPoints">Goals : Points</string>
+    <string name="divider">:</string>
 
     <!-- Graph Labels -->
     <string name="defender">Defender Rating</string>

@@ -24,7 +24,9 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="220dp"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/eventDetailsTextView"
@@ -67,7 +69,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginRight="230dp"
+        android:layout_marginLeft="16dp" />
 
     <ListView
         android:id="@+id/fixtureListView"

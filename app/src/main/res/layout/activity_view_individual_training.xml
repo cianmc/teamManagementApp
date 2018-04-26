@@ -16,7 +16,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingDate"
@@ -30,7 +31,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingDateTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="45dp" />
 
     <TextView
         android:id="@+id/trainingTimeTextView"
@@ -42,7 +45,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDateTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDateTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingTime"
@@ -56,7 +60,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingTimeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDate" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDate"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="45dp" />
 
     <TextView
         android:id="@+id/trainingDescriptionTextView"
@@ -68,7 +74,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingTimeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingTimeTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingDescription"
@@ -82,7 +89,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingDescriptionTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingTime" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingTime"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="6dp" />
 
     <TextView
         android:id="@+id/trainingLocationTextView"
@@ -94,7 +103,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDescriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDescriptionTextView"
+        android:layout_marginLeft="32dp" />
 
     <TextView
         android:id="@+id/trainingLocation"
@@ -108,7 +118,9 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/trainingLocationTextView"
-        app:layout_constraintTop_toBottomOf="@+id/trainingDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/trainingDescription"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="21dp" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -165,7 +177,8 @@
         android:background="@drawable/ic_check"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView"
+        android:layout_marginLeft="176dp" />
 
     <Button
         android:id="@+id/notAvailableBtn"
@@ -177,7 +190,8 @@
         android:background="@drawable/ic_clear"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/availabilityTextView"
+        android:layout_marginRight="176dp" />
 
     <TextView
         android:id="@+id/availabilityStatusTextView"
@@ -231,7 +245,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/edit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/save"
@@ -242,7 +257,8 @@
         android:text="@string/save"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/editInstruction"
@@ -253,7 +269,8 @@
         android:text="@string/editInstructions"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/save"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="228dp" />
 
     <EditText
         android:id="@+id/descMultiLine"
@@ -265,6 +282,7 @@
         android:inputType="textMultiLine"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/map"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="200dp" />
 
 </android.support.constraint.ConstraintLayout>

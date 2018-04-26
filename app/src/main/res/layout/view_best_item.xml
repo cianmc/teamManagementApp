@@ -24,7 +24,7 @@
                 android:id="@+id/nameViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Display name"
+                android:text="@string/loading"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="24sp"
                 android:paddingTop="20dp"/>
@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="Games Played"
+                android:text="@string/loading"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -49,21 +49,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="25dp"
-                android:text="Games Played"
+                android:text="@string/loading"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/defViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="25dp"
-                android:text="Games Played"
+                android:text="@string/loading"
                 android:textSize="18sp" />
             <TextView
                 android:id="@+id/overViewItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="25dp"
-                android:text="Games Played"
+                android:text="@string/loading"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>

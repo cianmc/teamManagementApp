@@ -8,4 +8,4 @@
     android:ellipsize="marquee"
     android:textSize="24sp"
     android:textColor="#808080"
-    android:text="[Select a Player...]" />
+    android:text="@string/nothingSelected" />

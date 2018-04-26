@@ -93,7 +93,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/pointsValue"
                         app:layout_constraintStart_toEndOf="@+id/pointsTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="240dp" />
 
                     <TextView
                         android:id="@+id/pointsValue"
@@ -109,7 +111,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/pointsPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="1.0"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/pointsPlusButton"
@@ -119,7 +122,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -163,7 +167,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/goalsValue"
                         app:layout_constraintStart_toEndOf="@+id/goalsTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="240dp" />
 
                     <TextView
                         android:id="@+id/goalsValue"
@@ -179,7 +185,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/goalsPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/goalsPlusButton"
@@ -189,7 +196,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -233,7 +241,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/widesValue"
                         app:layout_constraintStart_toEndOf="@+id/widesTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="240dp" />
 
                     <TextView
                         android:id="@+id/widesValue"
@@ -249,7 +259,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/widesPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/widesPlusButton"
@@ -259,7 +270,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -303,7 +315,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/tacklesValue"
                         app:layout_constraintStart_toEndOf="@+id/tacklesTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="220dp" />
 
                     <TextView
                         android:id="@+id/tacklesValue"
@@ -319,7 +333,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tacklesPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/tacklesPlusButton"
@@ -329,7 +344,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -373,7 +389,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/turnoversValue"
                         app:layout_constraintStart_toEndOf="@+id/turnoversTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="195dp" />
 
                     <TextView
                         android:id="@+id/turnoversValue"
@@ -389,7 +407,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/turnoversPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/turnoversPlusButton"
@@ -399,7 +418,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -443,7 +463,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/yellowCardsValue"
                         app:layout_constraintStart_toEndOf="@+id/yellowCardsTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="155dp" />
 
                     <TextView
                         android:id="@+id/yellowCardsValue"
@@ -459,7 +481,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/yellowCardsPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/yellowCardsPlusButton"
@@ -469,7 +492,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -513,7 +537,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/redCardsValue"
                         app:layout_constraintStart_toEndOf="@+id/redCardsTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="190dp" />
 
                     <TextView
                         android:id="@+id/redCardsValue"
@@ -529,7 +555,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/redCardsPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/redCardsPlusButton"
@@ -539,7 +566,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -583,7 +611,9 @@
                         app:layout_constraintEnd_toStartOf="@+id/blackCardsValue"
                         app:layout_constraintStart_toEndOf="@+id/blackCardsTextView"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="170dp" />
 
                     <TextView
                         android:id="@+id/blackCardsValue"
@@ -599,7 +629,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/blackCardsPlusButton"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.521" />
+                        app:layout_constraintVertical_bias="0.521"
+                        android:layout_marginRight="41dp" />
 
                     <Button
                         android:id="@+id/blackCardsPlusButton"
@@ -609,7 +640,8 @@
                         android:background="@drawable/ic_add_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="144dp" />
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
@@ -639,7 +671,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="200dp" />
 
     <TextView
     android:id="@+id/homeScoreGoals"
@@ -651,7 +684,8 @@
     android:textAppearance="@style/TextAppearance.AppCompat"
     android:textSize="24sp"
     app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
-    app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+    app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="29dp" />
 
     <TextView
         android:id="@+id/homeScorePoints"
@@ -663,7 +697,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="85dp" />
 
     <TextView
         android:id="@+id/textView19"
@@ -671,11 +706,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="48dp"
-        android:text=":"
+        android:text="@string/divider"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="60dp" />
 
     <TextView
         android:id="@+id/textView20"
@@ -683,11 +719,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="55dp"
-        android:text="Total Score"
+        android:text="@string/fixTotal"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/awayScoreTV"
@@ -695,11 +732,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="500dp"
         android:layout_marginTop="55dp"
-        android:text="Away"
+        android:text="@string/fixAway"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="500dp" />
 
     <TextView
         android:id="@+id/awayScoreGoals"
@@ -711,7 +749,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="29dp" />
 
     <TextView
         android:id="@+id/awayScorePoints"
@@ -723,7 +762,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="85dp" />
 
     <TextView
         android:id="@+id/textView22"
@@ -731,11 +771,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="48dp"
-        android:text=":"
+        android:text="@string/divider"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="60dp" />
 
     <Button
         android:id="@+id/awayGoalsPlus"
@@ -745,7 +786,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/ic_add_circle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginRight="152dp" />
 
     <Button
         android:id="@+id/awayGoalsMinus"
@@ -755,7 +797,8 @@
         android:layout_marginTop="85dp"
         android:background="@drawable/ic_remove_circle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginRight="152dp" />
 
     <Button
         android:id="@+id/awayPointsPlus"
@@ -765,7 +808,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/ic_add_circle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginRight="98dp" />
 
     <Button
         android:id="@+id/awayPointsMinus"
@@ -775,7 +819,8 @@
         android:layout_marginTop="85dp"
         android:background="@drawable/ic_remove_circle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginRight="98dp" />
 
     <TextView
         android:id="@+id/textView17"
@@ -783,8 +828,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="328dp"
         android:layout_marginTop="95dp"
-        android:text="Goals : Points"
+        android:text="@string/goalsPoints"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView"
+        android:layout_marginLeft="328dp" />
 </android.support.constraint.ConstraintLayout>
