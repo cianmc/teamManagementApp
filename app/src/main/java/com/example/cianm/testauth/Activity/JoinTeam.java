@@ -44,7 +44,7 @@ public class JoinTeam extends AppCompatActivity {
     TextView mNoTeam;
 
     String teamID, userName, userType, email;
-    ArrayList<String> teams;
+    ArrayList<String> checkTeams;
 
     User user;
     Fixture fixture;
@@ -64,7 +64,9 @@ public class JoinTeam extends AppCompatActivity {
         mTeamEmails = FirebaseDatabase.getInstance().getReference("TeamEmails");
         mAuth = FirebaseAuth.getInstance();
         fbUser = mAuth.getCurrentUser();
-        teams = new ArrayList<>();
+        checkTeams = new ArrayList<>();
+
+        getCurrentTeams();
 
         mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -111,7 +113,7 @@ public class JoinTeam extends AppCompatActivity {
         });
     }
 
-    private void collectTeamNames(final Map<String, Object> teams){
+    private void collectTeamNames(Map<String, Object> teams){
 
         final ArrayList<String> teamNames = new ArrayList<>();
 
@@ -130,7 +132,7 @@ public class JoinTeam extends AppCompatActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
                 lv.setVisibility(View.INVISIBLE);
                 teamID = adapterView.getItemAtPosition(i).toString();
-                if (teams.containsValue(teamID)) {
+                if (checkTeams.contains(teamID)) {
                     Toast.makeText(JoinTeam.this,"You're already a member of this team", Toast.LENGTH_LONG).show();
                 } else {
                     mDatabaseU.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -235,7 +237,7 @@ public class JoinTeam extends AppCompatActivity {
                 } else {
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
                         String team = ds.getValue(String.class);
-                        teams.add(team);
+                        checkTeams.add(team);
                     }
                 }
             }

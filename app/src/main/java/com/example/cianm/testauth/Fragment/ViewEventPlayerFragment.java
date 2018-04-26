@@ -120,6 +120,8 @@ public class ViewEventPlayerFragment extends Fragment {
         final ArrayList<String> trainings = new ArrayList<>();
         final ArrayList<String> confirmationStatus = new ArrayList<>();
         int currentItem = 0;
+        trainings.clear();
+        confirmationStatus.clear();
         final ArrayList<Map<String, String>> data2 = new ArrayList<Map<String, String>>();
 
         for (Map.Entry<String, Object> entry : trainConEvents.entrySet()) {
@@ -136,7 +138,10 @@ public class ViewEventPlayerFragment extends Fragment {
             currentItem++;
             data2.add(data);
         }
-        SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data2, android.R.layout.simple_list_item_2, new String[]{"date", "availability"}, new int[]{android.R.id.text1, android.R.id.text2});
+        SimpleAdapter adapter = new SimpleAdapter(this.getActivity(), data2,
+                android.R.layout.simple_list_item_2,
+                new String[]{"date", "availability"},
+                new int[]{android.R.id.text1, android.R.id.text2});
         mTrainingRespondedLV.setAdapter(adapter);
         mTrainingRespondedLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -155,6 +160,8 @@ public class ViewEventPlayerFragment extends Fragment {
         final ArrayList<String> fixtures = new ArrayList<>();
         final ArrayList<String> confirmationStatus = new ArrayList<>();
         int currentItem = 0;
+        fixtures.clear();
+        confirmationStatus.clear();
         final ArrayList<Map<String, String>> data2 = new ArrayList<Map<String, String>>();
 
         for (Map.Entry<String, Object> entry : fixConEvents.entrySet()) {
@@ -188,7 +195,7 @@ public class ViewEventPlayerFragment extends Fragment {
     private void collectPendingTrainingEvents(Map<String, Object> trainPendEvents){
 
         final ArrayList<String> trainings = new ArrayList<>();
-
+        trainings.clear();
         for (Map.Entry<String, Object> entry : trainPendEvents.entrySet()) {
             Map singleTraining = (Map) entry.getValue();
             trainings.add((String) singleTraining.get("date"));
@@ -209,7 +216,7 @@ public class ViewEventPlayerFragment extends Fragment {
     private void collectPendingFixtureEvents(Map<String, Object> fixPendEvents){
 
         final ArrayList<String> fixtures = new ArrayList<>();
-
+        fixtures.clear();
         for (Map.Entry<String, Object> entry : fixPendEvents.entrySet()) {
             Map singleTraining = (Map) entry.getValue();
             fixtures.add((String) singleTraining.get("date"));

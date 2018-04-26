@@ -2,18 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutManagerHome"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.cianm.testauth.Fragment.ManagerHomeFragment">
-    <!-- tools:showIn="@layout/app_bar_manager_home"-->
-
-
-    <!-- <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" /> -->
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textView18"
@@ -21,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
         android:layout_marginTop="45dp"
-        android:text="@string/bestAttackers"
+        android:text="@string/manager"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,63 +22,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="420dp"
-        android:text="@string/bestDefenders"
+        android:layout_marginTop="350dp"
+        android:text="@string/player"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/bestAttackersLV"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:id="@+id/viewManagerLV"
+        android:layout_width="734dp"
+        android:layout_height="240dp"
         android:layout_marginEnd="45dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/bestDefendersLV"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:id="@+id/viewPLayerLV"
+        android:layout_width="734dp"
+        android:layout_height="429dp"
         android:layout_marginEnd="45dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="410dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-    <TextView
-        android:id="@+id/noDataAttack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="208dp"
-        android:layout_marginTop="228dp"
-        android:text="@string/noDataHome"
-        android:textSize="24sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/noDataDef"
+        android:id="@+id/noDataManager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="208dp"
-        android:layout_marginTop="620dp"
-        android:text="@string/noDataHome"
-        android:textSize="24sp"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/noData"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <TextView
+        android:id="@+id/noDataPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="580dp"
+        android:text="@string/noData"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

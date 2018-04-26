@@ -35,10 +35,10 @@
         android:id="@+id/fixRatingScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="135dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/saveCurrentPlayerBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -621,11 +621,170 @@
         android:id="@+id/saveCurrentPlayerBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="25dp"
         android:layout_marginEnd="60dp"
         android:layout_marginStart="60dp"
         android:text="@string/saveRating"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/homeScoreTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/home"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+    android:id="@+id/homeScoreGoals"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="29dp"
+    android:layout_marginTop="55dp"
+    android:text="@string/zero"
+    android:textAppearance="@style/TextAppearance.AppCompat"
+    android:textSize="24sp"
+    app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
+    app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/homeScorePoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/zero"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="48dp"
+        android:text=":"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/homeScoreTV"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="55dp"
+        android:text="Total Score"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/awayScoreTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="500dp"
+        android:layout_marginTop="55dp"
+        android:text="Away"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/awayScoreGoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/zero"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/awayScorePoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="55dp"
+        android:text="@string/zero"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="48dp"
+        android:text=":"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/awayScoreTV"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <Button
+        android:id="@+id/awayGoalsPlus"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_add_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <Button
+        android:id="@+id/awayGoalsMinus"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginTop="85dp"
+        android:background="@drawable/ic_remove_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <Button
+        android:id="@+id/awayPointsPlus"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_add_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <Button
+        android:id="@+id/awayPointsMinus"
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginTop="85dp"
+        android:background="@drawable/ic_remove_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="328dp"
+        android:layout_marginTop="95dp"
+        android:text="Goals : Points"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fixRatingScrollView" />
 </android.support.constraint.ConstraintLayout>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cianm.testauth.Activity.MainActivity;
+import com.example.cianm.testauth.Activity.SelectTeam;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.Fragment.CreateEventFragment;
@@ -25,6 +26,7 @@ import com.example.cianm.testauth.Fragment.JoinTeamFragment;
 import com.example.cianm.testauth.Fragment.ManagerHomeFragment;
 import com.example.cianm.testauth.Fragment.SettingsFragment;
 import com.example.cianm.testauth.Fragment.ViewEventFragment;
+import com.example.cianm.testauth.Fragment.ViewMembersFragment;
 import com.example.cianm.testauth.Fragment.ViewRatingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -126,6 +128,9 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
             case R.id.navM_join_team:
                 fragment = new JoinTeamFragment();
                 break;
+            case R.id.navM_view_members:
+                fragment = new ViewMembersFragment();
+                break;
             case R.id.navM_create_event:
                 fragment = new CreateEventFragment();
                 break;
@@ -135,15 +140,20 @@ public class ManagerHome extends AppCompatActivity implements NavigationView.OnN
             case R.id.navM_view_ratings:
                 fragment = new ViewRatingsFragment();
                 break;
+            case R.id.navM_changeTeam:
+                Intent intent = new Intent (ManagerHome.this, SelectTeam.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
             case R.id.navM_settings:
                 fragment = new SettingsFragment();
                 break;
             case R.id.navM_sign_out:
                 mAuth.signOut();
                 Toast.makeText(getApplicationContext(), "Signing out...", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent (ManagerHome.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intent1 = new Intent (ManagerHome.this, MainActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
                 break;
         }
 

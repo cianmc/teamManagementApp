@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.cianm.testauth.Activity.MainActivity;
+import com.example.cianm.testauth.Activity.SelectTeam;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.Fragment.JoinTeamFragment;
@@ -23,6 +24,7 @@ import com.example.cianm.testauth.Fragment.PlayerHomeFragment;
 import com.example.cianm.testauth.Fragment.SettingsFragment;
 import com.example.cianm.testauth.Fragment.ViewEventFragment;
 import com.example.cianm.testauth.Fragment.ViewEventPlayerFragment;
+import com.example.cianm.testauth.Fragment.ViewMembersFragment;
 import com.example.cianm.testauth.Fragment.ViewRatingsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -121,11 +123,19 @@ public class PlayerHome extends AppCompatActivity implements NavigationView.OnNa
             case R.id.navP_join_team:
                 fragment = new JoinTeamFragment();
                 break;
+            case R.id.navP_view_members:
+                fragment = new ViewMembersFragment();
+                break;
             case R.id.navP_view_event:
                 fragment = new ViewEventPlayerFragment();
                 break;
             case R.id.navP_view_ratings:
                 fragment = new ViewRatingsFragment();
+                break;
+            case  R.id.navP_changeTeam:
+                Intent intent = new Intent (PlayerHome.this, SelectTeam.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.navP_settings:
                 fragment = new SettingsFragment();
@@ -133,9 +143,9 @@ public class PlayerHome extends AppCompatActivity implements NavigationView.OnNa
             case R.id.navP_signOut:
                 mAuth.signOut();
                 Toast.makeText(getApplicationContext(), "Signing out...", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent (PlayerHome.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intent1 = new Intent (PlayerHome.this, MainActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
                 break;
         }
 

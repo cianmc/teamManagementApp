@@ -41,13 +41,13 @@ public class FixtureRating extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser fbUser;
 
-    Button mPointsMinus, mPointsPlus, mGoalsMinus, mGoalsPlus, mWidesMinus, mWidesPlus, mTacklesMinus, mTacklesPlus, mTurnoversMinus, mTurnoversPlus, mYellowCardsMinus, mYellowCardsPlus, mRedCardsMinus, mRedCardsPlus, mBlackCardsMinus, mBlackCardsPlus, mSaveCurrentPlayer;
-    TextView mPointsValue, mGoalsValue, mWidesValue, mTacklesValue, mTurnoversValue, mYellowCardsValue, mRedCardsValue, mBlackCardsValue;
+    Button mPointsMinus, mPointsPlus, mGoalsMinus, mGoalsPlus, mWidesMinus, mWidesPlus, mTacklesMinus, mTacklesPlus, mTurnoversMinus, mTurnoversPlus, mYellowCardsMinus, mYellowCardsPlus, mRedCardsMinus, mRedCardsPlus, mBlackCardsMinus, mBlackCardsPlus, mSaveCurrentPlayer, mAwayPointPlus, mAwayPointMinus, mAwayGoalsPlus, mAwayGoalsMinus;
+    TextView mPointsValue, mGoalsValue, mWidesValue, mTacklesValue, mTurnoversValue, mYellowCardsValue, mRedCardsValue, mBlackCardsValue, mHomePoints, mHomeGoals, mAwayGoals, mAwayPoints;
     LinearLayout mBlackCardLinearLayout;
     Spinner mChooseAttendeeSpinner;
     ScrollView mRatingsView;
 
-    int points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards, savePoints, saveGoals, saveWides, saveTackles, saveTurnovers, saveYellowCards, saveRedCards, saveBlackCards;
+    int points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards, savePoints, saveGoals, saveWides, saveTackles, saveTurnovers, saveYellowCards, saveRedCards, saveBlackCards, totalPointH, totalGoalsH, totalPointsA, totalGoalsA;
     Double attackerRating, defenderRating, overallRating;
     String currentTeam, currentEvent, eventKey, position, teamType, savedName, userUID, dateAlt;
     int playerName, positionRef, uidName;
@@ -85,6 +85,8 @@ public class FixtureRating extends AppCompatActivity {
         mYellowCardsMinus = (Button) findViewById(R.id.yellowCardsMinusButton);
         mRedCardsMinus = (Button) findViewById(R.id.redCardsMinusButton);
         mBlackCardsMinus = (Button) findViewById(R.id.blackCardsMinusButton);
+        mAwayGoalsMinus = (Button) findViewById(R.id.awayGoalsMinus);
+        mAwayPointMinus = (Button) findViewById(R.id.awayPointsMinus);
 
         // Plus Buttons
         mPointsPlus = (Button) findViewById(R.id.pointsPlusButton);
@@ -95,6 +97,8 @@ public class FixtureRating extends AppCompatActivity {
         mYellowCardsPlus = (Button) findViewById(R.id.yellowCardsPlusButton);
         mRedCardsPlus = (Button) findViewById(R.id.redCardsPlusButton);
         mBlackCardsPlus = (Button) findViewById(R.id.blackCardsPlusButton);
+        mAwayPointPlus = (Button) findViewById(R.id.awayPointsPlus);
+        mAwayGoalsPlus = (Button) findViewById(R.id.awayGoalsPlus);
 
         // Values Text Views
         mPointsValue = (TextView) findViewById(R.id.pointsValue);
@@ -105,6 +109,10 @@ public class FixtureRating extends AppCompatActivity {
         mYellowCardsValue = (TextView) findViewById(R.id.yellowCardsValue);
         mRedCardsValue = (TextView) findViewById(R.id.redCardsValue);
         mBlackCardsValue = (TextView) findViewById(R.id.blackCardsValue);
+        mHomeGoals = (TextView) findViewById(R.id.homeScoreGoals);
+        mHomePoints = (TextView) findViewById(R.id.homeScorePoints);
+        mAwayPoints = (TextView) findViewById(R.id.awayScorePoints);
+        mAwayGoals = (TextView) findViewById(R.id.awayScoreGoals);
 
         // Make all minus buttons invisible so the uses cannot input a minus value
         mPointsMinus.setVisibility(INVISIBLE);
@@ -115,6 +123,8 @@ public class FixtureRating extends AppCompatActivity {
         mYellowCardsMinus.setVisibility(INVISIBLE);
         mRedCardsMinus.setVisibility(INVISIBLE);
         mBlackCardsMinus.setVisibility(INVISIBLE);
+        mAwayPointMinus.setVisibility(INVISIBLE);
+        mAwayGoalsMinus.setVisibility(INVISIBLE);
 
         mTempRatingF = FirebaseDatabase.getInstance().getReference("TempRatingF");
         mTempRatingH = FirebaseDatabase.getInstance().getReference("TempRatingH");
@@ -185,9 +195,12 @@ public class FixtureRating extends AppCompatActivity {
         mPointsPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                totalPointH = Integer.parseInt(mHomePoints.getText().toString());
                 points = Integer.parseInt(mPointsValue.getText().toString());
                 mPointsMinus.setVisibility(VISIBLE);
                 points++;
+                totalPointH++;
+                mHomePoints.setText(Integer.toString(totalPointH));
                 mPointsValue.setText(Integer.toString(points));
                 if (teamType.equalsIgnoreCase("Football")) {
                     mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).child("points").setValue(points);
@@ -199,8 +212,11 @@ public class FixtureRating extends AppCompatActivity {
         mPointsMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                totalPointH = Integer.parseInt(mHomePoints.getText().toString());
                 points = Integer.parseInt(mPointsValue.getText().toString());
                 points--;
+                totalPointH--;
+                mHomePoints.setText(Integer.toString(totalPointH));
                 if(points == 0) {
                     mPointsMinus.setVisibility(INVISIBLE);
                 }
@@ -217,9 +233,12 @@ public class FixtureRating extends AppCompatActivity {
         mGoalsPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                totalGoalsH = Integer.parseInt(mHomeGoals.getText().toString());
                 goals = Integer.parseInt(mGoalsValue.getText().toString());
                 mGoalsMinus.setVisibility(VISIBLE);
                 goals++;
+                totalGoalsH++;
+                mHomeGoals.setText(Integer.toString(totalGoalsH));
                 mGoalsValue.setText(Integer.toString(goals));
                 if (teamType.equalsIgnoreCase("Football")) {
                     mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).child("goals").setValue(goals);
@@ -232,8 +251,11 @@ public class FixtureRating extends AppCompatActivity {
         mGoalsMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                totalGoalsH = Integer.parseInt(mHomeGoals.getText().toString());
                 goals = Integer.parseInt(mGoalsValue.getText().toString());
                 goals--;
+                totalGoalsH--;
+                mHomeGoals.setText(Integer.toString(totalGoalsH));
                 if(goals == 0) {
                     mGoalsMinus.setVisibility(INVISIBLE);
                 }
@@ -475,6 +497,50 @@ public class FixtureRating extends AppCompatActivity {
             }
         });
 
+        mAwayPointPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                totalPointsA = Integer.parseInt(mAwayPoints.getText().toString());
+                mAwayPointMinus.setVisibility(VISIBLE);
+                totalPointsA++;
+                mAwayPoints.setText(Integer.toString(totalPointsA));
+            }
+        });
+
+        mAwayPointMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                totalPointsA = Integer.parseInt(mAwayPoints.getText().toString());
+                totalPointsA--;
+                if(totalPointsA == 0){
+                    mAwayPointMinus.setVisibility(INVISIBLE);
+                }
+                mAwayPoints.setText(Integer.toString(totalPointsA));
+            }
+        });
+
+        mAwayGoalsPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                totalGoalsA = Integer.parseInt(mAwayGoals.getText().toString());
+                mAwayGoalsMinus.setVisibility(VISIBLE);
+                totalGoalsA++;
+                mAwayGoals.setText(Integer.toString(totalGoalsA));
+            }
+        });
+
+        mAwayGoalsMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                totalGoalsA = Integer.parseInt(mAwayGoals.getText().toString());
+                totalGoalsA--;
+                if(totalGoalsA == 0){
+                    mAwayGoalsMinus.setVisibility(INVISIBLE);
+                }
+                mAwayGoals.setText(Integer.toString(totalGoalsA));
+            }
+        });
+
         saveCheck();
 
         mSaveCurrentPlayer.setOnClickListener(new View.OnClickListener() {
@@ -535,15 +601,6 @@ public class FixtureRating extends AppCompatActivity {
 
                             loadButtonsF();
 
-//                            tPoints = mPointsValue.getText().toString();
-//                            tGoals = mGoalsValue.getText().toString();
-//                            tWides = mWidesValue.getText().toString();
-//                            tTackles = mTacklesValue.getText().toString();
-//                            tTurnovers = mTurnoversValue.getText().toString();
-//                            tYellowCards = mYellowCardsValue.getText().toString();
-//                            tRedCards = mRedCardsValue.getText().toString();
-//                            tBlackCards = mBlackCardsValue.getText().toString();
-
                             tempRateF = new TempRatingFootball(points, goals, wides, tackles, turnovers, yellowCards, redCards, blackCards);
                             mTempRatingF = FirebaseDatabase.getInstance().getReference("TempRatingF");
                             mTempRatingF.child(currentTeam).child(fbUser.getUid()).child(position).setValue(tempRateF);
@@ -595,14 +652,6 @@ public class FixtureRating extends AppCompatActivity {
                             redCards = Integer.parseInt(mRedCardsValue.getText().toString());
 
                             loadButtonsH();
-
-//                            tPoints = mPointsValue.getText().toString();
-//                            tGoals = mGoalsValue.getText().toString();
-//                            tWides = mWidesValue.getText().toString();
-//                            tTackles = mTacklesValue.getText().toString();
-//                            tTurnovers = mTurnoversValue.getText().toString();
-//                            tYellowCards = mYellowCardsValue.getText().toString();
-//                            tRedCards = mRedCardsValue.getText().toString();
 
                             tempRateH = new TempRatingHurling(points, goals, wides, tackles, turnovers, yellowCards, redCards);
                             mTempRatingH = FirebaseDatabase.getInstance().getReference("TempRatingH");

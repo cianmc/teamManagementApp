@@ -267,6 +267,17 @@
         app:layout_constraintEnd_toStartOf="@+id/save"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/statsInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="150dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/statsSavedView"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/save"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <AutoCompleteTextView
         android:id="@+id/oppAutoComplete"
         android:layout_width="288dp"

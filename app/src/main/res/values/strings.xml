@@ -36,6 +36,7 @@
     <string name="register_btn">Register</string>
     <string name="createTeam">Create Team</string>
     <string name="joinTeam">Join Team</string>
+    <string name="viewTeam">View Members</string>
     <string name="createEvent">Create Event</string>
     <string name="pickLocation">Pick Location</string>
     <string name="pickTime">Pick Time</string>
@@ -48,11 +49,14 @@
     <string name="recordRating">Record Stats</string>
     <string name="saveRating">Save All Players</string>
     <string name="action_settings">Settings</string>
+    <string name="changeTeam">Change Team</string>
     <string name="viewRatings">View Ratings</string>
     <string name="pending">Pending</string>
     <string name="responded">Responded</string>
     <string name="edit">Edit</string>
     <string name="save">Save</string>
+    <string name="bestAttackers">Best Attackers</string>
+    <string name="bestDefenders">Best Defenders</string>
 
     <!-- Short Text Views -->
     <string name="teamType">Team type</string>
@@ -84,10 +88,6 @@
     <string name="fixRed">Red Cards</string>
     <string name="fixBlack">Black Cards</string>
 
-    <!-- Training Rating Text View -->
-    <string name="trainEffort">Effort</string>
-    <string name="trainApplication">Application to Training</string>
-
     <!-- Long Text Views -->
     <string name="dontHave">No account? Sign up here!</string>
     <string name="haveAccount">Already have an account? Login here!</string>
@@ -116,6 +116,8 @@
     <string name="editInstructions">Click on the item you want to change</string>
     <string name="careerOverView">All-time stats for:</string>
     <string name="totalGames">Number of games played: </string>
+    <string name="statsSavedView">Statistics have been recorded you cannot edit event</string>
+    <string name="noDataHome">There are no statistics saved yet</string>
 
     <!-- Graph Labels -->
     <string name="defender">Defender Rating</string>

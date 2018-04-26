@@ -16,8 +16,13 @@ import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Team;
 import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class CreateTeam extends AppCompatActivity {
 
@@ -26,6 +31,7 @@ public class CreateTeam extends AppCompatActivity {
     EditText mTeamNumber;
     RadioButton rFootball, rHurling;
     ProgressBar mProgressBar;
+    ArrayList<String> teams;
     Fragment fragment = null;
 
     String code, name, type;
@@ -43,7 +49,11 @@ public class CreateTeam extends AppCompatActivity {
         rHurling = (RadioButton) findViewById(R.id.radioHurling);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        teams = new ArrayList<>();
+
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("Team");
+
+        getTeams();
 
         mCreteTeam.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,27 +74,55 @@ public class CreateTeam extends AppCompatActivity {
                         code = "AFL";
                         name = code + division;
                         team = new Team(name, type, value);
-                        mFirebaseDatabase.child(name).setValue(team);
-                        Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
-                        mProgressBar.setVisibility(View.VISIBLE);
-                        mCreteTeam.setVisibility(View.GONE);
-                        Intent intent = new Intent (CreateTeam.this, ManagerHome.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        if(teams.contains(name)){
+                            Toast.makeText(CreateTeam.this, "This team already exists" , Toast.LENGTH_SHORT).show();
+                        }else {
+                            mFirebaseDatabase.child(name).setValue(team);
+                            Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
+                            mProgressBar.setVisibility(View.VISIBLE);
+                            mCreteTeam.setVisibility(View.GONE);
+                            Intent intent = new Intent(CreateTeam.this, ManagerHome.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
                     } else if (type.equals("Hurling")) {
                         code = "AHL";
                         name = code + division;
                         team = new Team(name, type, value);
-                        mFirebaseDatabase.child(name).setValue(team);
-                        Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
-                        mProgressBar.setVisibility(View.VISIBLE);
-                        mCreteTeam.setVisibility(View.GONE);
-                        Intent intent = new Intent (CreateTeam.this, ManagerHome.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);;
+                        if(teams.contains(name)){
+                            Toast.makeText(CreateTeam.this, "This team already exists" , Toast.LENGTH_SHORT).show();
+                        } else {
+                            mFirebaseDatabase.child(name).setValue(team);
+                            Toast.makeText(CreateTeam.this, "Your team has been created" + " " + team.getName(), Toast.LENGTH_SHORT).show();
+                            mProgressBar.setVisibility(View.VISIBLE);
+                            mCreteTeam.setVisibility(View.GONE);
+                            Intent intent = new Intent(CreateTeam.this, ManagerHome.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
                     }
 
                 }
+
+            }
+        });
+    }
+
+    public void getTeams(){
+        mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        String team = ds.getKey();
+                        teams.add(team);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

@@ -22,6 +22,7 @@ import com.example.cianm.testauth.Entity.Fixture;
 import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.Fragment.ViewEventFragment;
+import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -60,7 +61,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
 
-    private TextView mDate, mTime, mOpposition, mLocation, mAvailInfo, mAvailabilityStatus, mAllSaved, mEditInfo;
+    private TextView mDate, mTime, mOpposition, mLocation, mAvailInfo, mAvailabilityStatus, mAllSaved, mEditInfo, mStatsSavedMan;
     private Button mViewAttendees, mAvailable, mNotAvailable, mUpdateAvailibility, mEdit, mSave;
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTV;
@@ -105,6 +106,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mAvailabilityStatus = (TextView) findViewById(R.id.availabilityStatusTextView);
         mEditInfo = (TextView) findViewById(R.id.editInstruction);
         mOppositionTV = (AutoCompleteTextView) findViewById(R.id.oppAutoComplete);
+        mStatsSavedMan = (TextView) findViewById(R.id.statsInstruction);
 
         // Buttons
         mViewAttendees = (Button) findViewById(R.id.viewAttendeesBtn);
@@ -144,26 +146,6 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
         mSavedDates = FirebaseDatabase.getInstance().getReference("SavedDates");
         mCheckDates = FirebaseDatabase.getInstance().getReference("CheckDate");
 
-        // get dates that have stats saved so user can't confirm availibility for them
-        mSavedDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String dates = ds.getValue(String.class);
-                        savedDates.add(dates);
-                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         // get dates of events previously created
         mCheckDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,11 +172,12 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                     oldDate = fixture.getDate();
                     date = fixture.getDate();
                     mDate.setText(oldDate);
-                    if (!timePattern.matcher(fixture.getTime().toString()).matches()){
-                        time = fixture.getTime().toString() + "0";
+                    time = fixture.getTime();
+                    if (!timePattern.matcher(time).matches()){
+                        time = time + "0";
                         mTime.setText(time);
                     } else {
-                        mTime.setText(fixture.getTime());
+                        mTime.setText(time);
                     }
                     mOpposition.setText(fixture.getOpposition());
                     mOppositionTV.setText(fixture.getOpposition());
@@ -348,76 +331,111 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             }
         });
 
-        userReference = FirebaseDatabase.getInstance().getReference("User");
-        userReference.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+        // get dates that have stats saved so user can't confirm availability for them
+        mSavedDates.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                userType = user.getType();
-                userName = user.getName();
-                if (userType.equalsIgnoreCase("Manager")) {
-                    mViewAttendees.setVisibility(View.VISIBLE);
-                    mAvailInfo.setVisibility(View.INVISIBLE);
-                    mAvailable.setVisibility(View.INVISIBLE);
-                    mNotAvailable.setVisibility(View.INVISIBLE);
-                    mAvailabilityStatus.setVisibility(View.INVISIBLE);
-                    mUpdateAvailibility.setVisibility(View.INVISIBLE);
-                    mAllSaved.setVisibility(View.INVISIBLE);
-                    mEdit.setVisibility(View.VISIBLE);
-                } else if (userType.equalsIgnoreCase("Player")) {
-                    if (savedDates.contains(currentEvent)) {
-                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
-                        mAvailInfo.setVisibility(View.INVISIBLE);
-                        mAvailable.setVisibility(View.INVISIBLE);
-                        mNotAvailable.setVisibility(View.INVISIBLE);
-                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
-                        mAllSaved.setVisibility(View.VISIBLE);
-                        mEdit.setVisibility(View.INVISIBLE);
-                    } else {
-                        mViewAttendees.setVisibility(View.INVISIBLE);
-                        mAvailInfo.setVisibility(View.VISIBLE);
-                        mAvailable.setVisibility(View.VISIBLE);
-                        mNotAvailable.setVisibility(View.VISIBLE);
-                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
-                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
-                        mAllSaved.setVisibility(View.INVISIBLE);
-                        mEdit.setVisibility(View.INVISIBLE);
-                        attendenceRef.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                if(dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String dates = ds.getValue(String.class);
+                        savedDates.add(dates);
+                        userReference = FirebaseDatabase.getInstance().getReference("User");
+                        userReference.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    Attendee attendee = ds.getValue(Attendee.class);
-                                    String availabilityCheck = attendee.getAvailability();
-                                    String attendeeType = attendee.getUserType();
-                                    if (attendeeType.equalsIgnoreCase("Player")) {
-                                        if (availabilityCheck.equalsIgnoreCase("Going")) {
-                                            mAvailInfo.setVisibility(View.INVISIBLE);
-                                            mAvailable.setVisibility(View.INVISIBLE);
-                                            mNotAvailable.setVisibility(View.INVISIBLE);
-                                            mUpdateAvailibility.setVisibility(View.VISIBLE);
-                                            mAvailabilityStatus.setVisibility(View.VISIBLE);
-                                            mAvailabilityStatus.setText("Availability confirmed, You are attending this event");
-                                        } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
-                                            mAvailInfo.setVisibility(View.INVISIBLE);
-                                            mAvailable.setVisibility(View.INVISIBLE);
-                                            mNotAvailable.setVisibility(View.INVISIBLE);
-                                            mUpdateAvailibility.setVisibility(View.VISIBLE);
-                                            mAvailabilityStatus.setVisibility(View.VISIBLE);
-                                            mAvailabilityStatus.setText("Availability confirmed, You are not attending this event");
-                                        }
+                                user = dataSnapshot.getValue(User.class);
+                                userType = user.getType();
+                                userName = user.getName();
+                                if (userType.equalsIgnoreCase("Manager")) {
+                                    if (savedDates.contains(currentEvent)) {
+                                        mViewAttendees.setVisibility(View.VISIBLE);
+                                        mAvailInfo.setVisibility(View.INVISIBLE);
+                                        mAvailable.setVisibility(View.INVISIBLE);
+                                        mNotAvailable.setVisibility(View.INVISIBLE);
+                                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                                        mAllSaved.setVisibility(View.INVISIBLE);
+                                        mEdit.setVisibility(View.INVISIBLE);
+                                        mStatsSavedMan.setVisibility(View.VISIBLE);
+                                    } else {
+                                        mViewAttendees.setVisibility(View.VISIBLE);
+                                        mAvailInfo.setVisibility(View.INVISIBLE);
+                                        mAvailable.setVisibility(View.INVISIBLE);
+                                        mNotAvailable.setVisibility(View.INVISIBLE);
+                                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                                        mAllSaved.setVisibility(View.INVISIBLE);
+                                        mEdit.setVisibility(View.VISIBLE);
+                                        mStatsSavedMan.setVisibility(View.INVISIBLE);
+                                    }
+                                } else if (userType.equalsIgnoreCase("Player")) {
+                                    if (savedDates.contains(currentEvent)) {
+                                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                                        mAvailInfo.setVisibility(View.INVISIBLE);
+                                        mAvailable.setVisibility(View.INVISIBLE);
+                                        mNotAvailable.setVisibility(View.INVISIBLE);
+                                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                                        mAllSaved.setVisibility(View.VISIBLE);
+                                        mEdit.setVisibility(View.INVISIBLE);
+                                        mViewAttendees.setVisibility(View.INVISIBLE);
+                                        mStatsSavedMan.setVisibility(View.INVISIBLE);
+                                    } else {
+                                        mViewAttendees.setVisibility(View.INVISIBLE);
+                                        mAvailInfo.setVisibility(View.VISIBLE);
+                                        mAvailable.setVisibility(View.VISIBLE);
+                                        mNotAvailable.setVisibility(View.VISIBLE);
+                                        mAvailabilityStatus.setVisibility(View.INVISIBLE);
+                                        mUpdateAvailibility.setVisibility(View.INVISIBLE);
+                                        mAllSaved.setVisibility(View.INVISIBLE);
+                                        mEdit.setVisibility(View.INVISIBLE);
+                                        mStatsSavedMan.setVisibility(View.INVISIBLE);
+                                        attendenceRef.orderByChild("eventDate").equalTo(currentEvent).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                    Attendee attendee = ds.getValue(Attendee.class);
+                                                    String availabilityCheck = attendee.getAvailability();
+                                                    String attendeeType = attendee.getUserType();
+                                                    if (attendeeType.equalsIgnoreCase("Player")) {
+                                                        if (availabilityCheck.equalsIgnoreCase("Going")) {
+                                                            mAvailInfo.setVisibility(View.INVISIBLE);
+                                                            mAvailable.setVisibility(View.INVISIBLE);
+                                                            mNotAvailable.setVisibility(View.INVISIBLE);
+                                                            mUpdateAvailibility.setVisibility(View.VISIBLE);
+                                                            mAvailabilityStatus.setVisibility(View.VISIBLE);
+                                                            mAvailabilityStatus.setText("Availability confirmed, You are attending this event");
+                                                        } else if (availabilityCheck.equalsIgnoreCase("Not going")) {
+                                                            mAvailInfo.setVisibility(View.INVISIBLE);
+                                                            mAvailable.setVisibility(View.INVISIBLE);
+                                                            mNotAvailable.setVisibility(View.INVISIBLE);
+                                                            mUpdateAvailibility.setVisibility(View.VISIBLE);
+                                                            mAvailabilityStatus.setVisibility(View.VISIBLE);
+                                                            mAvailabilityStatus.setText("Availability confirmed, You are not attending this event");
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
                                     }
                                 }
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
                         });
-
                     }
+                } else {
+
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -543,10 +561,7 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
 
     public void saveDetails(){
         String opposition = mOppositionTV.getText().toString();
-        if(checkDates.contains(date)){
-            Toast.makeText(ViewIndividualFixture.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
-            pickDate();
-        } else if (TextUtils.isEmpty(opposition)) {
+        if (TextUtils.isEmpty(opposition)) {
             mOppositionTV.setError("You must enter in a opponent");
         } else {
             mSave.setVisibility(View.INVISIBLE);
@@ -577,6 +592,10 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
                     }
                     mCheckDates.child(currentTeam).child(key).removeValue();
                     mCheckDates.child(currentTeam).child(id).child("date").setValue(date);
+                    Toast.makeText(ViewIndividualFixture.this, "Fixture Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent (ViewIndividualFixture.this, ManagerHome.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
 
                 @Override
@@ -616,7 +635,11 @@ public class ViewIndividualFixture extends AppCompatActivity implements OnMapRea
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mDate.setText(year + "/" + (month + 1) + "/" + day);
                 date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
-               // mDatabase.child(eventKey).child("date").setValue(date);
+                if(checkDates.contains(date)){
+                    Toast.makeText(ViewIndividualFixture.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
+                    pickDate();
+                }
+                // mDatabase.child(eventKey).child("date").setValue(date);
             }
         }, mDay, mMonth, mYear);
         mDatePicker.setTitle("Select Date");

@@ -19,29 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/> -->
 
-    <Button
-        android:id="@+id/pickLocationBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="175dp"
-        android:text="@string/pickLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/locationTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="175dp"
         android:text="@string/eventLocation"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/pickLocationBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,22 +39,10 @@
         android:layout_marginStart="200dp"
         android:layout_marginTop="185dp"
         android:text="@string/createEvent"
+        android:visibility="invisible"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/pickTimeBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="300dp"
-        android:text="@string/pickTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,13 +50,11 @@
         android:id="@+id/timeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="305dp"
         android:text="@string/eventTime"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/pickTimeBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,21 +67,9 @@
         android:layout_marginTop="305dp"
         android:text="@string/createEvent"
         android:textAlignment="center"
+        android:visibility="invisible"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/pickDateBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="425dp"
-        android:text="@string/pickDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.017"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -136,6 +96,7 @@
         android:layout_marginStart="200dp"
         android:layout_marginTop="430dp"
         android:text="@string/createEvent"
+        android:visibility="invisible"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,8 +108,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="116dp"
-        android:layout_marginEnd="95dp"
-        android:layout_marginStart="95dp"
+        android:layout_marginEnd="220dp"
+        android:layout_marginStart="220dp"
         android:text="@string/createEvent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -257,6 +218,69 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pickLocationBtn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="376dp"
+        android:layout_marginTop="166dp"
+        android:background="@drawable/ic_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/locationPick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="188dp"
+        android:text="@string/pickLocation"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/pickLocationBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pickTimeBtn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="376dp"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/ic_access_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timePick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="320dp"
+        android:text="@string/pickTime"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/pickTimeBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pickDateBtn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="376dp"
+        android:layout_marginTop="425dp"
+        android:background="@drawable/ic_date_range"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/datePick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="445dp"
+        android:text="@string/pickDate"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/pickDateBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

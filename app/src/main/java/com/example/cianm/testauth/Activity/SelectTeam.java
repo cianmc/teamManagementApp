@@ -99,9 +99,13 @@ public class SelectTeam extends AppCompatActivity {
                                     userType = user.getType();
                                     ((GlobalVariables) SelectTeam.this.getApplication()).setCurrentTeam(teamID);
                                     if (user.getType().equalsIgnoreCase("Manager")) {
-                                        startActivity(new Intent(SelectTeam.this, ManagerHome.class));
+                                        Intent intent = new Intent(SelectTeam.this, ManagerHome.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
                                     } else if (user.getType().equalsIgnoreCase("Player")) {
-                                        startActivity(new Intent(SelectTeam.this, PlayerHome.class));
+                                        Intent intent = new Intent(SelectTeam.this, PlayerHome.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
                                     }
                                 }
 

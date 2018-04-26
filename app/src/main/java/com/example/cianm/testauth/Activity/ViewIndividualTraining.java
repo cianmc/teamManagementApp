@@ -21,6 +21,7 @@ import com.example.cianm.testauth.Entity.GlobalVariables;
 import com.example.cianm.testauth.Entity.Training;
 import com.example.cianm.testauth.Entity.User;
 import com.example.cianm.testauth.Fragment.ViewEventFragment;
+import com.example.cianm.testauth.ManagerHome;
 import com.example.cianm.testauth.PlayerHome;
 import com.example.cianm.testauth.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -161,12 +162,13 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                     Training training = child.getValue(Training.class);
                     oldDate = training.getDate();
                     date = training.getDate();
+                    time = training.getTime();
                     mDate.setText(training.getDate());
-                    if (!timePattern.matcher(training.getTime().toString()).matches()){
-                        time = training.getTime().toString() + "0";
+                    if (!timePattern.matcher(time).matches()){
+                        time = time + "0";
                         mTime.setText(time);
                     } else {
-                        mTime.setText(training.getTime());
+                        mTime.setText(time);
                     }
                     mDescription.setText(training.getDescription());
                     mDescriptionET.setText(training.getDescription());
@@ -502,10 +504,7 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
 
     public void saveDetails(){
         String description = mDescriptionET.getText().toString();
-        if(checkDates.contains(date)){
-            Toast.makeText(ViewIndividualTraining.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
-            pickDate();
-        } else if (TextUtils.isEmpty(description)) {
+        if (TextUtils.isEmpty(description)) {
             mDescriptionET.setError("Please enter in a description");
         } else {
             mSave.setVisibility(View.INVISIBLE);
@@ -536,6 +535,10 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
                     }
                     mCheckDates.child(currentTeam).child(key).removeValue();
                     mCheckDates.child(currentTeam).child(id).child("date").setValue(date);
+                    Toast.makeText(ViewIndividualTraining.this, "Training Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent (ViewIndividualTraining.this, ManagerHome.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
 
                 @Override
@@ -575,6 +578,10 @@ public class ViewIndividualTraining extends AppCompatActivity implements OnMapRe
             public void onDateSet(DatePicker datePicker, int day, int month, int year) {
                 mDate.setText(year + "/" + (month + 1) + "/" + day);
                 date = String.valueOf(year) + "/" + String.valueOf(month + 1) + "/" + String.valueOf(day);
+                if(checkDates.contains(date)){
+                    Toast.makeText(ViewIndividualTraining.this, "There is an event already set on that day", Toast.LENGTH_SHORT).show();
+                    pickDate();
+                }
                 //mDatabase.child(eventKey).child("date").setValue(date);
             }
         }, mDay, mMonth, mYear);

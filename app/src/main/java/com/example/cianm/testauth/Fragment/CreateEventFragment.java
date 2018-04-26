@@ -67,7 +67,7 @@ public class CreateEventFragment extends Fragment {
     AutocompleteFilter typeFilter;
     AutoCompleteTextView mOppositionTextView;
     Button mPickLocation, mPickTime, mPickDate, mCreateEvent;
-    TextView mViewPlace, mViewTime, mViewDate, mOppositionView, mDescriptionView;
+    TextView mViewPlace, mViewTime, mViewDate, mOppositionView, mDescriptionView, pickTime, pickDate, pickLocation;
     EditText mDescription;
     RadioButton rTraining, rFixture;
     RadioGroup rEvent;
@@ -133,11 +133,18 @@ public class CreateEventFragment extends Fragment {
         mOppositionTextView = (AutoCompleteTextView) getView().findViewById(R.id.oppositionAutoTextView);
         mOppositionView = (TextView) getView().findViewById(R.id.oppositionTextView);
         mDescriptionView = (TextView) getView().findViewById(R.id.descriptionTextView);
+        pickTime = (TextView) getView().findViewById(R.id.timePick);
+        pickDate = (TextView) getView().findViewById(R.id.datePick);
+        pickLocation = (TextView) getView().findViewById(R.id.locationPick);
 
         mViewPlace.setVisibility(View.GONE);
         mViewTime.setVisibility(View.GONE);
         mViewDate.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.GONE);
+
+        pickTime.setClickable(true);
+        pickDate.setClickable(true);
+        pickLocation.setClickable(true);
 
         mDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
         mDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -191,6 +198,12 @@ public class CreateEventFragment extends Fragment {
                 pickPlace();
             }
         });
+        pickLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickPlace();
+            }
+        });
 
         // Time picker dialog
         mPickTime.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +213,12 @@ public class CreateEventFragment extends Fragment {
             }
         });
         mViewTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickTime();
+            }
+        });
+        pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickTime();
@@ -218,6 +237,11 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View view) {
                 pickDate();
             }
+        });
+        pickDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickDate();            }
         });
 
         mCreateEvent.setOnClickListener(new View.OnClickListener() {
@@ -265,10 +289,12 @@ public class CreateEventFragment extends Fragment {
         }
         startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         mPickLocation.setVisibility(View.GONE);
+        pickLocation.setVisibility(View.GONE);
     }
 
     public void pickTime(){
         mPickTime.setVisibility(View.GONE);
+        pickTime.setVisibility(View.GONE);
         mViewTime.setVisibility(View.VISIBLE);
         Calendar mcurrentTime = Calendar.getInstance();
         mHour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
@@ -287,6 +313,7 @@ public class CreateEventFragment extends Fragment {
 
     public void pickDate(){
         mPickDate.setVisibility(View.GONE);
+        pickDate.setVisibility(View.GONE);
         mViewDate.setVisibility(View.VISIBLE);
         Calendar myCalendar = Calendar.getInstance();
         mYear = myCalendar.get(Calendar.YEAR);
@@ -365,7 +392,7 @@ public class CreateEventFragment extends Fragment {
                         }
                     });
                     mFirebaseDatabaseT.child(currentTeam).child(userID).setValue(training);
-                    mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
+                    //mFirebaseDatabaseTeam.child("trainings").child(userID).setValue(training);
                     mCreateEvent.setVisibility(View.GONE);
                     Intent intent = new Intent (getActivity(), ManagerHome.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -399,7 +426,7 @@ public class CreateEventFragment extends Fragment {
                         }
                     });
                     mFirebaseDatabaseF.child(currentTeam).child(userID).setValue(fixture);
-                    mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
+                    //mFirebaseDatabaseTeam.child("fixtures").child(userID).setValue(fixture);
                     mCreateEvent.setVisibility(View.GONE);
                     Intent intent = new Intent (getActivity(), ManagerHome.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

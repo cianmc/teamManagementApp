@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_join_team"
             android:title="@string/joinTeam" />
         <item
+            android:id="@+id/navM_view_members"
+            android:icon="@drawable/ic_people"
+            android:title="@string/viewTeam" />
+        <item
             android:id="@+id/navM_create_event"
             android:icon="@drawable/ic_create"
             android:title="@string/createEvent" />
@@ -32,6 +36,10 @@
 
     <item android:title="@string/account">
         <menu>
+            <item
+                android:id="@+id/navM_changeTeam"
+                android:icon="@drawable/ic_change"
+                android:title="@string/changeTeam" />
             <item
                 android:id="@+id/navM_settings"
                 android:icon="@drawable/ic_settings"
