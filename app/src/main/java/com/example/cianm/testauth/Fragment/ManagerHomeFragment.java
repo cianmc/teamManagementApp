@@ -4,9 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by cianm on 13/03/2018.
@@ -30,15 +33,15 @@ import java.util.Comparator;
 
 public class ManagerHomeFragment extends Fragment {
 
-    DatabaseReference mRatingRef;
-    ListView mAttackersLV, mDefendersLV;
-    TextView mNoDataA, mNoDataD;
+    DatabaseReference mRatingRef, mStillToSave;
+    ListView mAttackersLV, mDefendersLV, mStillToSaveLV;
+    TextView mNoDataA, mNoDataD, mNoneToSave;
     String playerName;
     double totalAtt, totalDef, totalOver, avgAtt, avgDef, avgOver;
     long noOfEvents, noOfPLayers;
     String eventNo, currentTeam, playerNo;
-    int noofEvents, noPlayers;
-    ArrayList<String> uids;
+    int noofEvents, noPlayers, size;
+    ArrayList<String> uids, datesToSave;
     ArrayList<BestPlayer> bestPlayersA, bestPlayersD;
     HomeRatingAdapter attackerAdapter, defenderAdapter;
 
@@ -61,12 +64,38 @@ public class ManagerHomeFragment extends Fragment {
 
         mAttackersLV = (ListView) getView().findViewById(R.id.bestAttackersLV);
         mDefendersLV = (ListView) getView().findViewById(R.id.bestDefendersLV);
+        mStillToSaveLV = (ListView) getView().findViewById(R.id.stillToSaveLV);
         mNoDataA = (TextView) getView().findViewById(R.id.noDataAttack);
         mNoDataD = (TextView) getView().findViewById(R.id.noDataDef);
+        mNoneToSave = (TextView) getView().findViewById(R.id.noneToSaveMH);
 
         uids = new ArrayList<>();
+        datesToSave = new ArrayList<>();
         bestPlayersA = new ArrayList<>();
         bestPlayersD = new ArrayList<>();
+
+        mStillToSave = FirebaseDatabase.getInstance().getReference("DatesToSave");
+        mStillToSave.child(currentTeam).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    mStillToSaveLV.setVisibility(View.INVISIBLE);
+                    mNoneToSave.setVisibility(View.VISIBLE);
+                } else {
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        String date = ds.child("date").getValue(String.class);
+                        datesToSave.add(date);
+                    }
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, datesToSave);
+                    mStillToSaveLV.setAdapter(arrayAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         // get all the stats saved for each user and getting their average attacker, defender and overall
         // rating based on the number of games they have played

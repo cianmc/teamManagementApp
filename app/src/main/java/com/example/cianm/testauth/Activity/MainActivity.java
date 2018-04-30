@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("TeamGo");
 
         mEmail = (EditText) findViewById(R.id.emailField);
         mPassword = (EditText) findViewById(R.id.passwordField);
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in" + user.getUid());
                     Toast.makeText(getApplicationContext(), "Sucessfully signed in with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent (MainActivity.this, SelectTeam.class);
+                    Intent intent = new Intent (MainActivity.this, CheckValidation.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {

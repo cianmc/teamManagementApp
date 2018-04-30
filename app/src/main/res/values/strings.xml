@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App Name -->
-    <string name="app_name">Team Management App</string>
+    <string name="app_name">TeamGo</string>
 
     <!-- Edit text labels -->
     <string name="name">Name</string>
@@ -124,6 +124,8 @@
     <string name="noDataHome">There are no statistics saved yet</string>
     <string name="goalsPoints">Goals : Points</string>
     <string name="divider">:</string>
+    <string name="stillToSave">Fixture stats still to save</string>
+    <string name="noneToSave">No fixtures stats to save</string>
 
     <!-- Graph Labels -->
     <string name="defender">Defender Rating</string>

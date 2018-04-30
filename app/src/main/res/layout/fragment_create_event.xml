@@ -229,7 +229,7 @@
         android:hint="@string/opposition_field"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

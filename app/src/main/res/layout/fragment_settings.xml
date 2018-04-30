@@ -27,30 +27,12 @@
         android:layout_marginLeft="20dp" />
 
     <EditText
-        android:id="@+id/oldPassEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
-        android:ems="10"
-        android:hint="@string/oldPassword"
-        android:inputType="textPassword"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="20dp" />
-
-    <EditText
         android:id="@+id/newPassEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="150dp"
         android:ems="10"
         android:hint="@string/newPassword"
         android:inputType="textPassword"
@@ -58,9 +40,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/oldPassEditText"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="20dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/confirmPassEditText"

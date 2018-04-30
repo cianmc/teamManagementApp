@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="100dp"
         android:text="@string/bestAttackers"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="500dp"
         android:text="@string/bestDefenders"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
@@ -93,6 +93,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="208dp" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="98dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/stillToSave"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="98dp" />
+
+    <ListView
+        android:id="@+id/stillToSaveLV"
+        android:layout_width="286dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView21"
+        tools:layout_editor_absoluteY="41dp"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/noneToSaveMH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="120dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/noneToSave"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21"
+        android:layout_marginRight="120dp" />
 
 
 </android.support.constraint.ConstraintLayout>

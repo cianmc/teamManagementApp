@@ -58,7 +58,6 @@ public class SettingsFragment extends Fragment {
         getActivity().setTitle("Account Settings");
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mOldPass = (EditText) getView().findViewById(R.id.oldPassEditText);
         mNewPass = (EditText) getView().findViewById(R.id.newPassEditText);
         mCofirmPass = (EditText) getView().findViewById(R.id.confirmPassEditText);
         mUpdatePass = (Button) getView().findViewById(R.id.updatePasswordBtn);
@@ -74,7 +73,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                oldPassDB = user.getPassword();
                 userType = user.getType();
             }
 
@@ -105,18 +103,13 @@ public class SettingsFragment extends Fragment {
 
     public void updatePassword(){
 
-        oldPass = mOldPass.getText().toString();
         newPass = mNewPass.getText().toString();
         cofirmPass = mCofirmPass.getText().toString();
 
-        if (TextUtils.isEmpty(oldPass)){
-            mOldPass.setError("Please enter in your password");
-        } else if (TextUtils.isEmpty(newPass)){
+         if (TextUtils.isEmpty(newPass)){
             mNewPass.setError("Please enter in a new password");
         } else if (TextUtils.isEmpty(cofirmPass)){
             mCofirmPass.setError("Please confirm your password");
-        } else if (!oldPass.equals(oldPassDB)){
-            mOldPass.setError("Incorrect password");
         } else if (!newPass.equals(cofirmPass)){
             Toast.makeText(getActivity(),"Password don't match", Toast.LENGTH_SHORT).show();
         } else if (newPass.length() < 6){
@@ -139,8 +132,9 @@ public class SettingsFragment extends Fragment {
                         mUser.delete();
                         Toast.makeText(getActivity(), "Deleting Account", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent (getActivity(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -168,8 +162,9 @@ public class SettingsFragment extends Fragment {
                         mUser.delete();
                         Toast.makeText(getActivity(), "Deleting Account", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent (getActivity(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
